@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import Layout from './Layout';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Login from './pages/Login/Login';
-import SignUp from './pages/Login/SignUp';
-import Contact from './pages/Contact/Contact';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
+import Layout from './pages/Layout';
+import Dashboard from './pages/Customer/Dashboard/Dashboard';
+import Login from './pages/Customer/Login/Login';
+import SignUp from './pages/Customer/Login/SignUp';
+import Contact from './pages/Contact/Contact';
+import Home from './pages/Home/Home';
+import About from './pages/About/About';
+import CustomerLayout from './pages/Customer/CustomerLayout';
+
+import './index.css';
+import Account from './pages/Customer/Account/Account';
 
 const routes = [
     {
@@ -14,26 +20,40 @@ const routes = [
         element: <Layout />,
         children: [
             {
-                path: '/dashboard',
+                path: '/home',
+                element: <Home />
+            },
+            {
+                path: '/about',
+                element: <About />
+            },
+            {
+                path: '/contact',
+                element: <Contact />
+            }
+        ]
+    },
+    {
+        path: '/customer',
+        element: <CustomerLayout />,
+        children: [
+            {
+                path: 'dashboard',
                 element: <Dashboard />
             },
             {
-                path: '/login',
+                path: 'login',
                 element: <Login />,
                 children: [
                     {
-                        path: '/login/sign-up',
+                        path: 'sign-up',
                         element: <SignUp />
                     }
                 ]
             },
             {
-                path: '/account',
-                element: <Contact />
-            },
-            {
-                path: '/contact',
-                element: <Contact />
+                path: 'account',
+                element: <Account />
             }
         ]
     }

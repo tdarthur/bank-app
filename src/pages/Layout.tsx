@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useMatches, useNavigate } from 'react-router-dom';
+import { Outlet, useMatches, useNavigate } from 'react-router-dom';
 
 const Layout = () => {
     const matches = useMatches();
@@ -7,16 +7,17 @@ const Layout = () => {
 
     useEffect(() => {
         if (matches.length === 1) {
-            // TODO: check if logged in, then navigate accordingly
-            navigate('login');
+            navigate('home');
         }
     }, [matches, navigate]);
 
     return (
         <>
+            <h1>Root</h1>
             {matches.map((match) => (
                 <div key={match.id}>{match.pathname}</div>
             ))}
+            <Outlet />
         </>
     );
 };
