@@ -8,6 +8,7 @@ import Banking from './routes/Root/Banking/Banking';
 import CreditCards from './routes/Root/CreditCards/CreditCards';
 import Benefits from './routes/Root/Benefits/Benefits';
 import Faq from './routes/Root/FAQ/Faq';
+import Legal from './routes/Root/Legal/Legal';
 
 import CustomerLayout from './routes/Customer/CustomerLayout';
 import Login from './routes/Customer/Login/Login';
@@ -29,11 +30,12 @@ const routes = [
             { path: 'banking', element: <Banking /> },
             { path: 'credit-cards', element: <CreditCards /> },
             { path: 'benefits', element: <Benefits /> },
-            { path: 'faq', element: <Faq /> }
+            { path: 'faq', element: <Faq /> },
+            { path: 'legal', element: <Legal /> }
         ]
     },
     {
-        path: '/customer',
+        path: 'customer',
         element: <CustomerLayout />,
         children: [
             {

@@ -3,6 +3,9 @@ import { Link, Outlet, useMatches, useNavigate } from 'react-router-dom';
 
 import styles from './layout.module.css';
 
+/**
+ * Navigation bar for the header.
+ */
 const HeaderNavigation = () => (
     <nav className={styles.navigation}>
         <ul>
@@ -31,6 +34,9 @@ const HeaderNavigation = () => (
     </nav>
 );
 
+/**
+ * Header to use in the layout.
+ */
 const Header = () => (
     <header className={styles.header}>
         <div className={styles.headerContent}>
@@ -40,6 +46,21 @@ const Header = () => (
             <HeaderNavigation />
         </div>
     </header>
+);
+
+/**
+ * Footer to use in the layout.
+ */
+const Footer = () => (
+    <footer className={styles.footer}>
+        <Link to="legal">
+            <b>Privacy</b>
+        </Link>
+        &nbsp;|&nbsp;
+        <Link to="legal">
+            <b>Terms</b>
+        </Link>
+    </footer>
 );
 
 /**
@@ -57,8 +78,15 @@ const Layout = () => {
 
     return (
         <>
-            <Header />
-            <Outlet />
+            <div className={styles.layout}>
+                <Header />
+                <div className={styles.pageContent}>
+                    <main className={styles.mainContent}>
+                        <Outlet />
+                    </main>
+                </div>
+                <Footer />
+            </div>
         </>
     );
 };
