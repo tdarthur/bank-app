@@ -1,23 +1,26 @@
 import { useEffect } from 'react';
-import { Outlet, useMatches, useNavigate } from 'react-router-dom';
+import { useMatches, useNavigate } from 'react-router-dom';
 
+/**
+ * Layout component for the 'Customer portal' in the application.
+ */
 const Layout = () => {
     const matches = useMatches();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (matches.length === 1) {
-            navigate('home');
+            // TODO: check if logged in, then navigate accordingly
+            navigate('customer/login');
         }
     }, [matches, navigate]);
 
     return (
         <>
-            <h1>Root</h1>
+            <h1>Customer Portal</h1>
             {matches.map((match) => (
                 <div key={match.id}>{match.pathname}</div>
             ))}
-            <Outlet />
         </>
     );
 };

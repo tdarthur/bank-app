@@ -1,15 +1,98 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@200;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;400;700;800&display=swap');
+
+/* CSS Reset */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
+}
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+#root,
+#__next {
+    isolation: isolate;
+}
+
+/* App Styles */
 
 :root {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 
-    background-color: #222;
-    color: #fff;
+    background-color: #ebebeb;
+    color: #3c3c3c;
 
     scroll-behavior: smooth;
 }
 
 body {
-    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+button {
+    border: none;
+    border-radius: 10000000px;
+
+    height: 48px;
+
+    background-color: white;
+
+    transition: all 150ms ease;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.button-primary {
+    padding: 0 64px;
+
+    background-color: #03a8c9;
+    color: white;
+}
+
+.button-primary:hover {
+    background-color: hsl(190, 97%, 30%);
+}
+
+.button-secondary {
+    padding: 0 16px;
+
+    background-color: transparent;
+}
+
+.button-secondary:hover {
+    color: #03a8c9;
 }

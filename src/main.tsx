@@ -2,17 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import Layout from './pages/Layout';
-import Dashboard from './pages/Customer/Dashboard/Dashboard';
-import Login from './pages/Customer/Login/Login';
-import SignUp from './pages/Customer/Login/SignUp';
-import Contact from './pages/Contact/Contact';
-import Home from './pages/Home/Home';
-import About from './pages/About/About';
-import CustomerLayout from './pages/Customer/CustomerLayout';
+import Layout from './routes/Root/Layout';
+import Home from './routes/Root/Home/Home';
+import Banking from './routes/Root/Banking/Banking';
+import CreditCards from './routes/Root/CreditCards/CreditCards';
+import Benefits from './routes/Root/Benefits/Benefits';
+import Faq from './routes/Root/FAQ/Faq';
+
+import CustomerLayout from './routes/Customer/CustomerLayout';
+import Login from './routes/Customer/Login/Login';
+import SignUp from './routes/Customer/Login/SignUp';
+import Dashboard from './routes/Customer/Dashboard/Dashboard';
+import Account from './routes/Customer/Account/Account';
 
 import './index.css';
-import Account from './pages/Customer/Account/Account';
 
 const routes = [
     {
@@ -20,17 +23,13 @@ const routes = [
         element: <Layout />,
         children: [
             {
-                path: '/home',
+                path: '/',
                 element: <Home />
             },
-            {
-                path: '/about',
-                element: <About />
-            },
-            {
-                path: '/contact',
-                element: <Contact />
-            }
+            { path: 'banking', element: <Banking /> },
+            { path: 'credit-cards', element: <CreditCards /> },
+            { path: 'benefits', element: <Benefits /> },
+            { path: 'faq', element: <Faq /> }
         ]
     },
     {
@@ -43,13 +42,11 @@ const routes = [
             },
             {
                 path: 'login',
-                element: <Login />,
-                children: [
-                    {
-                        path: 'sign-up',
-                        element: <SignUp />
-                    }
-                ]
+                element: <Login />
+            },
+            {
+                path: 'sign-up',
+                element: <SignUp />
             },
             {
                 path: 'account',
