@@ -141,3 +141,9 @@ button:hover {
 .button-tertiary:hover {
     color: var(--primary-color);
 }
+
+.center-child {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

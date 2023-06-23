@@ -1,6 +1,7 @@
 .carousel {
     position: relative;
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -20,6 +21,8 @@
     top: 0;
 
     width: 100%;
+
+    transition: left 300ms ease;
 }
 
 .carouselOverlay {
@@ -38,6 +41,18 @@
     padding: 0;
 }
 
+.carouselButton > svg {
+    fill: none;
+    stroke: black;
+
+    transition: all 150ms linear;
+}
+
+.carouselButton:hover > svg {
+    fill: black;
+    stroke: white;
+}
+
 .carouselButtonLeft {
     composes: carouselButton;
 
@@ -48,6 +63,32 @@
     composes: carouselButton;
 
     right: -64px;
+}
+
+.carouselIndexIndicator {
+    position: absolute;
+    z-index: 3;
+    height: 16px;
+    display: flex;
+    gap: 8px;
+
+    bottom: 1rem;
+}
+
+.carouselIndexIndicator > button {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 1px solid white;
+
+    background-color: white;
+
+    transition: all 300ms linear;
+}
+
+.carouselIndexIndicator > button:hover {
+    /* border-color: black; */
+    background-color: black;
 }
 
 .actionContainer {
@@ -76,12 +117,41 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     align-items: center;
-    overflow: hidden;
 
     width: 100%;
     height: 360px;
 }
 
-.card > div {
+.card > div:first-child {
     padding: 0 4rem;
+}
+
+.card > div:first-child > *:nth-child(2) {
+    margin-bottom: 1rem;
+}
+
+.cardImage {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+}
+
+.cardImage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    border-radius: 1000000px;
+}
+
+.cardImage img:nth-child(1) {
+    z-index: 2;
+}
+
+.cardImage img:nth-child(2) {
+    z-index: 1;
+
+    scale: 105%;
+    filter: blur(8px);
 }
