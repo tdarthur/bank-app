@@ -1,0 +1,87 @@
+.carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.carouselDisplay {
+    position: relative;
+    overflow: hidden;
+
+    width: var(--main-content-width);
+    height: 512px;
+
+    background-color: lightgray;
+}
+
+.carouselDisplay img {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+}
+
+.carouselOverlay {
+    position: absolute;
+    /* top: 4rem; */
+    left: 6rem;
+
+    color: white;
+    text-shadow: 0 0 40px #000000, 0 0 40px #00000080;
+}
+
+.carouselButton {
+    position: absolute;
+
+    aspect-ratio: 1;
+    padding: 0;
+}
+
+.carouselButtonLeft {
+    composes: carouselButton;
+
+    left: -64px;
+}
+
+.carouselButtonRight {
+    composes: carouselButton;
+
+    right: -64px;
+}
+
+.actionContainer {
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.actionHeader {
+    margin-bottom: 1rem;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 4rem;
+}
+
+.cards > :nth-child(even) > :nth-child(1) {
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    overflow: hidden;
+
+    width: 100%;
+    height: 360px;
+}
+
+.card > div {
+    padding: 0 4rem;
+}

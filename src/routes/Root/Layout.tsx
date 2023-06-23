@@ -25,10 +25,10 @@ const HeaderNavigation = () => (
 
         <div>
             <Link to="/customer/sign-up">
-                <button className="button-secondary">Sign Up</button>
+                <button className="button-tertiary button-short">Sign Up</button>
             </Link>
             <Link to="/customer/login">
-                <button className="button-primary">Log In</button>
+                <button className="button-primary button-long">Log In</button>
             </Link>
         </div>
     </nav>
@@ -53,13 +53,18 @@ const Header = () => (
  */
 const Footer = () => (
     <footer className={styles.footer}>
-        <Link to="legal">
-            <b>Privacy</b>
-        </Link>
-        &nbsp;|&nbsp;
-        <Link to="legal">
-            <b>Terms</b>
-        </Link>
+        <div className={styles.footerContent}>
+            <div className={styles.footerLinks}>
+                <Link to="legal">
+                    <b>Privacy</b>
+                </Link>
+                &nbsp;|&nbsp;
+                <Link to="legal">
+                    <b>Terms</b>
+                </Link>
+            </div>
+            <p>&#169;{new Date(Date.now()).getFullYear()} Human Bank</p>
+        </div>
     </footer>
 );
 

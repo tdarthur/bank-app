@@ -1,7 +1,7 @@
 .layout {
     --header-height: 66px;
     --main-content-width: 1080px;
-    --footer-height: 128px;
+    --footer-height: 96px;
 }
 
 .header {
@@ -10,8 +10,9 @@
     left: 0;
     top: 0;
     justify-content: center;
+    z-index: 100;
 
-    width: 100%;
+    width: 100vw;
     height: var(--header-height);
     padding: 0 4rem;
 
@@ -117,8 +118,9 @@ footer a {
     justify-content: center;
 
     width: 100vw;
-    min-height: calc(100vh - var(--footer-height));
-    padding: calc(var(--header-height) + 1rem) 4rem 0 4rem;
+    min-height: calc(100vh - var(--footer-height) - 4rem);
+    margin-bottom: 4rem;
+    padding: var(--header-height) 4rem 0 4rem;
 }
 
 .mainContent {
@@ -132,14 +134,8 @@ footer a {
 .footer {
     display: flex;
     justify-content: center;
-    align-items: center;
 
-    width: 100%;
-    height: var(--footer-height);
-
-    background-color: #ebebeb;
     font-size: small;
-    font-weight: bold;
 }
 
 .footer a {
@@ -148,4 +144,20 @@ footer a {
 
 .footer a:hover {
     color: var(--primary-color);
+}
+
+.footerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: var(--main-content-width);
+    max-width: 100vw;
+    height: var(--footer-height);
+    border-top: 1px solid lightgray;
+}
+
+.footerLinks {
+    font-weight: bold;
 }

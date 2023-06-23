@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useMatches, useNavigate } from 'react-router-dom';
+import { Link, useMatches, useNavigate } from 'react-router-dom';
 
 /**
  * Layout component for the 'Customer portal' in the application.
@@ -17,6 +17,7 @@ const Layout = () => {
 
     return (
         <>
+            <Link to="/">Back</Link>
             <h1>Customer Portal</h1>
             {matches.map((match) => (
                 <div key={match.id}>{match.pathname}</div>
