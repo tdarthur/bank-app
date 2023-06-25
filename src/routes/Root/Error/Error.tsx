@@ -29,7 +29,9 @@ const Error = () => {
 						{errorMessages[routeError.status] || routeError.error.message}
 					</h2>
 					<Link to="">
-						<button className="button-primary">Back to Homepage</button>
+						<button type="button" className="button-primary">
+							Back to Homepage
+						</button>
 					</Link>
 					<p className="text-soft">
 						{routeError.status} Error: {routeError.statusText}

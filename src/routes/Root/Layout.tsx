@@ -10,7 +10,7 @@ export const Header = () => (
 	<header className={styles.header}>
 		<div className={styles.headerContent}>
 			<Link to="">
-				<span className={styles.logo}>H{/* <span className={styles.logoText}>uman Bank</span> */}</span>
+				<span className="logo">H{/* <span className={styles.logoText}>uman Bank</span> */}</span>
 			</Link>
 			<nav className={styles.navigation}>
 				<ul>
@@ -29,11 +29,15 @@ export const Header = () => (
 				</ul>
 
 				<div>
-					<Link to="/customer/sign-up">
-						<button className="button-tertiary button-short">Sign Up</button>
+					<Link to="account-access">
+						<button type="button" className="button-tertiary button-small">
+							Sign Up
+						</button>
 					</Link>
-					<Link to="/customer/login">
-						<button className="button-primary button-long">Log In</button>
+					<Link to="account-access">
+						<button type="button" className="button-primary button-large">
+							Log In
+						</button>
 					</Link>
 				</div>
 			</nav>

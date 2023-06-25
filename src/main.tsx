@@ -11,9 +11,9 @@ import Faq from "./routes/Root/FAQ/Faq";
 import Legal from "./routes/Root/Legal/Legal";
 import Error from "./routes/Root/Error/Error";
 
+import AccountAccess from "./routes/AccountAccess/AccountAccess";
+
 import CustomerLayout from "./routes/Customer/CustomerLayout";
-import Login from "./routes/Customer/Login/Login";
-import SignUp from "./routes/Customer/Login/SignUp";
 import Dashboard from "./routes/Customer/Dashboard/Dashboard";
 import Account from "./routes/Customer/Account/Account";
 
@@ -37,20 +37,17 @@ const routes: RouteObject[] = [
 		],
 	},
 	{
+		path: "account-access",
+		element: <AccountAccess />,
+		errorElement: <Error />,
+	},
+	{
 		path: "customer",
 		element: <CustomerLayout />,
 		children: [
 			{
 				path: "dashboard",
 				element: <Dashboard />,
-			},
-			{
-				path: "login",
-				element: <Login />,
-			},
-			{
-				path: "sign-up",
-				element: <SignUp />,
 			},
 			{
 				path: "account",

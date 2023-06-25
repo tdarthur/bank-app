@@ -34,12 +34,6 @@ const carouselPanels: CarouselPanel[] = [
 	},
 ];
 
-const cardImages = [
-	"https://c.stocksy.com/a/oPT000/z9/113076.jpg",
-	"https://media.istockphoto.com/id/500145369/photo/confident-real-estate-agent-standing-outside-new-home-for-sale.jpg?s=612x612&w=0&k=20&c=E2vcVuL-ND1PIO2E_tcKrsinVYSOnH42Ufk37dBOHRM=",
-	"https://lccvermont.org/wp-content/uploads/2020/01/How-Do-I-Raise-Money-for-my-Business.jpg",
-];
-
 const carouselTransitionTimerMs = 5000;
 
 const Carousel = () => {
@@ -82,7 +76,11 @@ const Carousel = () => {
 						>
 							<h1>{header}</h1>
 							<p className="text-disclosure">{text}</p>
-							<button className="button-primary button-long">Sign Up</button>
+							<Link to="account-access">
+								<button type="button" className="button-primary button-large">
+									Sign Up
+								</button>
+							</Link>
 						</div>
 					</>
 				))}
@@ -90,12 +88,14 @@ const Carousel = () => {
 			<div className={styles.carouselIndexIndicator}>
 				{carouselPanels.map((_, index) => (
 					<button
+						type="button"
 						onClick={() => setCarouselPanelIndex(index)}
 						data-selected={carouselPanelIndex === index ? true : undefined}
 					/>
 				))}
 			</div>
 			<button
+				type="button"
 				className={styles.carouselButtonLeft}
 				onClick={() => {
 					setCarouselPanelIndex(carouselPanelIndex > 0 ? carouselPanelIndex - 1 : carouselPanels.length - 1);
@@ -113,6 +113,7 @@ const Carousel = () => {
 				</svg>
 			</button>
 			<button
+				type="button"
 				className={styles.carouselButtonRight}
 				onClick={() => {
 					setCarouselPanelIndex(carouselPanelIndex < carouselPanels.length - 1 ? carouselPanelIndex + 1 : 0);
@@ -147,7 +148,11 @@ const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
 			<p>{text}</p>
 			<div className="center-children">
 				<Link to={to}>
-					<button className="button-secondary" style={{ marginLeft: "auto", marginRight: "auto" }}>
+					<button
+						type="button"
+						className="button-secondary"
+						style={{ marginLeft: "auto", marginRight: "auto" }}
+					>
 						{actionText}{" "}
 						<span>
 							<b>{">"}</b>
@@ -163,14 +168,22 @@ const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
 	</article>
 );
 
+const cardImages = [
+	"https://c.stocksy.com/a/oPT000/z9/113076.jpg",
+	"https://media.istockphoto.com/id/500145369/photo/confident-real-estate-agent-standing-outside-new-home-for-sale.jpg?s=612x612&w=0&k=20&c=E2vcVuL-ND1PIO2E_tcKrsinVYSOnH42Ufk37dBOHRM=",
+	"https://lccvermont.org/wp-content/uploads/2020/01/How-Do-I-Raise-Money-for-my-Business.jpg",
+];
+
 const Home = () => (
 	<div className={styles.home}>
 		<Carousel />
 
 		<div className={styles.actionContainer}>
 			<h2 className={styles.actionHeader}>Get started for free today</h2>
-			<Link to="customer/sign-up">
-				<button className="button-secondary button-long">Sign Up</button>
+			<Link to="account-access">
+				<button type="button" className="button-secondary button-large">
+					Sign Up
+				</button>
 			</Link>
 		</div>
 
