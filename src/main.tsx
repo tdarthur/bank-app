@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import Layout from './routes/Root/Layout';
 import Home from './routes/Root/Home/Home';
@@ -9,6 +9,7 @@ import CreditCards from './routes/Root/CreditCards/CreditCards';
 import Benefits from './routes/Root/Benefits/Benefits';
 import Faq from './routes/Root/FAQ/Faq';
 import Legal from './routes/Root/Legal/Legal';
+import Error from './routes/Root/Error/Error';
 
 import CustomerLayout from './routes/Customer/CustomerLayout';
 import Login from './routes/Customer/Login/Login';
@@ -18,10 +19,11 @@ import Account from './routes/Customer/Account/Account';
 
 import './index.css';
 
-const routes = [
+const routes: RouteObject[] = [
     {
         path: '/',
         element: <Layout />,
+        errorElement: <Error />,
         children: [
             {
                 path: '/',

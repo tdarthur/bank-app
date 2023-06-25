@@ -38,6 +38,10 @@ h5,
 h6 {
     overflow-wrap: break-word;
 }
+a {
+    text-decoration: none;
+    color: inherit;
+}
 #root,
 #__next {
     isolation: isolate;
@@ -64,13 +68,18 @@ h6 {
 /* App Styles */
 
 :root {
+    --primary-color-dark: #02697e;
+    --primary-color: #36dbfc;
+    --primary-color-light: #03a8c9;
+    --primary-color-ultra-light: #9bedfd;
+    --text-color: #3c3c3c;
+    --text-color-soft: #6c6c6c;
+
+    overflow-x: hidden;
     scroll-behavior: smooth;
 
     font-family: 'Open Sans', sans-serif;
-    color: #3c3c3c;
-    overflow-x: hidden;
-
-    --primary-color: #03a8c9;
+    color: var(--text-color);
 }
 
 h1 {
@@ -88,8 +97,10 @@ button {
     padding-left: 32px;
     padding-right: 32px;
 
+    width: fit-content;
     height: 48px;
 
+    font-weight: bold;
     background-color: white;
 
     transition: all 150ms linear;
@@ -110,18 +121,15 @@ button:hover {
 }
 
 .button-primary {
-    /* padding: 0 64px; */
-
     background-color: var(--primary-color);
     color: white;
 }
 
 .button-primary:hover {
-    background-color: hsl(190, 97%, 30%);
+    background-color: var(--primary-color-dark);
 }
 
 .button-secondary {
-    /* padding: 0 64px; */
     border: 1px solid black;
 
     background-color: transparent;
@@ -133,8 +141,6 @@ button:hover {
 }
 
 .button-tertiary {
-    /* padding: 0 16px; */
-
     background-color: transparent;
 }
 
@@ -142,8 +148,13 @@ button:hover {
     color: var(--primary-color);
 }
 
-.center-child {
-    width: 100%;
+.center-children {
     display: flex;
     justify-content: center;
+
+    width: 100%;
+}
+
+.soft-text {
+    color: var(--text-color-soft);
 }

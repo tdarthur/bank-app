@@ -1,0 +1,21 @@
+.headerLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    height: 66px;
+    padding: 0 1rem;
+
+    background-color: white;
+}
+
+.errorDetails > * {
+    display: block;
+
+    margin-top: 4rem;
+}
+
+.errorMessage {
+    width: 400px;
+}

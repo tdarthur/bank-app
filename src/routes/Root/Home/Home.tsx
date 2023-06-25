@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
-
-import styles from './home.module.css';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+
+import layoutStyles from '../layout.module.css';
+import styles from './home.module.css';
 
 type CarouselPanel = {
     header: string;
-    text: JSX.Element;
+    text: React.ReactNode;
     image: string;
 };
 
@@ -65,11 +67,7 @@ const Carousel = () => {
                 {carouselPanels.map((_, index) => (
                     <button
                         onClick={() => setCarouselPanelIndex(index)}
-                        style={
-                            carouselPanelIndex === index
-                                ? { width: '16px', height: '16px', transform: 'translateY(-3px)' }
-                                : undefined
-                        }
+                        data-selected={carouselPanelIndex === index ? true : undefined}
                     />
                 ))}
             </div>
@@ -123,7 +121,7 @@ const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
         <div>
             <h2 className={styles.pageHeader}>{header}</h2>
             <p>{text}</p>
-            <div className="center-child">
+            <div className="center-children">
                 <Link to={to}>
                     <button className="button-secondary" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                         {actionText}{' '}
@@ -152,7 +150,7 @@ const Home = () => (
             </Link>
         </div>
 
-        <section className={styles.cards}>
+        <section className={classNames(styles.cards, layoutStyles.pageContent)}>
             <InfoCard
                 header="Banking. It's what we do."
                 text="This is what we do."
