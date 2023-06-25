@@ -1,5 +1,5 @@
 const Benefits = () => {
-    return <></>;
+	return <></>;
 };
 
 export default Benefits;

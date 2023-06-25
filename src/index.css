@@ -1,33 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@200;400;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;400;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@200;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;400;700;800&display=swap");
 
 /* CSS Reset */
 
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 * {
-    margin: 0;
+	margin: 0;
 }
 body {
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
 }
 img,
 picture,
 video,
 canvas,
 svg {
-    display: block;
-    max-width: 100%;
+	display: block;
+	max-width: 100%;
 }
 input,
 button,
 textarea,
 select {
-    font: inherit;
+	font: inherit;
 }
 p,
 h1,
@@ -36,125 +36,130 @@ h3,
 h4,
 h5,
 h6 {
-    overflow-wrap: break-word;
+	overflow-wrap: break-word;
 }
 a {
-    text-decoration: none;
-    color: inherit;
+	text-decoration: none;
+	color: inherit;
 }
 #root,
 #__next {
-    isolation: isolate;
+	isolation: isolate;
 }
 
 /* Scrollbar  */
 
 ::-webkit-scrollbar {
-    width: 16px;
+	width: 16px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #ccc;
+	background-color: #ccc;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #222;
+	background-color: #222;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--primary-color);
+	background-color: var(--primary-color);
 }
 
 /* App Styles */
 
 :root {
-    --primary-color-dark: #02697e;
-    --primary-color: #36dbfc;
-    --primary-color-light: #03a8c9;
-    --primary-color-ultra-light: #9bedfd;
-    --text-color: #3c3c3c;
-    --text-color-soft: #6c6c6c;
+	--primary-color-dark: #02697e;
+	--primary-color: #36dbfc;
+	--primary-color-light: #03a8c9;
+	--primary-color-ultra-light: #9bedfd;
+	--text-color: #3c3c3c;
+	--text-color-soft: #6c6c6c;
 
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+	overflow-x: hidden;
+	scroll-behavior: smooth;
 
-    font-family: 'Open Sans', sans-serif;
-    color: var(--text-color);
+	font-family: "Open Sans", sans-serif;
+	color: var(--text-color);
 }
 
 h1 {
-    font-size: 3rem;
+	font-size: 3rem;
 }
 
 h2 {
-    font-size: 2rem;
-    line-height: 2.5rem;
+	font-size: 2rem;
+	line-height: 2.5rem;
 }
 
 button {
-    border: none;
-    border-radius: 10000000px;
-    padding-left: 32px;
-    padding-right: 32px;
+	border: none;
+	border-radius: 10000000px;
+	padding-left: 32px;
+	padding-right: 32px;
 
-    width: fit-content;
-    height: 48px;
+	width: fit-content;
+	height: 48px;
 
-    font-weight: bold;
-    background-color: white;
+	font-weight: bold;
+	background-color: white;
 
-    transition: all 150ms linear;
+	transition: all 150ms linear;
 }
 
 button:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .button-long {
-    padding-left: 64px;
-    padding-right: 64px;
+	padding-left: 64px;
+	padding-right: 64px;
 }
 
 .button-short {
-    padding-left: 16px;
-    padding-right: 16px;
+	padding-left: 16px;
+	padding-right: 16px;
 }
 
 .button-primary {
-    background-color: var(--primary-color);
-    color: white;
+	background-color: var(--primary-color);
+	color: white;
 }
 
 .button-primary:hover {
-    background-color: var(--primary-color-dark);
+	background-color: var(--primary-color-dark);
 }
 
 .button-secondary {
-    border: 1px solid black;
+	border: 1px solid black;
 
-    background-color: transparent;
+	background-color: transparent;
 }
 
 .button-secondary:hover {
-    background-color: black;
-    color: white;
+	background-color: black;
+	color: white;
 }
 
 .button-tertiary {
-    background-color: transparent;
+	background-color: transparent;
 }
 
 .button-tertiary:hover {
-    color: var(--primary-color);
+	color: var(--primary-color);
 }
 
 .center-children {
-    display: flex;
-    justify-content: center;
+	display: flex;
+	justify-content: center;
 
-    width: 100%;
+	width: 100%;
 }
 
-.soft-text {
-    color: var(--text-color-soft);
+.text-soft {
+	color: var(--text-color-soft);
+}
+
+.text-disclosure {
+	font-size: 0.8rem;
+	font-weight: bold;
 }

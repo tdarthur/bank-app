@@ -1,5 +1,5 @@
 const CreditCards = () => {
-    return <></>;
+	return <></>;
 };
 
 export default CreditCards;

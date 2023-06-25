@@ -1,5 +1,5 @@
 const Faq = () => {
-    return <></>;
+	return <></>;
 };
 
 export default Faq;

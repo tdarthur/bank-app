@@ -1,21 +1,21 @@
 .headerLogo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
 
-    height: 66px;
-    padding: 0 1rem;
+	height: 66px;
+	padding: 0 1rem;
 
-    background-color: white;
+	background-color: white;
 }
 
 .errorDetails > * {
-    display: block;
+	display: block;
 
-    margin-top: 4rem;
+	margin-top: 4rem;
 }
 
 .errorMessage {
-    width: 400px;
+	width: 400px;
 }

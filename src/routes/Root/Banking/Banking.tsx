@@ -1,5 +1,5 @@
 const Banking = () => {
-    return <></>;
+	return <></>;
 };
 
 export default Banking;
