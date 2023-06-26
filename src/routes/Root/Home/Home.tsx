@@ -76,8 +76,8 @@ const Carousel = () => {
 						>
 							<h1>{header}</h1>
 							<p className="text-disclosure">{text}</p>
-							<Link to="account-access">
-								<button type="button" className="button-primary button-large">
+							<Link to="account-access?sign-up=true">
+								<button type="button" className="button-primary width-M">
 									Sign Up
 								</button>
 							</Link>
@@ -134,13 +134,13 @@ const Carousel = () => {
 	);
 };
 
-interface InfoCardProps {
+type InfoCardProps = {
 	header: string;
 	text: string;
 	image: string;
 	actionText: string;
 	to: string;
-}
+};
 const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
 	<article className={styles.card}>
 		<div>
@@ -180,8 +180,8 @@ const Home = () => (
 
 		<div className={styles.actionContainer}>
 			<h2 className={styles.actionHeader}>Get started for free today</h2>
-			<Link to="account-access">
-				<button type="button" className="button-secondary button-large">
+			<Link to="account-access?sign-up=true">
+				<button type="button" className="button-secondary width-M">
 					Sign Up
 				</button>
 			</Link>

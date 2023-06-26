@@ -30,13 +30,13 @@ export const Header = () => (
 
 				<div>
 					<Link to="account-access">
-						<button type="button" className="button-tertiary button-small">
-							Sign Up
+						<button type="button" className="button-tertiary width-S">
+							Log In
 						</button>
 					</Link>
-					<Link to="account-access">
-						<button type="button" className="button-primary button-large">
-							Log In
+					<Link to="account-access?sign-up=true">
+						<button type="button" className="button-primary width-M">
+							Sign Up
 						</button>
 					</Link>
 				</div>

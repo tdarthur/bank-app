@@ -1,0 +1,25 @@
+.inputWrapper {
+	position: relative;
+
+	width: fit-content;
+	height: fit-content;
+	margin-bottom: 1rem;
+}
+
+.inputWrapper > label {
+	position: absolute;
+	left: 1rem;
+	top: -5px;
+
+	background-color: white;
+	padding: 0 4px;
+
+	font-size: 10px;
+	line-height: 10px;
+}
+
+.inputWrapper > input {
+	padding: 0.5rem 1rem;
+	border: 1px solid #bbb;
+	border-radius: 0.25rem;
+}

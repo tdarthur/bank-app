@@ -68,10 +68,11 @@ a {
 /* App Styles */
 
 :root {
-	--primary-color-dark: #02697e;
-	--primary-color: #36dbfc;
-	--primary-color-light: #03a8c9;
-	--primary-color-ultra-light: #9bedfd;
+	--primary-color-ultra-dark: hsl(190, 97%, 10%);
+	--primary-color-dark: hsl(190, 97%, 25%);
+	--primary-color: hsl(190, 97%, 60%);
+	--primary-color-light: hsl(190, 97%, 75%);
+	--primary-color-ultra-light: hsl(190, 97%, 90%);
 	--text-color: #3c3c3c;
 	--text-color-soft: #6c6c6c;
 
@@ -97,7 +98,7 @@ button {
 	padding-left: 32px;
 	padding-right: 32px;
 
-	width: fit-content;
+	width: 192px;
 	height: 48px;
 
 	font-weight: bold;
@@ -108,16 +109,6 @@ button {
 
 button:hover {
 	cursor: pointer;
-}
-
-.button-large {
-	padding-left: 64px;
-	padding-right: 64px;
-}
-
-.button-small {
-	padding-left: 16px;
-	padding-right: 16px;
 }
 
 .button-primary {
@@ -185,4 +176,33 @@ button:hover {
 	font-weight: 900;
 	font-size: 24px;
 	line-height: 40px;
+}
+
+.form-line {
+	display: flex;
+	gap: 1rem;
+}
+
+.width-XS {
+	width: 64px;
+}
+
+.width-S {
+	width: 128px;
+}
+
+.width-M {
+	width: 192px;
+}
+
+.width-L {
+	width: 256px;
+}
+
+.width-L {
+	width: 320;
+}
+
+.width-XL {
+	width: 384;
 }

@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import styles from "./accountAccess.module.css";
+import TextInput from "../../components/TextInput";
 
 const SignUpForm = () => (
 	<>
-		<button type="button" className={classNames("button-secondary", styles.formActionButton)}>
+		<div className="form-line">
+			<TextInput label="First Name" />
+			<TextInput label="Last Name" />
+		</div>
+		<TextInput label="Email" width="L" />
+		<button type="button" className={classNames("button-secondary", "width-L", styles.formActionButton)}>
 			Next
 		</button>
 	</>
@@ -14,14 +20,17 @@ const SignUpForm = () => (
 
 const LoginForm = () => (
 	<>
-		<button type="button" className={classNames("button-primary", styles.formActionButton)}>
+		<TextInput label="Email" width="L" />
+		<TextInput label="Password" width="L" />
+		<button type="button" className={classNames("button-primary", "width-L", styles.formActionButton)}>
 			Log In
 		</button>
 	</>
 );
 
 const AccountAccess = () => {
-	const [returningMember, setReturningMember] = useState(false);
+	const [searchParams, setSearchParams] = useSearchParams();
+	const returningMember = !searchParams.has("sign-up");
 
 	return (
 		<div className={styles.layoutWrapper}>
@@ -33,13 +42,13 @@ const AccountAccess = () => {
 			</header>
 			<main>
 				<div className={styles.formCard}>
-					<h2>{returningMember ? "Existing Account" : "New Account"}</h2>
-					<form>{returningMember ? <SignUpForm /> : <LoginForm />}</form>
+					<h2>{returningMember ? "Log In" : "Sign Up"}</h2>
+					<form>{returningMember ? <LoginForm /> : <SignUpForm />}</form>
 					<button
 						type="button"
 						className={classNames("button-tertiary", styles.switchAccess)}
 						onClick={() => {
-							setReturningMember(!returningMember);
+							setSearchParams(returningMember ? { "sign-up": "true" } : {});
 						}}
 					>
 						{returningMember ? "Need to sign up?" : "Already a member?"}
