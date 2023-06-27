@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { Link, useRouteError } from "react-router-dom";
 import { Footer, Header } from "../Layout";
+import Button from "../../../components/Button";
 
 import layoutStyles from "../layout.module.css";
 import styles from "./error.module.css";
@@ -28,11 +29,7 @@ const Error = () => {
 					<h2 className={styles.errorMessage}>
 						{errorMessages[routeError.status] || routeError.error.message}
 					</h2>
-					<Link to="">
-						<button type="button" className="button-primary">
-							Back to Homepage
-						</button>
-					</Link>
+					<Button text="Back to Homepage" width="L" linkTo="" />
 					<p className="text-soft">
 						{routeError.status} Error: {routeError.statusText}
 					</p>

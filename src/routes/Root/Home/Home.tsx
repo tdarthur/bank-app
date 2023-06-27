@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import classNames from "classnames";
+import Button from "../../../components/Button";
 
 import layoutStyles from "../layout.module.css";
 import styles from "./home.module.css";
@@ -67,6 +67,7 @@ const Carousel = () => {
 							}}
 						/>
 						<div
+							className={styles.carouselOverlay}
 							style={{
 								transform: `translateY(${
 									(carouselDisplay.current?.clientHeight || 0) * (index - carouselPanelIndex)
@@ -75,12 +76,8 @@ const Carousel = () => {
 							data-active={index === carouselPanelIndex ? true : undefined}
 						>
 							<h1>{header}</h1>
-							<p className="text-disclosure">{text}</p>
-							<Link to="account-access?sign-up=true">
-								<button type="button" className="button-primary width-M">
-									Sign Up
-								</button>
-							</Link>
+							<p className="margin-bottom">{text}</p>
+							<Button text="Sign Up" linkTo="account-access?sign-up=true" />
 						</div>
 					</>
 				))}
@@ -147,18 +144,7 @@ const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
 			<h2 className={styles.pageHeader}>{header}</h2>
 			<p>{text}</p>
 			<div className="center-children">
-				<Link to={to}>
-					<button
-						type="button"
-						className="button-secondary"
-						style={{ marginLeft: "auto", marginRight: "auto" }}
-					>
-						{actionText}{" "}
-						<span>
-							<b>{">"}</b>
-						</span>
-					</button>
-				</Link>
+				<Button text={`${actionText} >`} variant="secondary" linkTo={to} />
 			</div>
 		</div>
 		<div className={styles.cardImage}>
@@ -180,11 +166,7 @@ const Home = () => (
 
 		<div className={styles.actionContainer}>
 			<h2 className={styles.actionHeader}>Get started for free today</h2>
-			<Link to="account-access?sign-up=true">
-				<button type="button" className="button-secondary width-M">
-					Sign Up
-				</button>
-			</Link>
+			<Button text="Sign Up" variant="secondary" linkTo="account-access?sign-up=true" />
 		</div>
 
 		<section className={classNames(styles.cards, layoutStyles.pageContent)}>

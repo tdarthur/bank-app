@@ -83,6 +83,10 @@ a {
 	color: var(--text-color);
 }
 
+button:not(:disabled) {
+	cursor: pointer;
+}
+
 h1 {
 	font-size: 3rem;
 }
@@ -90,53 +94,6 @@ h1 {
 h2 {
 	font-size: 2rem;
 	line-height: 2.5rem;
-}
-
-button {
-	border: none;
-	border-radius: 10000000px;
-	padding-left: 32px;
-	padding-right: 32px;
-
-	width: 192px;
-	height: 48px;
-
-	font-weight: bold;
-	background-color: white;
-
-	transition: all 150ms linear;
-}
-
-button:hover {
-	cursor: pointer;
-}
-
-.button-primary {
-	background-color: var(--primary-color);
-	color: white;
-}
-
-.button-primary:hover {
-	background-color: var(--primary-color-dark);
-}
-
-.button-secondary {
-	border: 1px solid black;
-
-	background-color: transparent;
-}
-
-.button-secondary:hover {
-	background-color: black;
-	color: white;
-}
-
-.button-tertiary {
-	background-color: transparent;
-}
-
-.button-tertiary:hover {
-	color: var(--primary-color);
 }
 
 .center-children {
@@ -205,4 +162,20 @@ button:hover {
 
 .width-XL {
 	width: 384;
+}
+
+.margin-top {
+	margin-top: 1rem;
+}
+
+.margin-bottom {
+	margin-bottom: 1rem;
+}
+
+.margin-left {
+	margin-left: 1rem;
+}
+
+.margin-right {
+	margin-right: 1rem;
 }

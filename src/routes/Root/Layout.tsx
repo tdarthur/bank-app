@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, Outlet, useMatches, useNavigate } from "react-router-dom";
 
 import styles from "./layout.module.css";
+import Button from "../../components/Button";
 
 /**
  * Header to use in the layout.
@@ -10,7 +11,7 @@ export const Header = () => (
 	<header className={styles.header}>
 		<div className={styles.headerContent}>
 			<Link to="">
-				<span className="logo">H{/* <span className={styles.logoText}>uman Bank</span> */}</span>
+				<span className="logo">H</span>
 			</Link>
 			<nav className={styles.navigation}>
 				<ul>
@@ -29,16 +30,8 @@ export const Header = () => (
 				</ul>
 
 				<div>
-					<Link to="account-access">
-						<button type="button" className="button-tertiary width-S">
-							Log In
-						</button>
-					</Link>
-					<Link to="account-access?sign-up=true">
-						<button type="button" className="button-primary width-M">
-							Sign Up
-						</button>
-					</Link>
+					<Button text="Log In" variant="tertiary" width="S" linkTo="account-access" />
+					<Button text="Sign Up" linkTo="account-access?sign-up=true" />
 				</div>
 			</nav>
 		</div>

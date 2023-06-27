@@ -1,5 +1,8 @@
 import { useEffect } from "react";
-import { Link, useMatches, useNavigate } from "react-router-dom";
+import { Outlet, useMatches, useNavigate } from "react-router-dom";
+import Button from "../../components/Button";
+
+import styles from "./customerLayout.module.css";
 
 /**
  * Layout component for the 'Customer portal' in the application.
@@ -11,17 +14,21 @@ const Layout = () => {
 	useEffect(() => {
 		if (matches.length === 1) {
 			// TODO: check if logged in, then navigate accordingly
-			navigate("customer/login");
+			// navigate("/account-access");
 		}
 	}, [matches, navigate]);
 
 	return (
 		<>
-			<Link to="/">Back</Link>
-			<h1>Customer Portal</h1>
-			{matches.map((match) => (
-				<div key={match.id}>{match.pathname}</div>
-			))}
+			<header className={styles.header}>
+				<Button text="Sign Out" variant="secondary" width="S" linkTo="/" />
+			</header>
+			<main className={styles.main}>
+				<Outlet />
+			</main>
+			<footer className={styles.footer}>
+				<p>Footer</p>
+			</footer>
 		</>
 	);
 };
