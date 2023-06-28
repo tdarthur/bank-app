@@ -1,0 +1,19 @@
+.accountSection {
+	width: 100%;
+	aspect-ratio: 1;
+}
+
+.accountSectionHeader {
+	width: 100%;
+	border: 1px solid lightgray;
+	border-radius: 1rem;
+	padding: 0.5rem 1rem;
+}
+
+.balance {
+	font-weight: normal;
+}
+
+.balanceAmount {
+	font-weight: bold;
+}

@@ -1,7 +1,7 @@
+import { To, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 import styles from "./components.module.css";
-import { To, useNavigate } from "react-router-dom";
 
 type Props = {
 	text: React.ReactNode;
@@ -10,7 +10,7 @@ type Props = {
 	linkTo?: To;
 } & React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & { children?: never };
 
-const Button = ({ width = "M", variant = "primary", text, linkTo, className, onClick, ...props }: Props) => {
+const Button = ({ width, variant = "primary", text, linkTo, className, onClick, ...props }: Props) => {
 	const navigate = useNavigate();
 
 	return (

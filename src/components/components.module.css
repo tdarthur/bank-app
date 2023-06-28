@@ -18,13 +18,20 @@
 	line-height: 10px;
 }
 
-.inputWrapper > input {
+.inputWrapper > input,
+.inputWrapper > select {
+	width: var(--width-M);
 	padding: 0.5rem 1rem;
 	border: 1px solid #bbb;
 	border-radius: 0.25rem;
 }
 
+.inputWrapper > select::after {
+	content: "";
+}
+
 .button {
+	width: var(--width-M);
 	border: none;
 	border-radius: 10000000px;
 	padding-left: 32px;
