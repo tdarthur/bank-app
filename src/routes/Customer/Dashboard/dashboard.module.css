@@ -1,19 +1,18 @@
 .accountSection {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2rem;
+
 	width: 100%;
 	aspect-ratio: 1;
 }
 
-.accountSectionHeader {
-	width: 100%;
-	border: 1px solid lightgray;
-	border-radius: 1rem;
-	padding: 0.5rem 1rem;
-}
+.accountCard {
+	width: 600px;
+	height: 300px;
+	padding: 2rem;
+	border-radius: 8px;
 
-.balance {
-	font-weight: normal;
-}
-
-.balanceAmount {
-	font-weight: bold;
+	background-color: white;
 }

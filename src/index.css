@@ -95,11 +95,17 @@ button:not(:disabled) {
 
 h1 {
 	font-size: 3rem;
+	line-height: 3.6rem;
 }
 
 h2 {
 	font-size: 2rem;
-	line-height: 2.5rem;
+	line-height: 2.4rem;
+}
+
+h3 {
+	font-size: 1.5rem;
+	line-height: 1.8rem;
 }
 
 .center-children {
@@ -144,6 +150,10 @@ h2 {
 .form-line {
 	display: flex;
 	gap: 1rem;
+}
+
+.card {
+	box-shadow: #00000014 0px 8px 12px 0px, #0000000a 0px 24px 32px 0px;
 }
 
 .width-XS {

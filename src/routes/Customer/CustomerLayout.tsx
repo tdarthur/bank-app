@@ -19,7 +19,7 @@ const Layout = () => {
 	}, [matches, navigate]);
 
 	return (
-		<>
+		<div className={styles.layoutWrapper}>
 			<header className={styles.header}>
 				<Link to="/">
 					<span className="logo">H</span>
@@ -44,7 +44,7 @@ const Layout = () => {
 					}
 					variant="tertiary"
 					className={styles.accountMenu}
-					linkTo="/"
+					linkTo="/account-access"
 				/>
 			</header>
 			<main className={styles.main}>
@@ -53,7 +53,7 @@ const Layout = () => {
 			<footer className={styles.footer}>
 				<p className="text-disclosure">This is footer text.</p>
 			</footer>
-		</>
+		</div>
 	);
 };
 

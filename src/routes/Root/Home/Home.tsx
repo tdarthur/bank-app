@@ -13,34 +13,34 @@ type CarouselPanel = {
 
 const carouselPanels: CarouselPanel[] = [
 	{
+		image: "https://images.pexels.com/photos/7620920/pexels-photo-7620920.jpeg?cs=srgb&dl=pexels-ivan-samkov-7620920.jpg&fm=jpg",
 		header: "Win. Your way.",
 		text: "This is something...",
-		image: "https://images.pexels.com/photos/7620920/pexels-photo-7620920.jpeg?cs=srgb&dl=pexels-ivan-samkov-7620920.jpg&fm=jpg",
 	},
 	{
-		header: "This is a header",
-		text: "Here's some text",
 		image: "https://static.vecteezy.com/system/resources/previews/003/351/091/large_2x/portrait-of-smiling-pretty-young-business-woman-using-phone-free-photo.jpg",
-	},
-	{
 		header: "This is a header",
 		text: "Here's some text",
+	},
+	{
 		image: "https://www.verywellmind.com/thmb/HZHiUS1k63_h8xtgNmQLTH498rU=/2121x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1126427826-976f525a9a3c4b3ea96016e418374b6b.jpg",
-	},
-	{
 		header: "This is a header",
 		text: "Here's some text",
+	},
+	{
 		image: "https://www.eatthis.com/wp-content/uploads/sites/4/2022/02/My-project-2022-02-07T075924.113.jpg?quality=82&strip=1",
+		header: "This is a header",
+		text: "Here's some text",
 	},
 ];
 
-const carouselTransitionTimerMs = 5000;
+const carouselTransitionTimerMs = 50000;
 
+// TODO: make the horizontal and vertical pieces into groups positioned via a wrapper element that scroll as a single unit.
+// that way they won't flicker onto the screen when loading the page.
 const Carousel = () => {
-	const [carouselPanelIndex, setCarouselPanelIndex] = useState(0);
+	const [carouselPanelIndex, setCarouselPanelIndex] = useState<number>(NaN);
 	const carouselDisplay = useRef<HTMLDivElement>(null);
-
-	const { header, text } = carouselPanels[carouselPanelIndex];
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
@@ -52,10 +52,14 @@ const Carousel = () => {
 		};
 	}, [carouselPanelIndex]);
 
+	useEffect(() => {
+		setCarouselPanelIndex(0);
+	}, [carouselDisplay]);
+
 	return (
 		<div className={styles.carousel}>
 			<div className={styles.carouselDisplay} ref={carouselDisplay}>
-				{carouselPanels.map(({ image }, index) => (
+				{carouselPanels.map(({ image, header, text }, index) => (
 					<>
 						<img
 							src={image}
@@ -63,7 +67,7 @@ const Carousel = () => {
 								transform: `translateX(${
 									(carouselDisplay.current?.clientWidth || 0) * (index - carouselPanelIndex)
 								}px)`,
-								zIndex: index === carouselPanelIndex ? 2 : 1,
+								zIndex: index === carouselPanelIndex ? 3 : 1,
 							}}
 						/>
 						<div
@@ -72,6 +76,7 @@ const Carousel = () => {
 								transform: `translateY(${
 									(carouselDisplay.current?.clientHeight || 0) * (index - carouselPanelIndex)
 								}px)`,
+								zIndex: index === carouselPanelIndex ? 4 : 2,
 							}}
 							data-active={index === carouselPanelIndex ? true : undefined}
 						>

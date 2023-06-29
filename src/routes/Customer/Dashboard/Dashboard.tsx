@@ -1,23 +1,61 @@
-import Dropdown from "../../../components/Dropdown";
+import classNames from "classnames";
 
 import styles from "./dashboard.module.css";
 
-const accountOptions = [
-	{ key: "checking", value: "Checking" },
-	{ key: "savings", value: "Savings" },
-	{ key: "credit", value: "Credit" },
-];
+type CheckingAccountInfo = {
+	balance: number;
+	cardNumberLast4Digits: string;
+	transactions: unknown[];
+};
+
+const CheckingAccountCard = ({ balance, cardNumberLast4Digits, transactions }: CheckingAccountInfo) => (
+	<div className={classNames("card", styles.accountCard)}>
+		<h3>{`Checking Account ...${cardNumberLast4Digits}`}</h3>
+		<p>${balance}</p>
+	</div>
+);
+
+type SavingsAccountInfo = {
+	balance: number;
+	activity: unknown[];
+};
+
+const SavingsAccountCard = ({ balance, activity }: SavingsAccountInfo) => (
+	<div className={classNames("card", styles.accountCard)}>
+		<h3>Savings Account</h3>
+		<p>${balance}</p>
+	</div>
+);
+
+type CreditCardAccountInfo = {
+	balance: number;
+	creditLimit: number;
+	cardNumberLast4Digits: string;
+	activity: unknown[];
+};
+
+const CreditCardAccountCard = ({ balance, creditLimit, cardNumberLast4Digits, activity }: CreditCardAccountInfo) => (
+	<div className={classNames("card", styles.accountCard)}>
+		<h3>{`Credit Card ...${cardNumberLast4Digits}`}</h3>
+		<p>{`$${balance} / $${creditLimit} limit`}</p>
+	</div>
+);
 
 const Dashboard = () => {
+	const checkingAccount: CheckingAccountInfo = { balance: 987, cardNumberLast4Digits: "1234", transactions: [] };
+	const savingsAccount: SavingsAccountInfo = { balance: 6543, activity: [] };
+	const creditCardAccounts: CreditCardAccountInfo[] = [
+		{ balance: 21, creditLimit: 10000, cardNumberLast4Digits: "5678", activity: [] },
+	];
+
 	return (
 		<>
-			<Dropdown label="Account" options={accountOptions} />
 			<section className={styles.accountSection}>
-				<div className={styles.accountSectionHeader}>
-					<h2 className={styles.balance}>
-						Balance: <span className={styles.balanceAmount}>$1,000</span>
-					</h2>
-				</div>
+				<CheckingAccountCard {...checkingAccount} />
+				<SavingsAccountCard {...savingsAccount} />
+				{creditCardAccounts.map((creditCardAccount) => (
+					<CreditCardAccountCard {...creditCardAccount} />
+				))}
 			</section>
 		</>
 	);

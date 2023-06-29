@@ -1,4 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
+import classNames from "classnames";
 
 import TextInput from "../../components/TextInput";
 import Button from "../../components/Button";
@@ -37,7 +38,7 @@ const AccountAccess = () => {
 				</Link>
 			</header>
 			<main>
-				<div className={styles.formCard}>
+				<div className={classNames("card", styles.formCard)}>
 					<h2>{returningMember ? "Log In" : "Sign Up"}</h2>
 					<form>{returningMember ? <LoginForm /> : <SignUpForm />}</form>
 					<Button
