@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Link, useRouteError } from "react-router-dom";
+import { useRouteError } from "react-router-dom";
 import { Footer, Header } from "../Layout";
 import Button from "../../../components/Button";
 

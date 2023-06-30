@@ -8,7 +8,7 @@ type CheckingAccountInfo = {
 	transactions: unknown[];
 };
 
-const CheckingAccountCard = ({ balance, cardNumberLast4Digits, transactions }: CheckingAccountInfo) => (
+const CheckingAccountCard = ({ balance, cardNumberLast4Digits }: CheckingAccountInfo) => (
 	<div className={classNames("card", styles.accountCard)}>
 		<h3>{`Checking Account ...${cardNumberLast4Digits}`}</h3>
 		<p>${balance}</p>
@@ -20,7 +20,7 @@ type SavingsAccountInfo = {
 	activity: unknown[];
 };
 
-const SavingsAccountCard = ({ balance, activity }: SavingsAccountInfo) => (
+const SavingsAccountCard = ({ balance }: SavingsAccountInfo) => (
 	<div className={classNames("card", styles.accountCard)}>
 		<h3>Savings Account</h3>
 		<p>${balance}</p>
@@ -34,7 +34,7 @@ type CreditCardAccountInfo = {
 	activity: unknown[];
 };
 
-const CreditCardAccountCard = ({ balance, creditLimit, cardNumberLast4Digits, activity }: CreditCardAccountInfo) => (
+const CreditCardAccountCard = ({ balance, creditLimit, cardNumberLast4Digits }: CreditCardAccountInfo) => (
 	<div className={classNames("card", styles.accountCard)}>
 		<h3>{`Credit Card ...${cardNumberLast4Digits}`}</h3>
 		<p>{`$${balance} / $${creditLimit} limit`}</p>
