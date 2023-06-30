@@ -1,34 +1,35 @@
 .carousel {
 	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.carouselDisplay {
-	position: relative;
 	overflow: hidden;
 
 	width: var(--root-content-width);
 	height: 512px;
+	margin: 0 auto;
 
-	background-color: lightgray;
+	background-color: #f8f8f8;
 }
 
-.carouselDisplay > img {
+.carouselImages {
 	position: absolute;
-	left: 0;
-	top: 0;
 
 	width: 100%;
+	height: 100%;
 
 	transition: transform 600ms ease;
 }
 
-.carouselOverlay {
+.carouselOverlays {
 	position: absolute;
-	left: 0;
-	top: 0;
+
+	width: 100%;
+	height: 100%;
+
+	transition: transform 600ms ease;
+}
+
+.carouselOverlays > * {
+	position: absolute;
+	z-index: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -39,62 +40,31 @@
 
 	color: white;
 	text-shadow: 0 0 40px #000000, 0 0 40px #00000080;
-
-	transition: transform 600ms ease;
 }
 
-.carouselOverlay[data-active] > a {
-	margin-top: 1rem;
-
-	opacity: 1;
+.carouselOverlays > * > p {
+	margin-bottom: 0.5rem;
 }
 
-.carouselOverlay > a {
-	margin-top: 1rem;
-
+.carouselOverlays > * > button {
 	opacity: 0;
 	transition: opacity 150ms linear;
 	transition-delay: 600ms;
 }
 
-.carouselButton {
-	position: absolute;
-
-	aspect-ratio: 1;
-	padding: 0;
-}
-
-.carouselButton > svg {
-	fill: none;
-	stroke: black;
-
-	transition: all 150ms linear;
-}
-
-.carouselButton:hover > svg {
-	fill: black;
-	stroke: white;
-}
-
-.carouselButtonLeft {
-	composes: carouselButton;
-
-	left: -64px;
-}
-
-.carouselButtonRight {
-	composes: carouselButton;
-
-	right: -64px;
+.carouselOverlays > *[data-active] > button {
+	opacity: 1;
 }
 
 .carouselIndexIndicator {
 	position: absolute;
 	bottom: 1rem;
-	z-index: 5;
+	z-index: 2;
 	display: flex;
+	justify-content: center;
 	gap: 8px;
 
+	width: 100%;
 	height: 12px;
 }
 
@@ -114,7 +84,7 @@
 	background-color: var(--primary-color-ultra-light);
 }
 
-.carouselIndexIndicator > [data-selected] {
+.carouselIndexIndicator > button[data-selected] {
 	height: 12px;
 	width: 48px;
 	transform: translateY(-2px);

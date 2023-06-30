@@ -34,13 +34,11 @@ const carouselPanels: CarouselPanel[] = [
 	},
 ];
 
-const carouselTransitionTimerMs = 50000;
+const carouselTransitionTimerMs = 6000;
 
-// TODO: make the horizontal and vertical pieces into groups positioned via a wrapper element that scroll as a single unit.
-// that way they won't flicker onto the screen when loading the page.
 const Carousel = () => {
 	const [carouselPanelIndex, setCarouselPanelIndex] = useState<number>(NaN);
-	const carouselDisplay = useRef<HTMLDivElement>(null);
+	const carouselElement = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
@@ -54,84 +52,71 @@ const Carousel = () => {
 
 	useEffect(() => {
 		setCarouselPanelIndex(0);
-	}, [carouselDisplay]);
+	}, [carouselElement]);
 
 	return (
-		<div className={styles.carousel}>
-			<div className={styles.carouselDisplay} ref={carouselDisplay}>
-				{carouselPanels.map(({ image, header, text }, index) => (
-					<>
-						<img
-							src={image}
-							style={{
-								transform: `translateX(${
-									(carouselDisplay.current?.clientWidth || 0) * (index - carouselPanelIndex)
-								}px)`,
-								zIndex: index === carouselPanelIndex ? 3 : 1,
-							}}
-						/>
-						<div
-							className={styles.carouselOverlay}
-							style={{
-								transform: `translateY(${
-									(carouselDisplay.current?.clientHeight || 0) * (index - carouselPanelIndex)
-								}px)`,
-								zIndex: index === carouselPanelIndex ? 4 : 2,
-							}}
-							data-active={index === carouselPanelIndex ? true : undefined}
-						>
-							<h1>{header}</h1>
-							<p className="margin-bottom">{text}</p>
-							<Button text="Sign Up" linkTo="account-access?sign-up=true" />
-						</div>
-					</>
-				))}
-			</div>
-			<div className={styles.carouselIndexIndicator}>
-				{carouselPanels.map((_, index) => (
-					<button
-						type="button"
-						onClick={() => setCarouselPanelIndex(index)}
-						data-selected={carouselPanelIndex === index ? true : undefined}
-					/>
-				))}
-			</div>
-			<button
-				type="button"
-				className={styles.carouselButtonLeft}
-				onClick={() => {
-					setCarouselPanelIndex(carouselPanelIndex > 0 ? carouselPanelIndex - 1 : carouselPanels.length - 1);
-				}}
-			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					strokeWidth={1.5}
-					stroke="currentColor"
-					className="w-6 h-6"
-				>
-					<path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-				</svg>
-			</button>
-			<button
-				type="button"
-				className={styles.carouselButtonRight}
-				onClick={() => {
-					setCarouselPanelIndex(carouselPanelIndex < carouselPanels.length - 1 ? carouselPanelIndex + 1 : 0);
-				}}
-			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					strokeWidth={1.5}
-					stroke="currentColor"
-					className="w-6 h-6"
-				>
-					<path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-				</svg>
-			</button>
+		<div className={styles.carousel} ref={carouselElement}>
+			{carouselElement.current && (
+				<>
+					<div
+						className={styles.carouselImages}
+						style={{
+							transform: `translateX(-${
+								(carouselElement.current?.clientWidth || 0) * carouselPanelIndex
+							}px)`,
+						}}
+					>
+						{carouselPanels.map(({ image }, index) => (
+							<img
+								src={image}
+								style={{
+									position: "absolute",
+									top: 0,
+									left: carouselElement.current ? index * carouselElement.current?.clientWidth : 0,
+								}}
+							/>
+						))}
+					</div>
+
+					<div
+						className={styles.carouselOverlays}
+						style={{
+							transform: `translateY(-${
+								(carouselElement.current?.clientHeight || 0) * carouselPanelIndex
+							}px)`,
+						}}
+					>
+						{carouselPanels.map(({ header, text }, index) => (
+							<div
+								style={{
+									position: "absolute",
+									left: 0,
+									top: carouselElement.current ? index * carouselElement.current?.clientHeight : 0,
+								}}
+								data-active={index === carouselPanelIndex ? true : undefined}
+							>
+								<h1>{header}</h1>
+								<p>{text}</p>
+								<Button
+									text="Sign Up"
+									linkTo="account-access?sign-up=true"
+									tabIndex={index === carouselPanelIndex ? 0 : -1}
+								/>
+							</div>
+						))}
+					</div>
+
+					<div className={styles.carouselIndexIndicator}>
+						{carouselPanels.map((_, index) => (
+							<button
+								type="button"
+								onClick={() => setCarouselPanelIndex(index)}
+								data-selected={carouselPanelIndex === index ? true : undefined}
+							/>
+						))}
+					</div>
+				</>
+			)}
 		</div>
 	);
 };
