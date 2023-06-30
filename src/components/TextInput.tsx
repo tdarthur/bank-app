@@ -5,12 +5,20 @@ import styles from "./components.module.css";
 type Props = {
 	label: string;
 	width?: "XS" | "S" | "M" | "L" | "XL";
-} & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+} & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & { id?: never };
 
-const TextInput = ({ label, width, className, ...props }: Props) => (
+const TextInput = ({ label, width, className, name, ...props }: Props) => (
 	<div className={styles.inputWrapper}>
-		<label className={styles.inputLabel}>{label}</label>
-		<input type="text" className={classNames(width && `width-${width}`, className)} {...props} />
+		<label className={styles.inputLabel} htmlFor={name}>
+			{label}
+		</label>
+		<input
+			id={name}
+			name={name}
+			type="text"
+			className={classNames(width && `width-${width}`, className)}
+			{...props}
+		/>
 	</div>
 );
 

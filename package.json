@@ -13,6 +13,8 @@
 		"publish": "amplify publish -y"
 	},
 	"dependencies": {
+		"@aws-amplify/ui-react": "^5.0.3",
+		"aws-amplify": "^5.3.3",
 		"classnames": "^2.3.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",

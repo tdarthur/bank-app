@@ -1,4 +1,15 @@
 export type AmplifyDependentResourcesAttributes = {
+  "auth": {
+    "bankappd6b5035e": {
+      "AppClientID": "string",
+      "AppClientIDWeb": "string",
+      "IdentityPoolId": "string",
+      "IdentityPoolName": "string",
+      "UserPoolArn": "string",
+      "UserPoolId": "string",
+      "UserPoolName": "string"
+    }
+  },
   "hosting": {
     "S3AndCloudFront": {
       "CloudFrontDistributionID": "string",

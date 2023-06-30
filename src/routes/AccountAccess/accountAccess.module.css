@@ -30,35 +30,65 @@
 }
 
 .formCard > h2 {
-	line-height: 1rem;
 	text-align: center;
-	margin-bottom: 1rem;
+
+	margin-bottom: 96px;
 }
 
-.formCard > form {
+.formCard > form,
+.formCard > form > fieldset {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 
-	flex-grow: 1;
-
 	width: 100%;
-	margin: 2rem 0;
+	padding: 0;
+	border: none;
+
+	flex-grow: 1;
 }
 
-.switchAccess {
-	text-align: center;
-
-	width: fit-content;
-	height: 0.7rem;
+.passwordRequirements {
+	width: var(--width-L);
+	margin-bottom: 1rem;
 	padding: 0;
+}
+
+.passwordRequirements > li {
+	white-space: nowrap;
+	list-style: none;
+	font-size: 0.7rem;
+	font-weight: bold;
+}
+
+.passwordRequirements > ul {
+	padding-left: 1.5rem;
+}
+
+.passwordRequirements > ul > li {
+	white-space: nowrap;
+	list-style: none;
+	font-size: 0.7rem;
+	font-weight: bold;
+}
+
+.switchAccessContainer {
+	display: flex;
+
+	width: 100%;
+}
+
+.switchAccessContainer > button {
+	width: fit-content;
+	height: 1rem;
+	margin: 0;
 
 	font-size: 0.7rem;
 	font-style: italic;
 }
 
 .footer {
-	margin: 0 auto;
 	text-align: center;
+
+	margin: 0 auto;
 }

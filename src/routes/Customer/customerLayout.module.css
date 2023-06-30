@@ -17,6 +17,10 @@
 	margin: 0 auto;
 }
 
+.header button {
+	margin: 0;
+}
+
 .accountMenu {
 	justify-self: right;
 

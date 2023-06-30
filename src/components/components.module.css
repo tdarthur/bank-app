@@ -9,13 +9,14 @@
 .inputWrapper > label {
 	position: absolute;
 	left: 1rem;
-	top: -5px;
+	top: 0px;
 
-	background-color: white;
+	height: 2px;
 	padding: 0 4px;
 
+	background-color: white;
 	font-size: 10px;
-	line-height: 10px;
+	line-height: 0px;
 }
 
 .inputWrapper > input,
@@ -32,12 +33,10 @@
 
 .button {
 	width: var(--width-M);
+	height: 48px;
 	border: none;
 	border-radius: 10000000px;
-	padding-left: 32px;
-	padding-right: 32px;
-
-	height: 48px;
+	margin-bottom: 1rem;
 
 	font-weight: bold;
 	background-color: white;

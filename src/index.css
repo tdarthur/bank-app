@@ -191,3 +191,7 @@ h3 {
 .margin-right {
 	margin-right: 1rem;
 }
+
+.display-block {
+	display: block;
+}
