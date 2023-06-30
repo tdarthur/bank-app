@@ -23,7 +23,7 @@ const Button = ({ width, variant = "primary", text, linkTo, className, onClick, 
 					: variant === "secondary"
 					? styles.buttonSecondary
 					: styles.buttonPrimary,
-				`width-${width}`,
+				width && `width-${width}`,
 				className,
 			)}
 			onClick={(event) => {
