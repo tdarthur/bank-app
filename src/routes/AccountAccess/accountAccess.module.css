@@ -72,6 +72,10 @@
 	font-weight: bold;
 }
 
+.passwordRequirements li.valid {
+	display: none;
+}
+
 .switchAccessContainer {
 	display: flex;
 

@@ -11,15 +11,33 @@ import styles from "./accountAccess.module.css";
 const SignUpForm = () => {
 	const [formPage, setFormPage] = useState(1);
 	const formRef = useRef<HTMLFormElement>(null);
+	const passwordRef = useRef<HTMLInputElement>(null);
+	const passwordConfirmationRef = useRef<HTMLInputElement>(null);
+
+	const [passwordLongEnough, setPasswordLongEnough] = useState(false);
+	const [passwordContainsNumber, setPasswordContainsNumber] = useState(false);
+	const [passwordContainsSpecialCharacter, setPasswordContainsSpecialCharacter] = useState(false);
+	const [passwordsMatch, setPasswordsMatch] = useState(true);
 
 	const validateForm = () => {
-		// if (password === passwordConfirmation) {
-		// 	console.log("passwords are the same");
-		// } else {
-		// 	console.log("passwords are NOT the same");
-		// }
+		if (formRef.current) {
+			const formData = new FormData(formRef.current);
 
-		return true;
+			const password = formData.get("password") as string;
+			const passwordConfirmation = formData.get("password-confirmation") as string;
+
+			const newPasswordLongEnough = password.length >= 8 && password.length < 32;
+			const newPasswordContainsNumber = /\d/.test(password);
+			const newPasswordContainsSpecialCharacter = /[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`+= ]/.test(password);
+
+			setPasswordLongEnough(newPasswordLongEnough);
+			setPasswordContainsNumber(newPasswordContainsNumber);
+			setPasswordContainsSpecialCharacter(newPasswordContainsSpecialCharacter);
+			setPasswordsMatch(
+				password === passwordConfirmation ||
+					!(newPasswordContainsNumber && newPasswordContainsNumber && newPasswordContainsSpecialCharacter),
+			);
+		}
 	};
 
 	const createAccount = () => {
@@ -31,9 +49,6 @@ const SignUpForm = () => {
 			const email = formData.get("email");
 			const password = formData.get("password");
 			const passwordConfirmation = formData.get("password-confirmation");
-
-			// password special chars:
-			// ^ $ * . [ ] { } ( ) ? - " ! @ # % & / \ , > < ' : ; | _ ~ ` + =
 		}
 
 		// try {
@@ -70,29 +85,61 @@ const SignUpForm = () => {
 					width="L"
 					onClick={() => {
 						setFormPage(2);
+						passwordRef.current?.focus();
 					}}
 				/>
 			</fieldset>
 
 			<fieldset className="" style={formPage !== 2 ? { display: "none" } : undefined}>
-				<TextInput type="password" name="password" label="Password" width="L" autoFocus autoComplete="off" />
+				<TextInput
+					type="password"
+					name="password"
+					label="Password"
+					width="L"
+					maxLength={32}
+					autoComplete="new-password"
+					ref={passwordRef}
+					onChange={() => {
+						validateForm();
+					}}
+				/>
 				<TextInput
 					type="password"
 					name="password-confirmation"
 					label="Confirm Password"
 					width="L"
-					autoComplete="off"
-					style={{ marginBottom: "-1rem" }}
+					autoComplete="new-password"
+					ref={passwordConfirmationRef}
+					onChange={() => {
+						validateForm();
+					}}
 				/>
-				<ul className={styles.passwordRequirements}>
-					<li>Password must contain:</li>
-					<ul>
-						<li>Between 8 and 32 characters</li>
-						<li>At least one number</li>
-						<li>At least one special character</li>
+				{(!passwordLongEnough ||
+					!passwordContainsNumber ||
+					!passwordContainsSpecialCharacter ||
+					!passwordsMatch) && (
+					<ul className={styles.passwordRequirements}>
+						<li
+							className={
+								passwordLongEnough && passwordContainsNumber && passwordContainsSpecialCharacter
+									? styles.valid
+									: undefined
+							}
+						>
+							Password must contain:
+						</li>
+						<ul>
+							<li className={passwordLongEnough ? styles.valid : undefined}>
+								Between 8 and 32 characters
+							</li>
+							<li className={passwordContainsNumber ? styles.valid : undefined}>At least one number</li>
+							<li className={passwordContainsSpecialCharacter ? styles.valid : undefined}>
+								At least one special character
+							</li>
+						</ul>
+						<li className={passwordsMatch ? styles.valid : undefined}>Passwords must match</li>
 					</ul>
-					<li>Passwords must match</li>
-				</ul>
+				)}
 				<Button
 					text="Create Account"
 					variant="primary"
