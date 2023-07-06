@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Auth } from "aws-amplify";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import classNames from "classnames";
 
 import TextInput from "../../components/TextInput";
@@ -10,16 +10,39 @@ import styles from "./accountAccess.module.css";
 
 const SignUpForm = () => {
 	const [formPage, setFormPage] = useState(1);
-	const formRef = useRef<HTMLFormElement>(null);
-	const passwordRef = useRef<HTMLInputElement>(null);
-	const passwordConfirmationRef = useRef<HTMLInputElement>(null);
-
+	const [formSubmitted, setFormSubmitted] = useState(false);
 	const [passwordLongEnough, setPasswordLongEnough] = useState(false);
 	const [passwordContainsNumber, setPasswordContainsNumber] = useState(false);
 	const [passwordContainsSpecialCharacter, setPasswordContainsSpecialCharacter] = useState(false);
 	const [passwordsMatch, setPasswordsMatch] = useState(true);
 
-	const validateForm = () => {
+	const navigate = useNavigate();
+
+	const formRef = useRef<HTMLFormElement>(null);
+	const passwordRef = useRef<HTMLInputElement>(null);
+	const passwordConfirmationRef = useRef<HTMLInputElement>(null);
+
+	const validateUserInfo = () => {
+		if (formRef.current) {
+			const formData = new FormData(formRef.current);
+
+			const firstName = formData.get("first-name") as string;
+			const lastName = formData.get("last-name") as string;
+			const email = formData.get("email") as string;
+
+			return (
+				firstName &&
+				lastName &&
+				/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(
+					email,
+				)
+			);
+		}
+
+		return false;
+	};
+
+	const validatePassword = () => {
 		if (formRef.current) {
 			const formData = new FormData(formRef.current);
 
@@ -29,46 +52,57 @@ const SignUpForm = () => {
 			const newPasswordLongEnough = password.length >= 8 && password.length < 32;
 			const newPasswordContainsNumber = /\d/.test(password);
 			const newPasswordContainsSpecialCharacter = /[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`+= ]/.test(password);
+			const newPasswordsMatch =
+				password === passwordConfirmation ||
+				!(newPasswordContainsNumber && newPasswordContainsNumber && newPasswordContainsSpecialCharacter);
 
 			setPasswordLongEnough(newPasswordLongEnough);
 			setPasswordContainsNumber(newPasswordContainsNumber);
 			setPasswordContainsSpecialCharacter(newPasswordContainsSpecialCharacter);
-			setPasswordsMatch(
-				password === passwordConfirmation ||
-					!(newPasswordContainsNumber && newPasswordContainsNumber && newPasswordContainsSpecialCharacter),
+			setPasswordsMatch(newPasswordsMatch);
+
+			return (
+				newPasswordLongEnough &&
+				newPasswordContainsNumber &&
+				newPasswordContainsSpecialCharacter &&
+				newPasswordsMatch
 			);
 		}
+
+		return false;
 	};
 
-	const createAccount = () => {
-		if (formRef.current) {
+	const createAccount = async () => {
+		if (!formSubmitted && formRef.current) {
+			setFormSubmitted(true);
+
 			const formData = new FormData(formRef.current);
 
-			const firstName = formData.get("first-name");
-			const lastName = formData.get("last-name");
-			const email = formData.get("email");
-			const password = formData.get("password");
-			const passwordConfirmation = formData.get("password-confirmation");
-		}
+			// TODO: save these
+			// const firstName = formData.get("first-name") as string;
+			// const lastName = formData.get("last-name") as string;
+			const email = formData.get("email") as string;
+			const password = formData.get("password") as string;
 
-		// try {
-		// 	const { user } = await Auth.signUp({
-		// 		username: email,
-		// 		password,
-		// 		attributes: {
-		// 			email, // optional
-		// 			phone_number, // optional - E.164 number convention
-		// 			// other custom attributes
-		// 		},
-		// 		autoSignIn: {
-		// 			// optional - enables auto sign in after user is confirmed
-		// 			enabled: true,
-		// 		},
-		// 	});
-		// 	console.log(user);
-		// } catch (error) {
-		// 	console.log("error signing up:", error);
-		// }
+			Auth.signUp({
+				username: email,
+				password,
+				attributes: {
+					email,
+				},
+				autoSignIn: {
+					enabled: true,
+				},
+			})
+				.then(({ user }) => {
+					console.log(user);
+					navigate("/customer/dashboard");
+				})
+				.catch((error) => {
+					console.log("error signing up:", error);
+					setFormSubmitted(false);
+				});
+		}
 	};
 
 	return (
@@ -84,8 +118,10 @@ const SignUpForm = () => {
 					variant="secondary"
 					width="L"
 					onClick={() => {
-						setFormPage(2);
-						passwordRef.current?.focus();
+						if (validateUserInfo()) {
+							setFormPage(2);
+							passwordRef.current?.focus();
+						}
 					}}
 				/>
 			</fieldset>
@@ -100,7 +136,7 @@ const SignUpForm = () => {
 					autoComplete="new-password"
 					ref={passwordRef}
 					onChange={() => {
-						validateForm();
+						validatePassword();
 					}}
 				/>
 				<TextInput
@@ -111,7 +147,7 @@ const SignUpForm = () => {
 					autoComplete="new-password"
 					ref={passwordConfirmationRef}
 					onChange={() => {
-						validateForm();
+						validatePassword();
 					}}
 				/>
 				{(!passwordLongEnough ||
@@ -146,7 +182,9 @@ const SignUpForm = () => {
 					width="L"
 					className="display-block"
 					onClick={() => {
-						createAccount();
+						if (validatePassword()) {
+							createAccount();
+						}
 					}}
 				/>
 			</fieldset>
