@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Auth } from "aws-amplify";
 import { Link, Outlet, useMatches, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 
@@ -12,10 +13,14 @@ const Layout = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (matches.length === 1) {
-			// TODO: check if logged in, then navigate accordingly
-			// navigate("/account-access");
-		}
+		Auth.currentSession()
+			.then((user) => {
+				console.log("signed in!", user);
+			})
+			.catch(() => {
+				console.log("Not signed in!");
+				navigate("/account-access");
+			});
 	}, [matches, navigate]);
 
 	return (

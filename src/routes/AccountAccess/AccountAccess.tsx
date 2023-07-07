@@ -10,7 +10,6 @@ import styles from "./accountAccess.module.css";
 
 const SignUpForm = () => {
 	const [formPage, setFormPage] = useState(1);
-	const [formSubmitted, setFormSubmitted] = useState(false);
 	const [passwordLongEnough, setPasswordLongEnough] = useState(false);
 	const [passwordContainsNumber, setPasswordContainsNumber] = useState(false);
 	const [passwordContainsSpecialCharacter, setPasswordContainsSpecialCharacter] = useState(false);
@@ -72,10 +71,8 @@ const SignUpForm = () => {
 		return false;
 	};
 
-	const createAccount = async () => {
-		if (!formSubmitted && formRef.current) {
-			setFormSubmitted(true);
-
+	const createAccount = () => {
+		if (formRef.current) {
 			const formData = new FormData(formRef.current);
 
 			// TODO: save these
@@ -96,11 +93,28 @@ const SignUpForm = () => {
 			})
 				.then(({ user }) => {
 					console.log(user);
-					navigate("/customer/dashboard");
+					setFormPage(3);
 				})
 				.catch((error) => {
 					console.log("error signing up:", error);
-					setFormSubmitted(false);
+				});
+		}
+	};
+
+	const submitConfirmationCode = () => {
+		if (formRef.current) {
+			const formData = new FormData(formRef.current);
+
+			const email = formData.get("email") as string;
+			const confirmationCode = formData.get("confirmation-code") as string;
+
+			// Auth.confirmSignIn(user);
+			Auth.confirmSignUp(email, confirmationCode)
+				.then(() => {
+					navigate("/customer/dashboard");
+				})
+				.catch((error) => {
+					console.log("failed to confirm email", error);
 				});
 		}
 	};
@@ -144,6 +158,7 @@ const SignUpForm = () => {
 					name="password-confirmation"
 					label="Confirm Password"
 					width="L"
+					maxLength={32}
 					autoComplete="new-password"
 					ref={passwordConfirmationRef}
 					onChange={() => {
@@ -185,6 +200,25 @@ const SignUpForm = () => {
 						if (validatePassword()) {
 							createAccount();
 						}
+					}}
+				/>
+			</fieldset>
+
+			<fieldset className="" style={formPage !== 3 ? { display: "none" } : undefined}>
+				<TextInput
+					name="confirmation-code"
+					label="Confirmation Code"
+					width="M"
+					maxLength={6}
+					autoComplete="off"
+				/>
+				<Button
+					text="Submit Code"
+					variant="primary"
+					width="L"
+					className="display-block"
+					onClick={() => {
+						submitConfirmationCode();
 					}}
 				/>
 			</fieldset>

@@ -6,6 +6,7 @@ type CheckingAccountInfo = {
 	balance: number;
 	cardNumberLast4Digits: string;
 	transactions: unknown[];
+	accountId: string;
 };
 
 const CheckingAccountCard = ({ balance, cardNumberLast4Digits }: CheckingAccountInfo) => (
@@ -18,6 +19,7 @@ const CheckingAccountCard = ({ balance, cardNumberLast4Digits }: CheckingAccount
 type SavingsAccountInfo = {
 	balance: number;
 	activity: unknown[];
+	accountId: string;
 };
 
 const SavingsAccountCard = ({ balance }: SavingsAccountInfo) => (
@@ -32,6 +34,7 @@ type CreditCardAccountInfo = {
 	creditLimit: number;
 	cardNumberLast4Digits: string;
 	activity: unknown[];
+	accountId: string;
 };
 
 const CreditCardAccountCard = ({ balance, creditLimit, cardNumberLast4Digits }: CreditCardAccountInfo) => (
@@ -42,10 +45,15 @@ const CreditCardAccountCard = ({ balance, creditLimit, cardNumberLast4Digits }: 
 );
 
 const Dashboard = () => {
-	const checkingAccount: CheckingAccountInfo = { balance: 987, cardNumberLast4Digits: "1234", transactions: [] };
-	const savingsAccount: SavingsAccountInfo = { balance: 6543, activity: [] };
+	const checkingAccount: CheckingAccountInfo = {
+		balance: 987,
+		cardNumberLast4Digits: "1234",
+		transactions: [],
+		accountId: "1",
+	};
+	const savingsAccount: SavingsAccountInfo = { balance: 6543, activity: [], accountId: "2" };
 	const creditCardAccounts: CreditCardAccountInfo[] = [
-		{ balance: 21, creditLimit: 10000, cardNumberLast4Digits: "5678", activity: [] },
+		{ balance: 21, creditLimit: 10000, cardNumberLast4Digits: "5678", activity: [], accountId: "3" },
 	];
 
 	return (
@@ -54,7 +62,7 @@ const Dashboard = () => {
 				<CheckingAccountCard {...checkingAccount} />
 				<SavingsAccountCard {...savingsAccount} />
 				{creditCardAccounts.map((creditCardAccount) => (
-					<CreditCardAccountCard {...creditCardAccount} />
+					<CreditCardAccountCard {...creditCardAccount} key={creditCardAccount.accountId} />
 				))}
 			</section>
 		</>
