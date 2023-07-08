@@ -226,13 +226,43 @@ const SignUpForm = () => {
 	);
 };
 
-const LoginForm = () => (
-	<form>
-		<TextInput label="Email" width="L" autoFocus />
-		<TextInput type="password" label="Password" width="L" style={{ letterSpacing: "1px" }} />
-		<Button text="Log In" width="L" linkTo="/customer/dashboard" />
-	</form>
-);
+const LoginForm = () => {
+	const formRef = useRef<HTMLFormElement>(null);
+
+	const navigate = useNavigate();
+
+	const login = () => {
+		if (formRef.current) {
+			const formData = new FormData(formRef.current);
+
+			const email = formData.get("email") as string;
+			const password = formData.get("password") as string;
+
+			Auth.signIn(email, password)
+				.then(() => {
+					navigate("/customer/dashboard");
+				})
+				.catch((error) => {
+					console.log("failed to sign in", error);
+				});
+		}
+	};
+
+	return (
+		<form ref={formRef}>
+			<TextInput name="email" label="Email" width="L" autoFocus />
+			<TextInput type="password" name="password" label="Password" width="L" maxLength={32} />
+			<Button
+				text="Log In"
+				width="L"
+				linkTo="/customer/dashboard"
+				onClick={() => {
+					login();
+				}}
+			/>
+		</form>
+	);
+};
 
 const AccountAccess = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
