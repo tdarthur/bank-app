@@ -9,9 +9,9 @@
 .inputWrapper > label {
 	position: absolute;
 	left: 1rem;
-	top: 0px;
+	top: -0.5px;
 
-	height: 2px;
+	height: 2.5px;
 	padding: 0 4px;
 
 	background-color: white;

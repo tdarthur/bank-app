@@ -7,6 +7,16 @@ import TextInput from "../../components/TextInput";
 import Button from "../../components/Button";
 
 import styles from "./accountAccess.module.css";
+import Form from "../../components/Form";
+
+const fieldNames = {
+	firstName: "first-name",
+	lastName: "last-name",
+	email: "email",
+	password: "password",
+	passwordConfirmation: "password-confirmation",
+	confirmationCode: "confirmation-code",
+};
 
 const SignUpForm = () => {
 	const [formPage, setFormPage] = useState(1);
@@ -17,212 +27,193 @@ const SignUpForm = () => {
 
 	const navigate = useNavigate();
 
-	const formRef = useRef<HTMLFormElement>(null);
-	const passwordRef = useRef<HTMLInputElement>(null);
-	const passwordConfirmationRef = useRef<HTMLInputElement>(null);
-
-	const validateUserInfo = () => {
-		if (formRef.current) {
-			const formData = new FormData(formRef.current);
-
-			const firstName = formData.get("first-name") as string;
-			const lastName = formData.get("last-name") as string;
-			const email = formData.get("email") as string;
-
-			return (
-				firstName &&
-				lastName &&
-				/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(
-					email,
-				)
-			);
-		}
-
-		return false;
-	};
-
-	const validatePassword = () => {
-		if (formRef.current) {
-			const formData = new FormData(formRef.current);
-
-			const password = formData.get("password") as string;
-			const passwordConfirmation = formData.get("password-confirmation") as string;
-
-			const newPasswordLongEnough = password.length >= 8 && password.length < 32;
-			const newPasswordContainsNumber = /\d/.test(password);
-			const newPasswordContainsSpecialCharacter = /[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`+= ]/.test(password);
-			const newPasswordsMatch =
-				password === passwordConfirmation ||
-				!(newPasswordContainsNumber && newPasswordContainsNumber && newPasswordContainsSpecialCharacter);
-
-			setPasswordLongEnough(newPasswordLongEnough);
-			setPasswordContainsNumber(newPasswordContainsNumber);
-			setPasswordContainsSpecialCharacter(newPasswordContainsSpecialCharacter);
-			setPasswordsMatch(newPasswordsMatch);
-
-			return (
-				newPasswordLongEnough &&
-				newPasswordContainsNumber &&
-				newPasswordContainsSpecialCharacter &&
-				newPasswordsMatch
-			);
-		}
-
-		return false;
-	};
-
-	const createAccount = () => {
-		if (formRef.current) {
-			const formData = new FormData(formRef.current);
-
-			// TODO: save these
-			// const firstName = formData.get("first-name") as string;
-			// const lastName = formData.get("last-name") as string;
-			const email = formData.get("email") as string;
-			const password = formData.get("password") as string;
-
-			Auth.signUp({
-				username: email,
-				password,
-				attributes: {
-					email,
-				},
-				autoSignIn: {
-					enabled: true,
-				},
-			})
-				.then(({ user }) => {
-					console.log(user);
-					setFormPage(3);
-				})
-				.catch((error) => {
-					console.log("error signing up:", error);
-				});
-		}
-	};
-
-	const submitConfirmationCode = () => {
-		if (formRef.current) {
-			const formData = new FormData(formRef.current);
-
-			const email = formData.get("email") as string;
-			const confirmationCode = formData.get("confirmation-code") as string;
-
-			// Auth.confirmSignIn(user);
-			Auth.confirmSignUp(email, confirmationCode)
-				.then(() => {
-					navigate("/customer/dashboard");
-				})
-				.catch((error) => {
-					console.log("failed to confirm email", error);
-				});
-		}
-	};
-
 	return (
-		<form ref={formRef}>
-			<fieldset style={formPage !== 1 ? { display: "none" } : undefined}>
-				<div className="form-line">
-					<TextInput name="first-name" label="First Name" autoFocus />
-					<TextInput name="last-name" label="Last Name" />
-				</div>
-				<TextInput name="email" label="Email" width="L" />
-				<Button
-					text="Next"
-					variant="secondary"
-					width="L"
-					onClick={() => {
-						if (validateUserInfo()) {
-							setFormPage(2);
-							passwordRef.current?.focus();
-						}
-					}}
-				/>
-			</fieldset>
+		<Form
+			render={({ values, messages, pushMessage, clearMessages }) => {
+				const validateUserInfo = () =>
+					values[fieldNames.firstName] &&
+					values[fieldNames.lastName] &&
+					/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(
+						values.email,
+					);
 
-			<fieldset className="" style={formPage !== 2 ? { display: "none" } : undefined}>
-				<TextInput
-					type="password"
-					name="password"
-					label="Password"
-					width="L"
-					maxLength={32}
-					autoComplete="new-password"
-					ref={passwordRef}
-					onChange={() => {
-						validatePassword();
-					}}
-				/>
-				<TextInput
-					type="password"
-					name="password-confirmation"
-					label="Confirm Password"
-					width="L"
-					maxLength={32}
-					autoComplete="new-password"
-					ref={passwordConfirmationRef}
-					onChange={() => {
-						validatePassword();
-					}}
-				/>
-				{(!passwordLongEnough ||
-					!passwordContainsNumber ||
-					!passwordContainsSpecialCharacter ||
-					!passwordsMatch) && (
-					<ul className={styles.passwordRequirements}>
-						<li
-							className={
-								passwordLongEnough && passwordContainsNumber && passwordContainsSpecialCharacter
-									? styles.valid
-									: undefined
-							}
-						>
-							Password must contain:
-						</li>
-						<ul>
-							<li className={passwordLongEnough ? styles.valid : undefined}>
-								Between 8 and 32 characters
-							</li>
-							<li className={passwordContainsNumber ? styles.valid : undefined}>At least one number</li>
-							<li className={passwordContainsSpecialCharacter ? styles.valid : undefined}>
-								At least one special character
-							</li>
-						</ul>
-						<li className={passwordsMatch ? styles.valid : undefined}>Passwords must match</li>
-					</ul>
-				)}
-				<Button
-					text="Create Account"
-					variant="primary"
-					width="L"
-					className="display-block"
-					onClick={() => {
-						if (validatePassword()) {
-							createAccount();
-						}
-					}}
-				/>
-			</fieldset>
+				const validatePassword = () => {
+					const { password, [fieldNames.passwordConfirmation]: passwordConfirmation } = values;
+					console.log(values, password, passwordConfirmation);
 
-			<fieldset className="" style={formPage !== 3 ? { display: "none" } : undefined}>
-				<TextInput
-					name="confirmation-code"
-					label="Confirmation Code"
-					width="M"
-					maxLength={6}
-					autoComplete="off"
-				/>
-				<Button
-					text="Submit Code"
-					variant="primary"
-					width="L"
-					className="display-block"
-					onClick={() => {
-						submitConfirmationCode();
-					}}
-				/>
-			</fieldset>
-		</form>
+					const newPasswordLongEnough = password.length >= 8 && password.length < 32;
+					const newPasswordContainsNumber = /\d/.test(password);
+					const newPasswordContainsSpecialCharacter = /[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`+= ]/.test(
+						password,
+					);
+					const newPasswordsMatch =
+						password === passwordConfirmation ||
+						!(
+							newPasswordContainsNumber &&
+							newPasswordContainsNumber &&
+							newPasswordContainsSpecialCharacter
+						);
+
+					setPasswordLongEnough(newPasswordLongEnough);
+					setPasswordContainsNumber(newPasswordContainsNumber);
+					setPasswordContainsSpecialCharacter(newPasswordContainsSpecialCharacter);
+					setPasswordsMatch(newPasswordsMatch);
+
+					return (
+						newPasswordLongEnough &&
+						newPasswordContainsNumber &&
+						newPasswordContainsSpecialCharacter &&
+						newPasswordsMatch
+					);
+				};
+
+				const createAccount = () => {
+					// TODO: save these
+					// const firstName = formData.get("first-name") as string;
+					// const lastName = formData.get("last-name") as string;
+
+					const { email, password } = values;
+
+					Auth.signUp({
+						username: email,
+						password,
+						attributes: {
+							email,
+						},
+						autoSignIn: {
+							enabled: true,
+						},
+					})
+						.then(({ user }) => {
+							console.log(user);
+							setFormPage(3);
+						})
+						.catch((error) => {
+							console.log("error signing up:", error);
+						});
+				};
+
+				const submitConfirmationCode = () => {
+					const { email, [fieldNames.confirmationCode]: confirmationCode } = values;
+
+					Auth.confirmSignUp(email, confirmationCode)
+						.then(() => {
+							navigate("/customer/dashboard");
+						})
+						.catch(() => {
+							pushMessage("Incorrect code", "error");
+						});
+				};
+
+				return (
+					<>
+						<fieldset style={formPage !== 1 ? { display: "none" } : undefined}>
+							<div className="form-line">
+								<TextInput name={fieldNames.firstName} label="First Name" autoFocus />
+								<TextInput name={fieldNames.lastName} label="Last Name" />
+							</div>
+							<TextInput name={fieldNames.email} label="Email" width="L" />
+							<Button
+								text="Next"
+								variant="secondary"
+								width="L"
+								onClick={() => {
+									if (validateUserInfo()) {
+										setFormPage(2);
+										// passwordRef.current?.focus();
+									}
+								}}
+							/>
+						</fieldset>
+
+						<fieldset className="" style={formPage !== 2 ? { display: "none" } : undefined}>
+							<TextInput
+								name={fieldNames.password}
+								type="password"
+								label="Password"
+								width="L"
+								maxLength={32}
+								autoComplete="new-password"
+								onChange={() => {
+									validatePassword();
+								}}
+							/>
+							<TextInput
+								name={fieldNames.passwordConfirmation}
+								type="password"
+								label="Confirm Password"
+								width="L"
+								maxLength={32}
+								autoComplete="new-password"
+								onChange={() => {
+									validatePassword();
+								}}
+							/>
+							{(!passwordLongEnough ||
+								!passwordContainsNumber ||
+								!passwordContainsSpecialCharacter ||
+								!passwordsMatch) && (
+								<ul className={styles.passwordRequirements}>
+									<li
+										className={
+											passwordLongEnough &&
+											passwordContainsNumber &&
+											passwordContainsSpecialCharacter
+												? styles.valid
+												: undefined
+										}
+									>
+										Password must contain:
+									</li>
+									<ul>
+										<li className={passwordLongEnough ? styles.valid : undefined}>
+											Between 8 and 32 characters
+										</li>
+										<li className={passwordContainsNumber ? styles.valid : undefined}>
+											At least one number
+										</li>
+										<li className={passwordContainsSpecialCharacter ? styles.valid : undefined}>
+											At least one special character
+										</li>
+									</ul>
+									<li className={passwordsMatch ? styles.valid : undefined}>Passwords must match</li>
+								</ul>
+							)}
+							<Button
+								text="Create Account"
+								variant="primary"
+								width="L"
+								className="display-block"
+								onClick={() => {
+									if (validatePassword()) {
+										createAccount();
+									}
+								}}
+							/>
+						</fieldset>
+
+						<fieldset className="" style={formPage !== 3 ? { display: "none" } : undefined}>
+							<TextInput
+								name="confirmation-code"
+								label="Confirmation Code"
+								width="M"
+								maxLength={6}
+								autoComplete="off"
+							/>
+							<Button
+								text="Submit Code"
+								variant="primary"
+								width="L"
+								className="display-block"
+								onClick={() => {
+									submitConfirmationCode();
+								}}
+							/>
+						</fieldset>
+					</>
+				);
+			}}
+		/>
 	);
 };
 

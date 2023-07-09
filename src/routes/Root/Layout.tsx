@@ -30,8 +30,8 @@ export const Header = () => (
 				</ul>
 
 				<div>
-					<Button text="Log In" variant="tertiary" width="S" linkTo="account-access" />
-					<Button text="Sign Up" linkTo="account-access?sign-up=true" />
+					<Button text="Log In" variant="tertiary" width="S" linkTo="/account-access" />
+					<Button text="Sign Up" linkTo="/account-access?sign-up=true" />
 				</div>
 			</nav>
 		</div>

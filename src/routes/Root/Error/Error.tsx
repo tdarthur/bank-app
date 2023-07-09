@@ -27,11 +27,17 @@ const Error = () => {
 			<main className={layoutStyles.main}>
 				<div className={classNames(layoutStyles.pageContent, styles.errorDetails)}>
 					<h2 className={styles.errorMessage}>
-						{errorMessages[routeError.status] || routeError.error.message}
+						{errorMessages[routeError?.status] || routeError?.error?.message || "An error occurred"}
 					</h2>
 					<Button text="Back to Homepage" width="L" linkTo="" />
+
 					<p className="text-soft">
-						{routeError.status} Error: {routeError.statusText}
+						{(routeError.status && routeError.statusText && (
+							<>
+								{routeError.status} Error: {routeError.statusText}
+							</>
+						)) ||
+							String(routeError) || <>Unknown error</>}
 					</p>
 				</div>
 			</main>

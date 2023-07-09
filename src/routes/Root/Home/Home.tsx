@@ -9,6 +9,7 @@ type CarouselPanel = {
 	header: string;
 	text: React.ReactNode;
 	image: string;
+	key: string;
 };
 
 const carouselPanels: CarouselPanel[] = [
@@ -16,21 +17,25 @@ const carouselPanels: CarouselPanel[] = [
 		image: "https://images.pexels.com/photos/7620920/pexels-photo-7620920.jpeg?cs=srgb&dl=pexels-ivan-samkov-7620920.jpg&fm=jpg",
 		header: "Win. Your way.",
 		text: "This is something...",
+		key: "0",
 	},
 	{
 		image: "https://static.vecteezy.com/system/resources/previews/003/351/091/large_2x/portrait-of-smiling-pretty-young-business-woman-using-phone-free-photo.jpg",
 		header: "This is a header",
 		text: "Here's some text",
+		key: "1",
 	},
 	{
 		image: "https://www.verywellmind.com/thmb/HZHiUS1k63_h8xtgNmQLTH498rU=/2121x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1126427826-976f525a9a3c4b3ea96016e418374b6b.jpg",
 		header: "This is a header",
 		text: "Here's some text",
+		key: "2",
 	},
 	{
 		image: "https://www.eatthis.com/wp-content/uploads/sites/4/2022/02/My-project-2022-02-07T075924.113.jpg?quality=82&strip=1",
 		header: "This is a header",
 		text: "Here's some text",
+		key: "3",
 	},
 ];
 
@@ -66,7 +71,7 @@ const Carousel = () => {
 							}px)`,
 						}}
 					>
-						{carouselPanels.map(({ image }, index) => (
+						{carouselPanels.map(({ image, key }, index) => (
 							<img
 								src={image}
 								style={{
@@ -74,6 +79,7 @@ const Carousel = () => {
 									top: 0,
 									left: carouselElement.current ? index * carouselElement.current?.clientWidth : 0,
 								}}
+								key={key}
 							/>
 						))}
 					</div>
@@ -86,7 +92,7 @@ const Carousel = () => {
 							}px)`,
 						}}
 					>
-						{carouselPanels.map(({ header, text }, index) => (
+						{carouselPanels.map(({ header, text, key }, index) => (
 							<div
 								style={{
 									position: "absolute",
@@ -94,12 +100,13 @@ const Carousel = () => {
 									top: carouselElement.current ? index * carouselElement.current?.clientHeight : 0,
 								}}
 								data-active={index === carouselPanelIndex ? true : undefined}
+								key={key}
 							>
 								<h1>{header}</h1>
 								<p>{text}</p>
 								<Button
 									text="Sign Up"
-									linkTo="account-access?sign-up=true"
+									linkTo="/account-access?sign-up=true"
 									tabIndex={index === carouselPanelIndex ? 0 : -1}
 								/>
 							</div>
@@ -107,11 +114,12 @@ const Carousel = () => {
 					</div>
 
 					<div className={styles.carouselIndexIndicator}>
-						{carouselPanels.map((_, index) => (
+						{carouselPanels.map(({ key }, index) => (
 							<button
 								type="button"
 								onClick={() => setCarouselPanelIndex(index)}
 								data-selected={carouselPanelIndex === index ? true : undefined}
+								key={key}
 							/>
 						))}
 					</div>
@@ -156,7 +164,7 @@ const Home = () => (
 
 		<div className={styles.actionContainer}>
 			<h2 className={styles.actionHeader}>Get started for free today</h2>
-			<Button text="Sign Up" variant="secondary" linkTo="account-access?sign-up=true" />
+			<Button text="Sign Up" variant="secondary" linkTo="/account-access?sign-up=true" />
 		</div>
 
 		<section className={classNames(styles.cards, layoutStyles.pageContent)}>
@@ -165,21 +173,21 @@ const Home = () => (
 				text="This is what we do."
 				image={cardImages[0]}
 				actionText="Get Started"
-				to={"banking"}
+				to={"/banking"}
 			/>
 			<InfoCard
 				header="Achieve your credit goals."
 				text="With our award winning credit cards, you'll never have to look elsewhere to plunge yourself into debt."
 				image={cardImages[1]}
 				actionText="Learn More"
-				to={"credit-cards"}
+				to={"/credit-cards"}
 			/>
 			<InfoCard
 				header="Win back your financial freedom."
 				text="It's a bold claim. But we're confident we can make it happen."
 				image={cardImages[2]}
 				actionText="Learn More"
-				to={"benefits"}
+				to={"/benefits"}
 			/>
 		</section>
 	</div>

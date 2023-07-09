@@ -13,7 +13,9 @@ const Dropdown = ({ label, width, options, className, ...props }: Props) => (
 		<label className={styles.inputLabel}>{label}</label>
 		<select className={classNames(width && `width-${width}`, className)} {...props}>
 			{options.map(({ key, value }) => (
-				<option key={key}>{value}</option>
+				<option value={key} key={key}>
+					{value}
+				</option>
 			))}
 		</select>
 	</div>
