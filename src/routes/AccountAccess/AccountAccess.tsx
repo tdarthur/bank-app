@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Auth } from "aws-amplify";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import classNames from "classnames";
@@ -258,6 +258,19 @@ const LoginForm = () => {
 const AccountAccess = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const returningMember = !searchParams.has("sign-up");
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		Auth.currentSession()
+			.then((user) => {
+				console.log("signed in!", user);
+				navigate("/customer/dashboard");
+			})
+			.catch(() => {
+				console.log("Not signed in!");
+			});
+	}, [navigate]);
 
 	return (
 		<div className={styles.layoutWrapper}>
