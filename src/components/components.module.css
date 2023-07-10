@@ -1,4 +1,6 @@
 .inputWrapper {
+	--background-color-error: #f8f8f8;
+
 	position: relative;
 
 	width: fit-content;
@@ -27,11 +29,24 @@
 	border-radius: 0.25rem;
 }
 
+.inputWrapper.invalid > input,
+.inputWrapper.invalid > select {
+	width: var(--width-M);
+	padding: 0.5rem 1rem;
+	border: 1px solid var(--color-error);
+	background-color: var(--background-color-error);
+	border-radius: 0.25rem;
+}
+
 .inputWrapper > select::after {
 	content: "";
 }
 
 .button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 	width: var(--width-M);
 	height: 48px;
 	border: none;
@@ -45,29 +60,96 @@
 }
 
 .buttonPrimary {
-	background-color: var(--primary-color);
+	composes: button;
+
 	color: white;
+	background-color: var(--primary-color);
 }
 
-.buttonPrimary:hover {
+.buttonPrimary:hover:not(:disabled) {
+	background-color: var(--primary-color-dark);
+}
+
+.buttonPrimary:disabled {
 	background-color: var(--primary-color-dark);
 }
 
 .buttonSecondary {
+	composes: button;
+
 	border: 1px solid black;
 
-	background-color: transparent;
+	background-color: white;
 }
 
-.buttonSecondary:hover {
+.buttonSecondary:hover:not(:disabled) {
 	background-color: black;
 	color: white;
 }
 
-.sbuttonTertiary {
+.buttonSecondary:disabled {
+	background-color: #bbb;
+}
+
+.buttonTertiary {
+	composes: button;
+
 	background-color: transparent;
 }
 
 .buttonTertiary:hover {
 	color: var(--primary-color);
+}
+
+.formMessage {
+	width: 100%;
+	padding: 0.75rem 0 0.75rem 3rem;
+	margin-bottom: 0.5rem;
+	border-radius: 4px;
+
+	color: white;
+	font-size: 0.8rem;
+}
+
+.infoMessage {
+	composes: formMessage;
+
+	background-color: var(--color-info);
+}
+
+.warningMessage {
+	composes: formMessage;
+
+	background-color: var(--color-warning);
+}
+
+.errorMessage {
+	composes: formMessage;
+
+	background-color: var(--color-error);
+}
+
+@keyframes spinner_spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.loadingSpinner {
+	display: inline-block;
+
+	transform-origin: center;
+	animation: spinner_spin 0.75s infinite linear;
+}
+
+.button > .loadingSpinner {
+	width: 0;
+	margin-left: 0;
+
+	transition: width 150ms ease, margin-left 150ms ease;
+}
+
+.button > .loadingSpinner[data-displayed] {
+	width: 24px;
+	margin-left: 1rem;
 }

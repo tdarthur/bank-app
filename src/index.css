@@ -75,6 +75,9 @@ a {
 	--primary-color-ultra-light: hsl(190, 97%, 90%);
 	--text-color: #3c3c3c;
 	--text-color-soft: #6c6c6c;
+	--color-info: #1bb5e0;
+	--color-warning: #ff9d34;
+	--color-error: #d92727;
 
 	--width-XS: 64px;
 	--width-S: 128px;

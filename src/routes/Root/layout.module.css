@@ -88,6 +88,10 @@ body {
 	background-color: var(--primary-color);
 }
 
+.navigation > div {
+	display: flex;
+}
+
 .navigation li {
 	height: 100%;
 }

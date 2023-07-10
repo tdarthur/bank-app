@@ -6,7 +6,7 @@ type Props = {
 	label: string;
 	width?: "XS" | "S" | "M" | "L" | "XL";
 	options: { key: string; value: string }[];
-} & React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> & { children?: never };
+} & Omit<React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>, "children">;
 
 const Dropdown = ({ label, width, options, className, ...props }: Props) => (
 	<div className={styles.inputWrapper}>
