@@ -4,7 +4,10 @@ import type { FormSuppliedProps } from "../components/Form";
 const formContext = createContext<FormSuppliedProps>({
 	values: {},
 	messages: [],
-	submitted: false,
+	valid: true,
+	invalidFields: {},
+	invalidSubmission: false,
+	submitting: false,
 	pushErrorMessage: () => undefined,
 	pushWarningMessage: () => undefined,
 	pushInfoMessage: () => undefined,

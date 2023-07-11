@@ -88,6 +88,8 @@ const Layout = () => {
 			});
 	}, [navigate]);
 
+	if (authenticating) return <></>;
+
 	return (
 		<div className={styles.layoutWrapper}>
 			<header className={styles.header}>
