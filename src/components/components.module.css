@@ -1,5 +1,5 @@
 .inputWrapper {
-	--background-color-error: #f8f8f8;
+	--background-color-error: #f8e6e6;
 
 	position: relative;
 
@@ -18,6 +18,7 @@
 
 	background-color: white;
 	font-size: 10px;
+	font-weight: bold;
 	line-height: 0px;
 }
 
@@ -29,13 +30,29 @@
 	border-radius: 0.25rem;
 }
 
-.inputWrapper.invalid > input,
-.inputWrapper.invalid > select {
+.inputWrapper.invalid > input:not(:focus),
+.inputWrapper.invalid > select:not(:focus) {
 	width: var(--width-M);
 	padding: 0.5rem 1rem;
 	border: 1px solid var(--color-error);
+	outline: 1px solid var(--color-error);
+	outline-offset: -2px;
 	background-color: var(--background-color-error);
 	border-radius: 0.25rem;
+}
+
+.inputWrapper > .validationError {
+	display: none;
+	height: 8px;
+
+	color: var(--color-error);
+	font-size: 10px;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.inputWrapper.invalid:not(:focus-within) > .validationError {
+	display: block;
 }
 
 .inputWrapper > select::after {

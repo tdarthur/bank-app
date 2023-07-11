@@ -26,15 +26,19 @@ const fieldNames = {
 };
 
 const emailValidationRegex =
-	/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+	/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+const passwordMinLength = 8;
+const passwordMaxLength = 32;
+const passwordSpecialCharacterRegex = /[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`+= ]/;
 
 const SignUpForm = () => {
-	const [formPage, setFormPage] = useState(1);
+	const [signUpStep, setSignUpStep] = useState<1 | 2 | 3>(1);
 	const [signUpInfo, setSignUpInfo] = useState<SignUpInfo>({ firstName: "", lastName: "", email: "" });
 	const [passwordLongEnough, setPasswordLongEnough] = useState(false);
 	const [passwordContainsNumber, setPasswordContainsNumber] = useState(false);
 	const [passwordContainsSpecialCharacter, setPasswordContainsSpecialCharacter] = useState(false);
 	const [passwordsMatch, setPasswordsMatch] = useState(true);
+	const [awaitingRedirect, setSignedIn] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -56,22 +60,16 @@ const SignUpForm = () => {
 
 	return (
 		<>
-			{formPage === 1 && (
+			{signUpStep === 1 && (
 				<Form
 					validators={{
-						[fieldNames.firstName]: (value) => value.length > 0,
+						[fieldNames.email]: (value) => (emailValidationRegex.test(value) ? null : "Invalid email"),
 					}}
-					onSubmit={async ({ values, pushErrorMessage, clearMessages }) => {
-						clearMessages();
-
+					onSubmit={async ({ values }) => {
 						const { [fieldNames.firstName]: firstName, [fieldNames.lastName]: lastName, email } = values;
 
-						if (firstName && lastName && emailValidationRegex.test(email)) {
-							setSignUpInfo({ firstName, lastName, email });
-							setFormPage(2);
-						} else {
-							pushErrorMessage("Please fill out all required fields");
-						}
+						setSignUpInfo({ firstName, lastName, email });
+						setSignUpStep(2);
 					}}
 					render={({ messages }) => (
 						<>
@@ -79,32 +77,31 @@ const SignUpForm = () => {
 
 							<fieldset>
 								<div className="form-line">
-									<TextInput name={fieldNames.firstName} label="First Name" autoFocus />
-									<TextInput name={fieldNames.lastName} label="Last Name" />
+									<TextInput name={fieldNames.firstName} label="First Name" autoFocus required />
+									<TextInput name={fieldNames.lastName} label="Last Name" required />
 								</div>
-								<TextInput name={fieldNames.email} label="Email" width="L" />
+								<TextInput name={fieldNames.email} label="Email" width="L" required />
 							</fieldset>
 
-							<Button
-								type="submit"
-								text="Next"
-								variant="secondary"
-								width="L"
-								//  disabled={false}
-							/>
+							<Button type="submit" text="Next" variant="secondary" width="L" />
 						</>
 					)}
 				/>
 			)}
 
-			{formPage === 2 && (
+			{signUpStep === 2 && (
 				<Form
-					onSubmit={async ({ values }) => {
-						const { password } = values;
-
-						return Auth.signUp({
+					validators={{
+						password: () =>
+							passwordLongEnough && passwordContainsNumber && passwordContainsSpecialCharacter
+								? null
+								: "Invalid password",
+						[fieldNames.passwordConfirmation]: () => (passwordsMatch ? null : "Passwords do not match"),
+					}}
+					onSubmit={async ({ values, pushErrorMessage, clearMessages }) =>
+						Auth.signUp({
 							username: signUpInfo.email,
-							password,
+							password: values.password,
 							attributes: {
 								email: signUpInfo.email,
 							},
@@ -113,21 +110,21 @@ const SignUpForm = () => {
 							},
 						})
 							.then(() => {
-								setFormPage(3);
+								setSignUpStep(3);
 							})
 							.catch((error) => {
-								console.error("error signing up", error);
-							});
-					}}
-					render={({ values, messages }) => {
-						const validatePassword = () => {
+								clearMessages();
+								pushErrorMessage((error as Error).message);
+							})
+					}
+					render={({ values, messages, submitting }) => {
+						const handlePasswordChange = () => {
 							const { password, [fieldNames.passwordConfirmation]: passwordConfirmation } = values;
 
-							const newPasswordLongEnough = password.length >= 8 && password.length < 32;
+							const newPasswordLongEnough =
+								password.length >= passwordMinLength && password.length <= passwordMaxLength;
 							const newPasswordContainsNumber = /\d/.test(password);
-							const newPasswordContainsSpecialCharacter = /[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`+= ]/.test(
-								password,
-							);
+							const newPasswordContainsSpecialCharacter = passwordSpecialCharacterRegex.test(password);
 							const newPasswordsMatch =
 								password === passwordConfirmation ||
 								!(
@@ -140,13 +137,6 @@ const SignUpForm = () => {
 							setPasswordContainsNumber(newPasswordContainsNumber);
 							setPasswordContainsSpecialCharacter(newPasswordContainsSpecialCharacter);
 							setPasswordsMatch(newPasswordsMatch);
-
-							return (
-								newPasswordLongEnough &&
-								newPasswordContainsNumber &&
-								newPasswordContainsSpecialCharacter &&
-								newPasswordsMatch
-							);
 						};
 
 						return (
@@ -159,22 +149,27 @@ const SignUpForm = () => {
 										type="password"
 										label="Password"
 										width="L"
-										maxLength={32}
-										autoComplete="new-password"
 										onChange={() => {
-											validatePassword();
+											handlePasswordChange();
 										}}
+										autoComplete="new-password"
+										minLength={passwordMinLength}
+										maxLength={passwordMaxLength}
+										required
+										autoFocus
 									/>
 									<TextInput
 										name={fieldNames.passwordConfirmation}
 										type="password"
 										label="Confirm Password"
 										width="L"
-										maxLength={32}
-										autoComplete="new-password"
 										onChange={() => {
-											validatePassword();
+											handlePasswordChange();
 										}}
+										autoComplete="new-password"
+										minLength={passwordMinLength}
+										maxLength={passwordMaxLength}
+										required
 									/>
 									{(!passwordLongEnough ||
 										!passwordContainsNumber ||
@@ -219,8 +214,8 @@ const SignUpForm = () => {
 									text="Create Account"
 									variant="primary"
 									width="L"
-									className="display-block"
-									// disabled={true}
+									loadingIndicator={submitting}
+									disabled={submitting}
 								/>
 							</>
 						);
@@ -228,14 +223,22 @@ const SignUpForm = () => {
 				/>
 			)}
 
-			{formPage === 3 && (
+			{signUpStep === 3 && (
 				<Form
+					validators={{
+						[fieldNames.confirmationCode]: (value) =>
+							value.length === 6 ? null : "Confirmation code should be 6 digits",
+					}}
 					onSubmit={async ({ values, pushErrorMessage }) =>
-						Auth.confirmSignUp(signUpInfo.email, values.confirmationCode).catch(() => {
-							pushErrorMessage("Incorrect code");
-						})
+						Auth.confirmSignUp(signUpInfo.email, values[fieldNames.confirmationCode])
+							.then(() => {
+								setSignedIn(true);
+							})
+							.catch(() => {
+								pushErrorMessage("Incorrect code");
+							})
 					}
-					render={({ messages }) => (
+					render={({ messages, submitting }) => (
 						<>
 							<MessageContainer messages={messages} className={styles.messageContainer} />
 
@@ -243,8 +246,9 @@ const SignUpForm = () => {
 								name="confirmation-code"
 								label="Confirmation Code"
 								width="M"
-								maxLength={6}
 								autoComplete="off"
+								minLength={6}
+								maxLength={6}
 							/>
 
 							<Button
@@ -253,7 +257,8 @@ const SignUpForm = () => {
 								variant="primary"
 								width="L"
 								className="display-block"
-								// disabled={false}
+								loadingIndicator={submitting || awaitingRedirect}
+								disabled={submitting || awaitingRedirect}
 							/>
 						</>
 					)}
@@ -294,7 +299,7 @@ const LoginForm = () => {
 					}
 				}
 			}}
-			render={({ messages, submitted }) => (
+			render={({ messages, submitting }) => (
 				<>
 					<MessageContainer messages={messages} className={styles.messageContainer} />
 
@@ -304,12 +309,17 @@ const LoginForm = () => {
 						name="password"
 						label="Password"
 						width="L"
-						maxLength={32}
 						autoComplete="current-password"
 						required
 					/>
 
-					<Button type="submit" text="Sign In" width="L" loadingIndicator={submitted} disabled={submitted} />
+					<Button
+						type="submit"
+						text="Sign In"
+						width="L"
+						loadingIndicator={submitting}
+						disabled={submitting}
+					/>
 				</>
 			)}
 		/>
@@ -317,21 +327,27 @@ const LoginForm = () => {
 };
 
 const AccountAccess = () => {
+	const [authenticating, setAuthenticating] = useState(true);
+
 	const [searchParams, setSearchParams] = useSearchParams();
 	const returningMember = !searchParams.has("sign-up");
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		Auth.currentSession()
-			.then((user) => {
-				console.log("signed in!", user);
+		Auth.currentAuthenticatedUser()
+			.then(() => {
 				navigate("/customer/dashboard");
 			})
 			.catch(() => {
-				console.log("Not signed in!");
+				return;
+			})
+			.finally(() => {
+				setAuthenticating(false);
 			});
 	}, [navigate]);
+
+	if (authenticating) return <></>;
 
 	return (
 		<div className={styles.layoutWrapper}>

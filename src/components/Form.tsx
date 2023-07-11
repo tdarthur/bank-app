@@ -1,7 +1,11 @@
-import { ChangeEvent, Reducer, useEffect, useReducer, useRef, useState } from "react";
+import { Reducer, useEffect, useReducer, useRef, useState } from "react";
 import formContext from "../contexts/formContext";
 
 export type FormValues = {
+	[_: string]: string;
+};
+
+type ValidationErrors = {
 	[_: string]: string;
 };
 
@@ -21,8 +25,10 @@ type MessagesReducerAction = {
 export type FormSuppliedProps = {
 	values: FormValues;
 	messages: FormMessage[];
-	invalidFields: string[];
-	submitted: boolean;
+	valid: boolean;
+	invalidFields: ValidationErrors;
+	invalidSubmission: boolean;
+	submitting: boolean;
 	pushErrorMessage: (text: string) => void;
 	pushWarningMessage: (text: string) => void;
 	pushInfoMessage: (text: string) => void;
@@ -30,7 +36,7 @@ export type FormSuppliedProps = {
 };
 
 type Props = {
-	validators?: { [_: string]: (value: string) => boolean };
+	validators?: { [_: string]: (value: string) => string | null | undefined };
 	render: (_: FormSuppliedProps) => React.ReactNode;
 	onSubmit?: (_: FormSuppliedProps, event: React.FormEvent<HTMLFormElement>) => Promise<void>;
 } & Omit<
@@ -55,35 +61,52 @@ const Form = ({ validators, render, onSubmit, ...props }: Props) => {
 		messagesReducer,
 		[],
 	);
-	const [invalidFields, setInvalidFields] = useState<string[]>([]);
-	const [submitted, setSubmitted] = useState(false);
+	const [validatorsValid, setValidatorsValid] = useState(true);
+	const [invalidFields, setInvalidFields] = useState<ValidationErrors>({});
+	const [invalidSubmission, setInvalidSubmission] = useState(false);
+	const [submitting, setSubmitting] = useState(false);
 
 	const formRef = useRef<HTMLFormElement>(null);
+
+	const requiredFieldsHaveValues = () => {
+		if (formRef.current) {
+			let allFieldsHaveValue = true;
+			for (const field of formRef.current.querySelectorAll("input[required],select[required]")) {
+				allFieldsHaveValue = allFieldsHaveValue && !!(field as HTMLInputElement).value;
+			}
+			return allFieldsHaveValue;
+		}
+
+		return true;
+	};
 
 	useEffect(() => {
 		if (formRef.current) {
 			const updateValues = () => {
 				if (formRef.current) {
 					const formData = new FormData(formRef.current);
-					const newValues: FormValues = {};
-					const newInvalidFields = [];
+					const newValues = {} as FormValues;
+					let newValid = true;
+					const newInvalidFields = {} as ValidationErrors;
 					for (const entry of formData.entries()) {
 						newValues[entry[0]] = entry[1].valueOf() as string;
 
-						if (
-							validators &&
-							entry[0] in validators &&
-							!validators[entry[0]](entry[1].valueOf() as string)
-						) {
-							newInvalidFields.push(entry[0]);
+						if (validators && entry[0] in validators) {
+							const validationError = validators[entry[0]](entry[1].valueOf() as string);
+							if (validationError) {
+								newValid = false;
+								newInvalidFields[entry[0] as string] = validationError;
+							}
 						}
 					}
-					setInvalidFields(newInvalidFields);
 					setValues(newValues);
+					setValidatorsValid(newValid);
+					setInvalidFields(newInvalidFields);
 				}
 			};
 
-			const newInvalidFields = [];
+			let newValid = true;
+			const newInvalidFields = {} as ValidationErrors;
 			for (const field of formRef.current.querySelectorAll("input,select")) {
 				field.removeEventListener("input", updateValues);
 				field.removeEventListener("change", updateValues);
@@ -91,14 +114,15 @@ const Form = ({ validators, render, onSubmit, ...props }: Props) => {
 				field.addEventListener("change", updateValues);
 
 				const fieldName = field.getAttribute("name") as string;
-				if (
-					validators &&
-					fieldName in validators &&
-					!validators[fieldName]((field as HTMLInputElement).value)
-				) {
-					newInvalidFields.push(fieldName);
+				if (validators && fieldName in validators) {
+					const validationError = validators[fieldName]((field as HTMLInputElement).value);
+					if (validationError) {
+						newValid = false;
+						newInvalidFields[fieldName] = validationError;
+					}
 				}
 			}
+			setValidatorsValid(newValid);
 			setInvalidFields(newInvalidFields);
 
 			const observer = new MutationObserver((mutationRecord) => {
@@ -117,7 +141,7 @@ const Form = ({ validators, render, onSubmit, ...props }: Props) => {
 					mutation.addedNodes.forEach(checkForFieldAdded);
 				}
 			});
-			observer.observe(formRef.current, { subtree: true, childList: true });
+			observer.observe(formRef.current, { subtree: true, childList: true, attributes: true });
 
 			return () => {
 				observer.disconnect();
@@ -141,11 +165,15 @@ const Form = ({ validators, render, onSubmit, ...props }: Props) => {
 		dispatchMessageUpdate({ type: "clear" });
 	};
 
+	const valid = validatorsValid && requiredFieldsHaveValues();
+
 	const suppliedProps = {
 		values,
 		messages,
+		valid,
 		invalidFields,
-		submitted,
+		invalidSubmission,
+		submitting,
 		pushErrorMessage,
 		pushWarningMessage,
 		pushInfoMessage,
@@ -157,13 +185,20 @@ const Form = ({ validators, render, onSubmit, ...props }: Props) => {
 			ref={formRef}
 			onSubmit={(event) => {
 				event?.preventDefault();
+
+				if (!valid) {
+					setInvalidSubmission(true);
+					return;
+				}
+
 				if (onSubmit) {
-					setSubmitted(true);
+					setSubmitting(true);
 					onSubmit(suppliedProps, event).finally(() => {
-						setSubmitted(false);
+						setSubmitting(false);
 					});
 				}
 			}}
+			noValidate
 			{...props}
 		>
 			<formContext.Provider value={suppliedProps}>{render(suppliedProps)}</formContext.Provider>

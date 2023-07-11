@@ -178,23 +178,3 @@ h3 {
 .width-XL {
 	width: var(--width-XL) !important;
 }
-
-.margin-top {
-	margin-top: 1rem;
-}
-
-.margin-bottom {
-	margin-bottom: 1rem;
-}
-
-.margin-left {
-	margin-left: 1rem;
-}
-
-.margin-right {
-	margin-right: 1rem;
-}
-
-.display-block {
-	display: block;
-}

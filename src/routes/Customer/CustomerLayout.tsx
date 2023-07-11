@@ -75,16 +75,16 @@ const AccountNavigationMenu = () => {
  * Layout component for the 'Customer portal' in the application.
  */
 const Layout = () => {
+	const [authenticating, setAuthenticating] = useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		Auth.currentSession()
-			.then((user) => {
-				console.log("signed in!", user);
-			})
+		Auth.currentAuthenticatedUser()
 			.catch(() => {
-				console.log("Not signed in!");
 				navigate("/account-access");
+			})
+			.finally(() => {
+				setAuthenticating(false);
 			});
 	}, [navigate]);
 
