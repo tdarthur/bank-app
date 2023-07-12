@@ -98,7 +98,7 @@
 	flex-direction: column;
 	align-items: center;
 	text-align: center;
-	margin-top: 4rem;
+	margin: 64px 0 128px 0;
 }
 
 .actionHeader {
@@ -108,6 +108,7 @@
 .cards {
 	display: flex;
 	flex-direction: column;
+	gap: 128px;
 
 	margin-top: 4rem;
 }
@@ -131,6 +132,11 @@
 	padding: 0 4rem;
 }
 
+.card h2 {
+	color: var(--primary-color);
+	text-shadow: 0 0 64px black;
+}
+
 .card > div:first-child > *:nth-child(2) {
 	margin-bottom: 1rem;
 }
@@ -142,21 +148,6 @@
 	height: 100%;
 }
 
-.cardImage img {
-	position: absolute;
-	top: 0;
-	left: 0;
-
-	border-radius: 1000000px;
-}
-
-.cardImage img:nth-child(1) {
-	z-index: 2;
-}
-
-.cardImage img:nth-child(2) {
-	z-index: 1;
-
-	scale: 105%;
-	filter: blur(8px);
+.cardImage > img {
+	margin: 0 auto;
 }

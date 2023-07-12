@@ -4,6 +4,7 @@ import Button from "../../../components/Button";
 
 import layoutStyles from "../layout.module.css";
 import styles from "./home.module.css";
+import moneyPhoneImage from "../../../assets/money-phone.png";
 
 type CarouselPanel = {
 	header: string;
@@ -147,22 +148,22 @@ const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
 		</div>
 		<div className={styles.cardImage}>
 			<img src={image} />
-			<img src={image} />
 		</div>
 	</article>
 );
 
-const cardImages = [
-	"https://c.stocksy.com/a/oPT000/z9/113076.jpg",
-	"https://media.istockphoto.com/id/500145369/photo/confident-real-estate-agent-standing-outside-new-home-for-sale.jpg?s=612x612&w=0&k=20&c=E2vcVuL-ND1PIO2E_tcKrsinVYSOnH42Ufk37dBOHRM=",
-	"https://lccvermont.org/wp-content/uploads/2020/01/How-Do-I-Raise-Money-for-my-Business.jpg",
-];
+const cardImages = [moneyPhoneImage, moneyPhoneImage, moneyPhoneImage];
 
 const Home = () => (
 	<div className={styles.home}>
 		<Carousel />
 
 		<div className={styles.actionContainer}>
+			<div>
+				<span className="logo-text">Learn what makes us </span>
+				<span className="logo">H</span>
+				<span className="logo-text">uman</span>
+			</div>
 			<h2 className={styles.actionHeader}>Get started for free today</h2>
 			<Button text="Sign Up" variant="secondary" linkTo="/account-access?sign-up=true" />
 		</div>
