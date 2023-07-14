@@ -59,6 +59,9 @@ const SavingsAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: Saving
 	<button className={classNames("card", styles.accountCard)} onClick={openCard} data-open={isOpen}>
 		<h3>Personal Savings Account</h3>
 		<p>${accountInfo.balance}</p>
+		<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
+			<IconX />
+		</button>
 	</button>
 );
 
@@ -78,6 +81,9 @@ const CreditCardAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: Cre
 	<button className={classNames("card", styles.accountCard)} onClick={openCard} data-open={isOpen}>
 		<h3>{`Sapien Rewards Credit Card ...${accountInfo.cardNumberLast4Digits}`}</h3>
 		<p>{`$${accountInfo.balance} / $${accountInfo.creditLimit} limit`}</p>
+		<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
+			<IconX />
+		</button>
 	</button>
 );
 
