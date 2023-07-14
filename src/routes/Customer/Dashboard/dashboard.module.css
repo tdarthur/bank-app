@@ -1,3 +1,7 @@
+.mainContent {
+	width: 1080px;
+}
+
 .accountSection {
 	display: flex;
 	flex-direction: column;
@@ -8,11 +12,131 @@
 	aspect-ratio: 1;
 }
 
+.accountSection h3 {
+	width: 100%;
+}
+
 .accountCard {
+	position: relative;
+	text-align: left;
+	flex-direction: column; /* WHY IS THIS NEEDED */
+
 	width: 600px;
-	height: 300px;
+	height: 200px;
 	padding: 2rem;
 	border-radius: 8px;
 
-	background-color: white;
+	background-color: transparent;
+	color: black;
+	border: none;
+	overflow: hidden;
+
+	transition: scale 150ms ease, width 450ms ease, height 450ms ease, color 450ms linear;
+}
+
+.accountCard:focus-visible {
+	outline: 2px solid black;
+}
+
+.accountCard > * {
+	position: relative;
+	z-index: 2;
+}
+
+.accountCardBackdrop {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+
+	width: 100%;
+	height: 100%;
+
+	transition: filter 450ms linear;
+}
+
+.accountCard[data-open="true"] .accountCardBackdrop {
+	filter: brightness(50%);
+}
+
+.accountCard:not([data-open="true"]):hover {
+	scale: 1.05;
+}
+
+.accountCard[data-open="true"] {
+	width: 1080px;
+	height: 150px;
+
+	color: white;
+}
+
+.currency {
+	position: relative;
+	margin-left: 20px;
+}
+
+.currency::before {
+	content: "$";
+	position: absolute;
+	top: 0;
+	left: -20px;
+
+	font-size: 24px;
+	line-height: 24px;
+	font-weight: bold;
+}
+
+.accountCardChecking .accountCardBackdrop {
+	background: linear-gradient(
+		45deg,
+		rgba(0, 0, 0, 1) 0%,
+		rgba(129, 232, 253, 1) 49%,
+		rgba(255, 255, 255, 1) 49%,
+		rgba(129, 232, 253, 1) 53%,
+		rgba(255, 255, 255, 1) 100%
+	);
+}
+
+.accountCardHeader {
+	font-size: 20px;
+}
+
+.accountCardBalance {
+	font-size: 40px;
+	line-height: 36px;
+}
+
+.accountCardAccountType {
+	position: absolute;
+	bottom: 1.75rem;
+	right: 2rem;
+	text-align: right;
+
+	font-size: 32px;
+	font-weight: 200;
+	line-height: 32px;
+}
+
+.accountCardCloseButton {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+
+	width: 40px;
+	height: 40px;
+
+	color: currentColor;
+	opacity: 0;
+	border: none;
+	background-color: transparent;
+
+	transition: opacity 150ms linear, scale 150ms ease;
+}
+
+.accountCard[data-open="true"] .accountCardCloseButton {
+	opacity: 100%;
+}
+
+.accountCard[data-open="true"] .accountCardCloseButton:hover {
+	scale: 1.2;
 }

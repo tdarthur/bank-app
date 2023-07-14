@@ -68,11 +68,11 @@ a {
 /* App Styles */
 
 :root {
-	--primary-color-ultra-dark: hsl(190, 97%, 10%);
-	--primary-color-dark: hsl(190, 97%, 25%);
-	--primary-color: hsl(190, 97%, 60%);
-	--primary-color-light: hsl(190, 97%, 75%);
-	--primary-color-ultra-light: hsl(190, 97%, 90%);
+	--primary-color-ultra-dark: #012a32;
+	--primary-color-dark: #02697e;
+	--primary-color: #36dbfc;
+	--primary-color-light: #81e8fd;
+	--primary-color-ultra-light: #cdf6fe;
 	--text-color: #3c3c3c;
 	--text-color-soft: #6c6c6c;
 	--color-info: #1bb5e0;

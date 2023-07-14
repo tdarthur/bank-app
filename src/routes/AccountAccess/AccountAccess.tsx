@@ -335,12 +335,9 @@ const AccountAccess = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		Auth.currentAuthenticatedUser()
+		Auth.currentSession()
 			.then(() => {
 				navigate("/customer/dashboard");
-			})
-			.catch(() => {
-				return;
 			})
 			.finally(() => {
 				setAuthenticating(false);

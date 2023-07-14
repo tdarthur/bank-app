@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Auth } from "aws-amplify";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { CognitoUserSession } from "amazon-cognito-identity-js";
 
 import Button from "../../components/Button";
 
 import styles from "./customerLayout.module.css";
+import sessionContext from "../../contexts/sessionContext";
 
 const AccountNavigationMenu = () => {
 	const [displayMenu, setDisplayMenu] = useState(false);
@@ -52,10 +54,10 @@ const AccountNavigationMenu = () => {
 			>
 				<ul ref={navigationListRef}>
 					<li>
-						<Button text="Account Settings" />
+						<Button text="Account Settings" tabIndex={displayMenu ? 0 : -1} />
 					</li>
 					<li>
-						<Button text="Security" />
+						<Button text="Security" tabIndex={displayMenu ? 0 : -1} />
 					</li>
 					<li>
 						<Button
@@ -63,6 +65,7 @@ const AccountNavigationMenu = () => {
 							onClick={() => {
 								signOut();
 							}}
+							tabIndex={displayMenu ? 0 : -1}
 						/>
 					</li>
 				</ul>
@@ -76,10 +79,12 @@ const AccountNavigationMenu = () => {
  */
 const Layout = () => {
 	const [authenticating, setAuthenticating] = useState(false);
+	const [currentSession, setCurrentSession] = useState<CognitoUserSession | null>(null);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		Auth.currentAuthenticatedUser()
+		Auth.currentSession()
+			.then((session) => setCurrentSession(session))
 			.catch(() => {
 				navigate("/account-access");
 			})
@@ -91,21 +96,23 @@ const Layout = () => {
 	if (authenticating) return <></>;
 
 	return (
-		<div className={styles.layoutWrapper}>
-			<header className={styles.header}>
-				<Link to="/">
-					<span className="logo">H</span>
-					<span className="logo-text">uman Bank</span>
-				</Link>
-				<AccountNavigationMenu />
-			</header>
-			<main className={styles.main}>
-				<Outlet />
-			</main>
-			<footer className={styles.footer}>
-				<p className="text-disclosure">This is footer text.</p>
-			</footer>
-		</div>
+		<sessionContext.Provider value={currentSession}>
+			<div className={styles.layoutWrapper}>
+				<header className={styles.header}>
+					<Link to="/">
+						<span className="logo">H</span>
+						<span className="logo-text">uman Bank</span>
+					</Link>
+					<AccountNavigationMenu />
+				</header>
+				<main className={styles.main}>
+					<Outlet />
+				</main>
+				<footer className={styles.footer}>
+					<p className="text-disclosure">This is footer text.</p>
+				</footer>
+			</div>
+		</sessionContext.Provider>
 	);
 };
 
