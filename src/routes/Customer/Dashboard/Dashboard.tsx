@@ -29,20 +29,25 @@ type CheckingAccountCardProps = CardProps & {
 };
 
 const CheckingAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: CheckingAccountCardProps) => (
-	<button
-		className={classNames("card", styles.accountCard, styles.accountCardChecking)}
-		onClick={openCard}
-		data-open={isOpen}
-		disabled={isOpen}
-	>
-		<div className={styles.accountCardBackdrop} />
-		<h3 className={styles.accountCardHeader}>Account Balance</h3>
-		<p className={classNames(styles.accountCardBalance, styles.currency)}>{accountInfo.balance}</p>
-		<p className={styles.accountCardAccountType}>Gamer Checking</p>
-		<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
-			<IconX />
+	<div>
+		<button
+			className={classNames("card", styles.accountCard, styles.accountCardChecking)}
+			onClick={openCard}
+			data-open={isOpen}
+			disabled={isOpen}
+		>
+			<div className={styles.accountCardBackdrop} />
+			<h3 className={styles.accountCardHeader}>Account Balance</h3>
+			<p className={classNames(styles.accountCardBalance, styles.currency)}>{accountInfo.balance}</p>
+			<p className={styles.accountCardAccountType}>Gamer Checking</p>
+			<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
+				<IconX />
+			</button>
 		</button>
-	</button>
+		<div className={classNames("card", styles.accountDetailsSection)} data-open={isOpen}>
+			<p>Hey</p>
+		</div>
+	</div>
 );
 
 type SavingsAccountInfo = {
@@ -56,13 +61,22 @@ type SavingsAccountCardProps = CardProps & {
 };
 
 const SavingsAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: SavingsAccountCardProps) => (
-	<button className={classNames("card", styles.accountCard)} onClick={openCard} data-open={isOpen}>
-		<h3>Personal Savings Account</h3>
-		<p>${accountInfo.balance}</p>
-		<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
-			<IconX />
+	<div>
+		<button
+			className={classNames("card", styles.accountCard, styles.accountCardSavings)}
+			onClick={openCard}
+			data-open={isOpen}
+			disabled={isOpen}
+		>
+			<div className={styles.accountCardBackdrop} />
+			<h3 className={styles.accountCardHeader}>Account Balance</h3>
+			<p className={classNames(styles.accountCardBalance, styles.currency)}>{accountInfo.balance}</p>
+			<p className={styles.accountCardAccountType}>Personal Savings</p>
+			<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
+				<IconX />
+			</button>
 		</button>
-	</button>
+	</div>
 );
 
 type CreditCardAccountInfo = {
@@ -78,13 +92,26 @@ type CreditCardAccountCardProps = CardProps & {
 };
 
 const CreditCardAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: CreditCardAccountCardProps) => (
-	<button className={classNames("card", styles.accountCard)} onClick={openCard} data-open={isOpen}>
-		<h3>{`Sapien Rewards Credit Card ...${accountInfo.cardNumberLast4Digits}`}</h3>
-		<p>{`$${accountInfo.balance} / $${accountInfo.creditLimit} limit`}</p>
-		<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
-			<IconX />
+	<div>
+		<button
+			className={classNames("card", styles.accountCard, styles.accountCardCredit)}
+			onClick={openCard}
+			data-open={isOpen}
+			disabled={isOpen}
+		>
+			<div className={styles.accountCardBackdrop} />
+			<h3 className={styles.accountCardHeader}>Account Balance</h3>
+			<p className={classNames(styles.accountCardBalance, styles.currency)}>
+				{accountInfo.balance} / {accountInfo.creditLimit} limit
+			</p>
+			<p className={styles.accountCardAccountType}>Sapien Rewards Credit Card</p>
+
+			{/* <h3>{`ending in ${accountInfo.cardNumberLast4Digits}`}</h3> */}
+			<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
+				<IconX />
+			</button>
 		</button>
-	</button>
+	</div>
 );
 
 const Dashboard = () => {

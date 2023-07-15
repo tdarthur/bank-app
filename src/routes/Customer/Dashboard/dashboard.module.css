@@ -27,11 +27,12 @@
 	border-radius: 8px;
 
 	background-color: transparent;
-	color: black;
 	border: none;
 	overflow: hidden;
 
-	transition: scale 150ms ease, width 450ms ease, height 450ms ease, color 450ms linear;
+	transition: scale 150ms ease, width 450ms ease, height 450ms ease, color 450ms linear,
+		border-bottom-left-radius 450ms linear, border-bottom-right-radius 450ms linear;
+	transition-delay: 450ms;
 }
 
 .accountCard:focus-visible {
@@ -43,24 +44,9 @@
 	z-index: 2;
 }
 
-.accountCardBackdrop {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1;
-
-	width: 100%;
-	height: 100%;
-
-	transition: filter 450ms linear;
-}
-
-.accountCard[data-open="true"] .accountCardBackdrop {
-	filter: brightness(50%);
-}
-
 .accountCard:not([data-open="true"]):hover {
 	scale: 1.05;
+	transition-delay: 0ms;
 }
 
 .accountCard[data-open="true"] {
@@ -68,32 +54,77 @@
 	height: 150px;
 
 	color: white;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+
+	transition-delay: 0ms;
+}
+
+.accountCardBackdrop {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+
+	width: 1080px;
+	height: 1080px;
+
+	transform: translateX(-540px) translateY(-540px);
+
+	transition: filter 450ms linear;
+	transition-delay: 450ms;
+}
+
+.accountCard[data-open="true"] .accountCardBackdrop {
+	filter: brightness(50%);
+	transition-delay: 0ms;
 }
 
 .currency {
 	position: relative;
-	margin-left: 20px;
+	margin-left: 16px;
 }
 
 .currency::before {
 	content: "$";
 	position: absolute;
-	top: 0;
-	left: -20px;
+	top: 2px;
+	left: -16px;
 
 	font-size: 24px;
 	line-height: 24px;
-	font-weight: bold;
 }
 
 .accountCardChecking .accountCardBackdrop {
 	background: linear-gradient(
 		45deg,
-		rgba(0, 0, 0, 1) 0%,
+		rgba(0, 0, 0, 1) 20%,
+		rgb(199, 199, 199) 49%,
+		rgba(255, 255, 255, 1) 49%,
+		rgb(209, 209, 209) 53%,
+		rgb(0, 0, 0) 80%
+	);
+}
+
+.accountCardSavings .accountCardBackdrop {
+	background: linear-gradient(
+		45deg,
+		rgb(255, 255, 255) 20%,
+		rgb(128, 128, 128) 49%,
+		rgb(65, 65, 65) 49%,
+		rgb(109, 109, 109) 53%,
+		rgb(255, 255, 255) 80%
+	);
+}
+
+.accountCardCredit .accountCardBackdrop {
+	background: linear-gradient(
+		45deg,
+		rgba(0, 0, 0, 1) 20%,
 		rgba(129, 232, 253, 1) 49%,
 		rgba(255, 255, 255, 1) 49%,
 		rgba(129, 232, 253, 1) 53%,
-		rgba(255, 255, 255, 1) 100%
+		rgba(255, 255, 255, 1) 80%
 	);
 }
 
@@ -139,4 +170,27 @@
 
 .accountCard[data-open="true"] .accountCardCloseButton:hover {
 	scale: 1.2;
+}
+
+.accountDetailsSection {
+	width: 100%;
+	height: 0;
+
+	overflow: hidden;
+
+	/* background-color: var(--primary-color-ultra-dark); */
+	background-color: white;
+
+	transition: height 450ms ease-out, border-top 0ms linear;
+	transition-delay: 0;
+}
+
+.accountDetailsSection[data-open="true"] {
+	height: 800px;
+
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top: 4px solid white;
+
+	transition-delay: 450ms;
 }
