@@ -11,14 +11,12 @@ import Form from "../../components/Form";
 import MessageContainer from "../../components/MessageContainer";
 
 type SignUpInfo = {
-	firstName: string;
-	lastName: string;
+	fullName: string;
 	email: string;
 };
 
 const fieldNames = {
-	firstName: "first-name",
-	lastName: "last-name",
+	fullName: "full-name",
 	email: "email",
 	password: "password",
 	passwordConfirmation: "password-confirmation",
@@ -33,7 +31,7 @@ const passwordSpecialCharacterRegex = /[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`+= ]/;
 
 const SignUpForm = () => {
 	const [signUpStep, setSignUpStep] = useState<1 | 2 | 3>(1);
-	const [signUpInfo, setSignUpInfo] = useState<SignUpInfo>({ firstName: "", lastName: "", email: "" });
+	const [signUpInfo, setSignUpInfo] = useState<SignUpInfo>({ fullName: "", email: "" });
 	const [passwordLongEnough, setPasswordLongEnough] = useState(false);
 	const [passwordContainsNumber, setPasswordContainsNumber] = useState(false);
 	const [passwordContainsSpecialCharacter, setPasswordContainsSpecialCharacter] = useState(false);
@@ -66,9 +64,10 @@ const SignUpForm = () => {
 						[fieldNames.email]: (value) => (emailValidationRegex.test(value) ? null : "Invalid email"),
 					}}
 					onSubmit={async ({ values }) => {
-						const { [fieldNames.firstName]: firstName, [fieldNames.lastName]: lastName, email } = values;
+						const { [fieldNames.fullName]: fullName, email } = values;
 
-						setSignUpInfo({ firstName, lastName, email });
+						console.log(fullName);
+						setSignUpInfo({ fullName, email });
 						setSignUpStep(2);
 					}}
 					render={({ messages }) => (
@@ -76,10 +75,7 @@ const SignUpForm = () => {
 							<MessageContainer messages={messages} className={styles.messageContainer} />
 
 							<fieldset>
-								<div className="form-line">
-									<TextInput name={fieldNames.firstName} label="First Name" autoFocus required />
-									<TextInput name={fieldNames.lastName} label="Last Name" required />
-								</div>
+								<TextInput name={fieldNames.fullName} label="Full Name" width="L" autoFocus required />
 								<TextInput name={fieldNames.email} label="Email" width="L" required />
 							</fieldset>
 
@@ -338,6 +334,9 @@ const AccountAccess = () => {
 		Auth.currentSession()
 			.then(() => {
 				navigate("/customer/dashboard");
+			})
+			.catch(() => {
+				console.log("No active session");
 			})
 			.finally(() => {
 				setAuthenticating(false);
