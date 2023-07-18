@@ -4,11 +4,12 @@ import styles from "./dashboard.module.css";
 import { useContext, useEffect, useState } from "react";
 import sessionContext from "../../../contexts/sessionContext";
 import IconX from "../../../components/IconX";
+import { Link } from "react-router-dom";
 
 const welcomeMessages: string[] = [
 	"Welcome back _name_! Here's a look at your accounts.",
 	"Good evening _name_! Here are your accounts.",
-	"Fancy to see you here _name_. I've got your accounts here for you.",
+	"Fancy to see you here _name_. I've got your accounts ready for you.",
 ];
 
 type CardProps = {
@@ -17,10 +18,14 @@ type CardProps = {
 	closeCard: () => void;
 };
 
+type Transaction = {
+	amount: number;
+};
+
 type CheckingAccountInfo = {
 	balance: number;
 	cardNumberLast4Digits: string;
-	transactions: unknown[];
+	transactions: Transaction[];
 	accountId: string;
 };
 
@@ -28,8 +33,20 @@ type CheckingAccountCardProps = CardProps & {
 	accountInfo: CheckingAccountInfo;
 };
 
+type TransactionContainerProps = {
+	transactions: Transaction[];
+};
+
+const TransactionContainer = ({ transactions }: TransactionContainerProps) => (
+	<div className={styles.transactionContainer}>
+		{transactions.map((transaction) => (
+			<div>{transaction.amount}</div>
+		))}
+	</div>
+);
+
 const CheckingAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: CheckingAccountCardProps) => (
-	<div>
+	<div className={styles.accountContainer}>
 		<button
 			className={classNames("card", styles.accountCard, styles.accountCardChecking)}
 			onClick={openCard}
@@ -45,14 +62,17 @@ const CheckingAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: Check
 			</button>
 		</button>
 		<div className={classNames("card", styles.accountDetailsSection)} data-open={isOpen}>
-			<p>Hey</p>
+			<div>
+				<Link to="#"></Link>
+			</div>
+			<TransactionContainer transactions={accountInfo.transactions} />
 		</div>
 	</div>
 );
 
 type SavingsAccountInfo = {
 	balance: number;
-	activity: unknown[];
+	transactions: Transaction[];
 	accountId: string;
 };
 
@@ -61,7 +81,7 @@ type SavingsAccountCardProps = CardProps & {
 };
 
 const SavingsAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: SavingsAccountCardProps) => (
-	<div>
+	<div className={styles.accountContainer}>
 		<button
 			className={classNames("card", styles.accountCard, styles.accountCardSavings)}
 			onClick={openCard}
@@ -76,6 +96,12 @@ const SavingsAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: Saving
 				<IconX />
 			</button>
 		</button>
+		<div className={classNames("card", styles.accountDetailsSection)} data-open={isOpen}>
+			<div>
+				<Link to="#"></Link>
+			</div>
+			<TransactionContainer transactions={accountInfo.transactions} />
+		</div>
 	</div>
 );
 
@@ -83,7 +109,7 @@ type CreditCardAccountInfo = {
 	balance: number;
 	creditLimit: number;
 	cardNumberLast4Digits: string;
-	activity: unknown[];
+	transactions: Transaction[];
 	accountId: string;
 };
 
@@ -92,7 +118,7 @@ type CreditCardAccountCardProps = CardProps & {
 };
 
 const CreditCardAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: CreditCardAccountCardProps) => (
-	<div>
+	<div className={styles.accountContainer}>
 		<button
 			className={classNames("card", styles.accountCard, styles.accountCardCredit)}
 			onClick={openCard}
@@ -101,8 +127,9 @@ const CreditCardAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: Cre
 		>
 			<div className={styles.accountCardBackdrop} />
 			<h3 className={styles.accountCardHeader}>Account Balance</h3>
-			<p className={classNames(styles.accountCardBalance, styles.currency)}>
-				{accountInfo.balance} / {accountInfo.creditLimit} limit
+			<p className={styles.accountCardBalance}>
+				<span className={styles.currency}>{accountInfo.balance}</span> /{" "}
+				<span className={styles.currency}>{accountInfo.creditLimit}</span> limit
 			</p>
 			<p className={styles.accountCardAccountType}>Sapien Rewards Credit Card</p>
 
@@ -111,6 +138,12 @@ const CreditCardAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: Cre
 				<IconX />
 			</button>
 		</button>
+		<div className={classNames("card", styles.accountDetailsSection)} data-open={isOpen}>
+			<div>
+				<Link to="#"></Link>
+			</div>
+			<TransactionContainer transactions={accountInfo.transactions} />
+		</div>
 	</div>
 );
 
@@ -138,16 +171,16 @@ const Dashboard = () => {
 		transactions: [],
 		accountId: "1",
 	};
-	const savingsAccount: SavingsAccountInfo = { balance: 6543, activity: [], accountId: "2" };
+	const savingsAccount: SavingsAccountInfo = { balance: 6543, transactions: [], accountId: "2" };
 	const creditCardAccounts: CreditCardAccountInfo[] = [
-		{ balance: 21, creditLimit: 10000, cardNumberLast4Digits: "5678", activity: [], accountId: "3" },
+		{ balance: 21, creditLimit: 10000, cardNumberLast4Digits: "5678", transactions: [], accountId: "3" },
 	];
 
 	return (
 		<>
 			<div className={styles.mainContent}>
 				<section className={styles.accountSection}>
-					<h3>{welcomeMessage}</h3>
+					<h3 className={styles.welcomeMessage}>{welcomeMessage}</h3>
 					<CheckingAccountCard
 						isOpen={openAccount === checkingAccount.accountId}
 						openCard={() => {

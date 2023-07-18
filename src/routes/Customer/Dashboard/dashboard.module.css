@@ -1,3 +1,18 @@
+.currency {
+	position: relative;
+	margin-left: 16px;
+}
+
+.currency::before {
+	content: "$";
+	position: absolute;
+	top: 2px;
+	left: -16px;
+
+	font-size: 24px;
+	line-height: 24px;
+}
+
 .mainContent {
 	width: 1080px;
 }
@@ -16,6 +31,52 @@
 	width: 100%;
 }
 
+.accountContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+@keyframes open-account-card {
+	from {
+		width: 600px;
+		height: 200px;
+
+		color: var(--text-color);
+		border-bottom-left-radius: 8px;
+		border-bottom-right-radius: 8px;
+	}
+
+	to {
+		width: 1080px;
+		height: 150px;
+
+		color: white;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+}
+
+@keyframes close-account-card {
+	from {
+		width: 1080px;
+		height: 150px;
+
+		color: white;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	to {
+		width: 600px;
+		height: 200px;
+
+		color: var(--text-color);
+		border-bottom-left-radius: 8px;
+		border-bottom-right-radius: 8px;
+	}
+}
+
 .accountCard {
 	position: relative;
 	text-align: left;
@@ -30,34 +91,25 @@
 	border: none;
 	overflow: hidden;
 
-	transition: scale 150ms ease, width 450ms ease, height 450ms ease, color 450ms linear,
-		border-bottom-left-radius 450ms linear, border-bottom-right-radius 450ms linear;
-	transition-delay: 450ms;
+	transition: scale 150ms ease;
+	animation: close-account-card 450ms ease-in-out both 450ms;
 }
 
 .accountCard:focus-visible {
 	outline: 2px solid black;
 }
 
-.accountCard > * {
-	position: relative;
-	z-index: 2;
-}
-
 .accountCard:not([data-open="true"]):hover {
 	scale: 1.05;
-	transition-delay: 0ms;
 }
 
 .accountCard[data-open="true"] {
-	width: 1080px;
-	height: 150px;
+	animation: open-account-card 450ms ease-in-out both;
+}
 
-	color: white;
-	border-bottom-left-radius: 0;
-	border-bottom-right-radius: 0;
-
-	transition-delay: 0ms;
+.accountCard > * {
+	position: relative;
+	z-index: 2;
 }
 
 .accountCardBackdrop {
@@ -75,24 +127,9 @@
 	transition-delay: 450ms;
 }
 
-.accountCard[data-open="true"] .accountCardBackdrop {
+[data-open="true"] .accountCardBackdrop {
 	filter: brightness(50%);
 	transition-delay: 0ms;
-}
-
-.currency {
-	position: relative;
-	margin-left: 16px;
-}
-
-.currency::before {
-	content: "$";
-	position: absolute;
-	top: 2px;
-	left: -16px;
-
-	font-size: 24px;
-	line-height: 24px;
 }
 
 .accountCardChecking .accountCardBackdrop {
@@ -164,21 +201,21 @@
 	transition: opacity 150ms linear, scale 150ms ease;
 }
 
-.accountCard[data-open="true"] .accountCardCloseButton {
+[data-open="true"] .accountCardCloseButton {
 	opacity: 100%;
 }
 
-.accountCard[data-open="true"] .accountCardCloseButton:hover {
+[data-open="true"] .accountCardCloseButton:hover {
 	scale: 1.2;
 }
 
 .accountDetailsSection {
-	width: 100%;
-	height: 0;
-
+	display: grid;
 	overflow: hidden;
 
-	/* background-color: var(--primary-color-ultra-dark); */
+	width: 1080px;
+	height: 0;
+
 	background-color: white;
 
 	transition: height 450ms ease-out, border-top 0ms linear;

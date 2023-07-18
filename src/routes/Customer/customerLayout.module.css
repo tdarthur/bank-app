@@ -78,7 +78,7 @@
 }
 
 .accountNavigationMenu button:hover:not(:disabled) {
-	background-color: #0000001a;
+	background-color: #eeeeee;
 }
 
 .main {
