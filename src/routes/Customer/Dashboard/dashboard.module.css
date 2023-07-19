@@ -6,7 +6,6 @@
 .currency::before {
 	content: "$";
 	position: absolute;
-	top: 2px;
 	left: -16px;
 
 	font-size: 24px;
@@ -47,6 +46,7 @@
 		border-bottom-right-radius: 8px;
 	}
 
+	50%,
 	to {
 		width: 1080px;
 		height: 150px;
@@ -58,7 +58,8 @@
 }
 
 @keyframes close-account-card {
-	from {
+	from,
+	50% {
 		width: 1080px;
 		height: 150px;
 
@@ -92,19 +93,19 @@
 	overflow: hidden;
 
 	transition: scale 150ms ease;
-	animation: close-account-card 450ms ease-in-out both 450ms;
+	animation: close-account-card 600ms ease-in-out both;
 }
 
 .accountCard:focus-visible {
 	outline: 2px solid black;
 }
 
-.accountCard:not([data-open="true"]):hover {
+.accountCard:not([data-open="true"]):not(:disabled):hover {
 	scale: 1.05;
 }
 
 .accountCard[data-open="true"] {
-	animation: open-account-card 450ms ease-in-out both;
+	animation: open-account-card 600ms ease-in-out both;
 }
 
 .accountCard > * {
@@ -123,8 +124,8 @@
 
 	transform: translateX(-540px) translateY(-540px);
 
-	transition: filter 450ms linear;
-	transition-delay: 450ms;
+	transition: filter 300ms linear;
+	transition-delay: 300ms;
 }
 
 [data-open="true"] .accountCardBackdrop {
@@ -198,11 +199,12 @@
 	border: none;
 	background-color: transparent;
 
-	transition: opacity 150ms linear, scale 150ms ease;
+	transition: opacity 150ms linear 0ms, scale 150ms ease;
 }
 
 [data-open="true"] .accountCardCloseButton {
 	opacity: 100%;
+	transition: opacity 150ms linear 750ms;
 }
 
 [data-open="true"] .accountCardCloseButton:hover {
@@ -229,5 +231,5 @@
 	border-bottom-right-radius: 8px;
 	border-top: 4px solid white;
 
-	transition-delay: 450ms;
+	transition-delay: 300ms;
 }

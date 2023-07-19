@@ -80,6 +80,7 @@ const AccountNavigationMenu = () => {
 const Layout = () => {
 	const [authenticating, setAuthenticating] = useState(false);
 	const [currentSession, setCurrentSession] = useState<CognitoUserSession | null>(null);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {

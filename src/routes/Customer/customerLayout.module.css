@@ -66,11 +66,12 @@
 }
 
 .accountNavigationMenu button {
+	justify-content: right;
+
 	width: 100%;
 	height: 100%;
 	padding: 0 8px;
 	border-radius: 0;
-	justify-content: right;
 
 	color: var(--text-color);
 	background-color: white;
@@ -78,7 +79,7 @@
 }
 
 .accountNavigationMenu button:hover:not(:disabled) {
-	background-color: #eeeeee;
+	background-color: #cccccc;
 }
 
 .main {

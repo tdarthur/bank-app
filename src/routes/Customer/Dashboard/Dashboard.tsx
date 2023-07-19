@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
 import styles from "./dashboard.module.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import sessionContext from "../../../contexts/sessionContext";
 import IconX from "../../../components/IconX";
 import { Link } from "react-router-dom";
@@ -11,27 +11,6 @@ const welcomeMessages: string[] = [
 	"Good evening _name_! Here are your accounts.",
 	"Fancy to see you here _name_. I've got your accounts ready for you.",
 ];
-
-type CardProps = {
-	isOpen: boolean;
-	openCard: () => void;
-	closeCard: () => void;
-};
-
-type Transaction = {
-	amount: number;
-};
-
-type CheckingAccountInfo = {
-	balance: number;
-	cardNumberLast4Digits: string;
-	transactions: Transaction[];
-	accountId: string;
-};
-
-type CheckingAccountCardProps = CardProps & {
-	accountInfo: CheckingAccountInfo;
-};
 
 type TransactionContainerProps = {
 	transactions: Transaction[];
@@ -45,18 +24,57 @@ const TransactionContainer = ({ transactions }: TransactionContainerProps) => (
 	</div>
 );
 
-const CheckingAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: CheckingAccountCardProps) => (
+type AccountCardProps = {
+	type: "checking" | "savings" | "credit";
+	accountBalance: React.ReactNode;
+	accountName: string;
+	isOpen: boolean;
+	isAnimating: boolean;
+	openCard: () => void;
+	closeCard: () => void;
+	pushAnimation: () => void;
+	popAnimation: () => void;
+};
+
+const AccountCard = ({
+	type,
+	accountBalance,
+	accountName,
+	isOpen,
+	isAnimating,
+	openCard,
+	closeCard,
+	pushAnimation,
+	popAnimation,
+}: AccountCardProps) => (
 	<div className={styles.accountContainer}>
 		<button
-			className={classNames("card", styles.accountCard, styles.accountCardChecking)}
-			onClick={openCard}
+			className={classNames(
+				"card",
+				styles.accountCard,
+				styles.accountCardChecking,
+				type === "checking" && styles.accountCardChecking,
+				type === "savings" && styles.accountCardSavings,
+				type === "credit" && styles.accountCardCredit,
+			)}
+			onClick={() => {
+				if (!isAnimating) openCard();
+			}}
+			onAnimationStart={() => {
+				console.log("starting animation");
+				pushAnimation();
+			}}
+			onAnimationEnd={() => {
+				console.log("ending animation");
+				popAnimation();
+			}}
+			disabled={isOpen || isAnimating}
 			data-open={isOpen}
-			disabled={isOpen}
 		>
 			<div className={styles.accountCardBackdrop} />
 			<h3 className={styles.accountCardHeader}>Account Balance</h3>
-			<p className={classNames(styles.accountCardBalance, styles.currency)}>{accountInfo.balance}</p>
-			<p className={styles.accountCardAccountType}>Gamer Checking</p>
+			{accountBalance}
+			<p className={styles.accountCardAccountType}>{accountName}</p>
 			<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
 				<IconX />
 			</button>
@@ -65,9 +83,35 @@ const CheckingAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: Check
 			<div>
 				<Link to="#"></Link>
 			</div>
-			<TransactionContainer transactions={accountInfo.transactions} />
+			{/* <TransactionContainer transactions={accountInfo.transactions} /> */}
 		</div>
 	</div>
+);
+
+type SpecificAccountProps = Omit<AccountCardProps, "type" | "accountBalance" | "accountName">;
+
+type Transaction = {
+	amount: number;
+};
+
+type CheckingAccountInfo = {
+	balance: number;
+	cardNumberLast4Digits: string;
+	transactions: Transaction[];
+	accountId: string;
+};
+
+type CheckingAccountCardProps = {
+	accountInfo: CheckingAccountInfo;
+} & SpecificAccountProps;
+
+const CheckingAccountCard = ({ accountInfo, ...accountCardProps }: CheckingAccountCardProps) => (
+	<AccountCard
+		type="checking"
+		accountBalance={<p className={classNames(styles.accountCardBalance, styles.currency)}>{accountInfo.balance}</p>}
+		accountName="Gamer Checking"
+		{...accountCardProps}
+	/>
 );
 
 type SavingsAccountInfo = {
@@ -76,33 +120,17 @@ type SavingsAccountInfo = {
 	accountId: string;
 };
 
-type SavingsAccountCardProps = CardProps & {
+type SavingsAccountCardProps = {
 	accountInfo: SavingsAccountInfo;
-};
+} & SpecificAccountProps;
 
-const SavingsAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: SavingsAccountCardProps) => (
-	<div className={styles.accountContainer}>
-		<button
-			className={classNames("card", styles.accountCard, styles.accountCardSavings)}
-			onClick={openCard}
-			data-open={isOpen}
-			disabled={isOpen}
-		>
-			<div className={styles.accountCardBackdrop} />
-			<h3 className={styles.accountCardHeader}>Account Balance</h3>
-			<p className={classNames(styles.accountCardBalance, styles.currency)}>{accountInfo.balance}</p>
-			<p className={styles.accountCardAccountType}>Personal Savings</p>
-			<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
-				<IconX />
-			</button>
-		</button>
-		<div className={classNames("card", styles.accountDetailsSection)} data-open={isOpen}>
-			<div>
-				<Link to="#"></Link>
-			</div>
-			<TransactionContainer transactions={accountInfo.transactions} />
-		</div>
-	</div>
+const SavingsAccountCard = ({ accountInfo, ...accountCardProps }: SavingsAccountCardProps) => (
+	<AccountCard
+		type="savings"
+		accountBalance={<p className={classNames(styles.accountCardBalance, styles.currency)}>{accountInfo.balance}</p>}
+		accountName="Savings"
+		{...accountCardProps}
+	/>
 );
 
 type CreditCardAccountInfo = {
@@ -113,43 +141,30 @@ type CreditCardAccountInfo = {
 	accountId: string;
 };
 
-type CreditCardAccountCardProps = CardProps & {
+type CreditCardAccountCardProps = {
 	accountInfo: CreditCardAccountInfo;
-};
+} & SpecificAccountProps;
 
-const CreditCardAccountCard = ({ isOpen, openCard, closeCard, accountInfo }: CreditCardAccountCardProps) => (
-	<div className={styles.accountContainer}>
-		<button
-			className={classNames("card", styles.accountCard, styles.accountCardCredit)}
-			onClick={openCard}
-			data-open={isOpen}
-			disabled={isOpen}
-		>
-			<div className={styles.accountCardBackdrop} />
-			<h3 className={styles.accountCardHeader}>Account Balance</h3>
+const CreditCardAccountCard = ({ accountInfo, ...accountCardProps }: CreditCardAccountCardProps) => (
+	<AccountCard
+		type="credit"
+		accountBalance={
 			<p className={styles.accountCardBalance}>
 				<span className={styles.currency}>{accountInfo.balance}</span> /{" "}
 				<span className={styles.currency}>{accountInfo.creditLimit}</span> limit
 			</p>
-			<p className={styles.accountCardAccountType}>Sapien Rewards Credit Card</p>
-
-			{/* <h3>{`ending in ${accountInfo.cardNumberLast4Digits}`}</h3> */}
-			<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
-				<IconX />
-			</button>
-		</button>
-		<div className={classNames("card", styles.accountDetailsSection)} data-open={isOpen}>
-			<div>
-				<Link to="#"></Link>
-			</div>
-			<TransactionContainer transactions={accountInfo.transactions} />
-		</div>
-	</div>
+		}
+		accountName="Sapien Rewards Credit Card"
+		{...accountCardProps}
+	/>
 );
+
+const animationReducer = (animationCount: number, increment: -1 | 1) => animationCount + increment;
 
 const Dashboard = () => {
 	const [welcomeMessage, setWelcomeMessage] = useState<string>();
 	const [openAccount, setOpenAccount] = useState<string>();
+	const [animationCount, dispatchAnimationUpdate] = useReducer(animationReducer, 0);
 
 	const session = useContext(sessionContext);
 	useEffect(() => {
@@ -176,6 +191,11 @@ const Dashboard = () => {
 		{ balance: 21, creditLimit: 10000, cardNumberLast4Digits: "5678", transactions: [], accountId: "3" },
 	];
 
+	const pushAnimation = () => dispatchAnimationUpdate(1);
+	const popAnimation = () => dispatchAnimationUpdate(-1);
+
+	console.log(animationCount);
+
 	return (
 		<>
 			<div className={styles.mainContent}>
@@ -183,6 +203,7 @@ const Dashboard = () => {
 					<h3 className={styles.welcomeMessage}>{welcomeMessage}</h3>
 					<CheckingAccountCard
 						isOpen={openAccount === checkingAccount.accountId}
+						isAnimating={animationCount > 0}
 						openCard={() => {
 							if (openAccount !== checkingAccount.accountId) {
 								setOpenAccount(checkingAccount.accountId);
@@ -190,9 +211,13 @@ const Dashboard = () => {
 						}}
 						closeCard={() => setOpenAccount("")}
 						accountInfo={checkingAccount}
+						pushAnimation={pushAnimation}
+						popAnimation={popAnimation}
 					/>
+
 					<SavingsAccountCard
 						isOpen={openAccount === savingsAccount.accountId}
+						isAnimating={animationCount > 0}
 						openCard={() => {
 							if (openAccount !== savingsAccount.accountId) {
 								setOpenAccount(savingsAccount.accountId);
@@ -200,10 +225,14 @@ const Dashboard = () => {
 						}}
 						closeCard={() => setOpenAccount(undefined)}
 						accountInfo={savingsAccount}
+						pushAnimation={pushAnimation}
+						popAnimation={popAnimation}
 					/>
+
 					{creditCardAccounts.map((creditCardAccount) => (
 						<CreditCardAccountCard
 							isOpen={openAccount === creditCardAccount.accountId}
+							isAnimating={animationCount > 0}
 							openCard={() => {
 								if (openAccount !== creditCardAccount.accountId) {
 									setOpenAccount(creditCardAccount.accountId);
@@ -212,6 +241,8 @@ const Dashboard = () => {
 							closeCard={() => setOpenAccount(undefined)}
 							accountInfo={creditCardAccount}
 							key={creditCardAccount.accountId}
+							pushAnimation={pushAnimation}
+							popAnimation={popAnimation}
 						/>
 					))}
 				</section>
