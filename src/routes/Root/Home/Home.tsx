@@ -5,6 +5,7 @@ import Button from "../../../components/Button";
 import layoutStyles from "../layout.module.css";
 import styles from "./home.module.css";
 import moneyPhoneImage from "../../../assets/money-phone.png";
+import cashbackCardImage from "../../../assets/cashback-card.png";
 
 type CarouselPanel = {
 	header: string;
@@ -152,7 +153,7 @@ const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
 	</article>
 );
 
-const cardImages = [moneyPhoneImage, moneyPhoneImage, moneyPhoneImage];
+const cardImages = [moneyPhoneImage, cashbackCardImage, moneyPhoneImage];
 
 const Home = () => (
 	<div className={styles.home}>
