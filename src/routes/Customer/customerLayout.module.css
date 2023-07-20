@@ -91,3 +91,40 @@
 	display: flex;
 	justify-content: center;
 }
+
+@keyframes hideLoadingOverlay {
+	50% {
+		transform: translateY(128px);
+	}
+
+	60% {
+		color: transparent;
+	}
+
+	to {
+		transform: translateY(-8000px);
+		display: none;
+	}
+}
+
+.loadingOverlay {
+	position: fixed;
+	top: -128px;
+	left: 0;
+	z-index: 1000;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 16px;
+	padding-top: 128px;
+
+	width: 100vw;
+	height: calc(100vh + 128px);
+	background-color: white;
+}
+
+.loadingOverlay[data-ready] {
+	animation: hideLoadingOverlay 1s cubic-bezier(0.8, 0.04, 0.38, 0.81) forwards;
+}

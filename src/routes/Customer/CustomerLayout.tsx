@@ -4,9 +4,19 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { CognitoUserSession } from "amazon-cognito-identity-js";
 
 import Button from "../../components/Button";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import sessionContext from "../../contexts/sessionContext";
 
 import styles from "./customerLayout.module.css";
-import sessionContext from "../../contexts/sessionContext";
+
+const LoadingOverlay = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => {
+	return (
+		<div className={styles.loadingOverlay} {...props}>
+			<LoadingSpinner width={64} height={64} />
+			<h3>Getting your accounts ready</h3>
+		</div>
+	);
+};
 
 const AccountNavigationMenu = () => {
 	const [displayMenu, setDisplayMenu] = useState(false);
@@ -78,26 +88,30 @@ const AccountNavigationMenu = () => {
  * Layout component for the 'Customer portal' in the application.
  */
 const Layout = () => {
-	const [authenticating, setAuthenticating] = useState(false);
+	const [fetchingData, setFetchingData] = useState(false);
 	const [currentSession, setCurrentSession] = useState<CognitoUserSession | null>(null);
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		setFetchingData(true);
 		Auth.currentSession()
-			.then((session) => setCurrentSession(session))
+			.then((session) => {
+				setCurrentSession(session);
+			})
 			.catch(() => {
 				navigate("/account-access");
 			})
 			.finally(() => {
-				setAuthenticating(false);
+				setFetchingData(false);
 			});
 	}, [navigate]);
 
-	if (authenticating) return <></>;
+	if (fetchingData) return <LoadingOverlay />;
 
 	return (
 		<sessionContext.Provider value={currentSession}>
+			<LoadingOverlay data-ready />
 			<div className={styles.layoutWrapper}>
 				<header className={styles.header}>
 					<Link to="/">
