@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Auth } from "aws-amplify";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { CognitoUserSession } from "amazon-cognito-identity-js";
+import { DataStore } from "@aws-amplify/datastore";
 
+import { User } from "../../models";
 import Button from "../../components/Button";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import sessionContext from "../../contexts/sessionContext";
@@ -90,6 +92,7 @@ const AccountNavigationMenu = () => {
 const Layout = () => {
 	const [fetchingData, setFetchingData] = useState(false);
 	const [currentSession, setCurrentSession] = useState<CognitoUserSession | null>(null);
+	const [userInfo, setUserInfo] = useState<User>();
 
 	const navigate = useNavigate();
 
@@ -97,6 +100,19 @@ const Layout = () => {
 		setFetchingData(true);
 		Auth.currentSession()
 			.then((session) => {
+				(async () => {
+					const userInfo = await Auth.currentUserInfo();
+
+					DataStore.query(User, (user) => user.email.eq(userInfo?.attributes?.email))
+						.then((users) => {
+							const user = users[0];
+							setUserInfo(user);
+							console.log(user);
+						})
+						.catch((err) => {
+							console.log(err);
+						});
+				})();
 				setCurrentSession(session);
 			})
 			.catch(() => {
@@ -121,7 +137,7 @@ const Layout = () => {
 					<AccountNavigationMenu />
 				</header>
 				<main className={styles.main}>
-					<Outlet />
+					<Outlet context={{ userInfo: userInfo }} />
 				</main>
 				<footer className={styles.footer}>
 					<p className="text-disclosure">This is footer text.</p>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Auth, Hub } from "aws-amplify";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { DataStore } from "@aws-amplify/datastore";
 import classNames from "classnames";
 
+import { User } from "../../models";
 import TextInput from "../../components/TextInput";
 import Button from "../../components/Button";
 
@@ -36,7 +38,7 @@ const SignUpForm = () => {
 	const [passwordContainsNumber, setPasswordContainsNumber] = useState(false);
 	const [passwordContainsSpecialCharacter, setPasswordContainsSpecialCharacter] = useState(false);
 	const [passwordsMatch, setPasswordsMatch] = useState(true);
-	const [awaitingRedirect, setSignedIn] = useState(false);
+	const [awaitingRedirect, setAwaitingRedirect] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -45,7 +47,20 @@ const SignUpForm = () => {
 			const { event } = payload;
 
 			if (event === "autoSignIn") {
-				navigate("/customer/dashboard");
+				DataStore.save(
+					new User({
+						email: signUpInfo.email,
+						fullName: signUpInfo.fullName,
+						bankAccounts: [],
+						creditAccounts: [],
+					}),
+				)
+					.then(() => {
+						navigate("/customer/dashboard");
+					})
+					.catch((err) => {
+						console.log(err);
+					});
 			} else if (event === "autoSignIn_failure") {
 				console.log("failed to sign in");
 			}
@@ -54,7 +69,7 @@ const SignUpForm = () => {
 		return () => {
 			clearHubListener();
 		};
-	}, [navigate]);
+	}, [navigate, signUpInfo]);
 
 	return (
 		<>
@@ -66,7 +81,6 @@ const SignUpForm = () => {
 					onSubmit={async ({ values }) => {
 						const { [fieldNames.fullName]: fullName, email } = values;
 
-						console.log(fullName);
 						setSignUpInfo({ fullName, email });
 						setSignUpStep(2);
 					}}
@@ -228,7 +242,7 @@ const SignUpForm = () => {
 					onSubmit={async ({ values, pushErrorMessage }) =>
 						Auth.confirmSignUp(signUpInfo.email, values[fieldNames.confirmationCode])
 							.then(() => {
-								setSignedIn(true);
+								setAwaitingRedirect(true);
 							})
 							.catch(() => {
 								pushErrorMessage("Incorrect code");

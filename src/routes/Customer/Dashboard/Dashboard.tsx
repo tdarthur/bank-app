@@ -4,7 +4,8 @@ import styles from "./dashboard.module.css";
 import { useContext, useEffect, useReducer, useState } from "react";
 import sessionContext from "../../../contexts/sessionContext";
 import IconX from "../../../components/IconX";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
+import { User } from "../../../models";
 
 const welcomeMessages: string[] = [
 	"Welcome back _name_! Here's a look at your accounts.",
@@ -12,17 +13,17 @@ const welcomeMessages: string[] = [
 	"Fancy to see you here _name_. I've got your accounts ready for you.",
 ];
 
-type TransactionContainerProps = {
-	transactions: Transaction[];
-};
+// type TransactionContainerProps = {
+// 	transactions: Transaction[];
+// };
 
-const TransactionContainer = ({ transactions }: TransactionContainerProps) => (
-	<div className={styles.transactionContainer}>
-		{transactions.map((transaction) => (
-			<div>{transaction.amount}</div>
-		))}
-	</div>
-);
+// const TransactionContainer = ({ transactions }: TransactionContainerProps) => (
+// 	<div className={styles.transactionContainer}>
+// 		{transactions.map((transaction) => (
+// 			<div>{transaction.amount}</div>
+// 		))}
+// 	</div>
+// );
 
 type AccountCardProps = {
 	type: "checking" | "savings" | "credit";
@@ -61,11 +62,9 @@ const AccountCard = ({
 				if (!isAnimating) openCard();
 			}}
 			onAnimationStart={() => {
-				console.log("starting animation");
 				pushAnimation();
 			}}
 			onAnimationEnd={() => {
-				console.log("ending animation");
 				popAnimation();
 			}}
 			disabled={isOpen || isAnimating}
@@ -166,6 +165,8 @@ const Dashboard = () => {
 	const [openAccount, setOpenAccount] = useState<string>();
 	const [animationCount, dispatchAnimationUpdate] = useReducer(animationReducer, 0);
 
+	const { userInfo } = useOutletContext() as { userInfo: User };
+
 	const session = useContext(sessionContext);
 	useEffect(() => {
 		let randomKey = 0;
@@ -176,9 +177,11 @@ const Dashboard = () => {
 			}
 
 			// TODO: use the customer name here instead of "Guy"
-			setWelcomeMessage(welcomeMessages[randomKey % welcomeMessages.length].replace("_name_", "Guy"));
+			setWelcomeMessage(
+				welcomeMessages[randomKey % welcomeMessages.length].replace("_name_", userInfo?.fullName),
+			);
 		}
-	}, [session]);
+	}, [session, userInfo]);
 
 	const checkingAccount: CheckingAccountInfo = {
 		balance: 987,
@@ -193,8 +196,6 @@ const Dashboard = () => {
 
 	const pushAnimation = () => dispatchAnimationUpdate(1);
 	const popAnimation = () => dispatchAnimationUpdate(-1);
-
-	console.log(animationCount);
 
 	return (
 		<>

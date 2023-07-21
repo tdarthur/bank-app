@@ -17,6 +17,9 @@
       },
       "auth": {
         "bankappd6b5035e": {}
+      },
+      "storage": {
+        "bankdata": {}
       }
     }
   }

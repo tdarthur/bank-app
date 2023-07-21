@@ -17,7 +17,6 @@ const TextInput = ({ label, width, className, name, required, ...props }: Props)
 		if (formProps && name) {
 			if (formProps.invalidSubmission) {
 				if (required && !formProps.values[name]) {
-					console.log(formProps.values[name]);
 					setValidationError("Required");
 				} else {
 					setValidationError(formProps.invalidFields[name]);
