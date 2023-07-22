@@ -1,55 +1,42 @@
-type User @model @auth(rules: [{allow: public}]) {
+type User @model @auth(rules: [{allow: public}, {allow: owner}]) {
   id: ID!
   email: String!
   fullName: String!
-  bankAccounts: [BankAccount] @manyToMany(relationName: "UserBankAccount")
+  checkingAccounts: [CheckingAccount] @manyToMany(relationName: "UserCheckingAccount")
+  savingsAccounts: [SavingsAccount] @manyToMany(relationName: "UserSavingsAccount")
   creditAccounts: [CreditAccount] @manyToMany(relationName: "UserCreditAccount")
 }
 
-type BankAccount @model @auth(rules: [{allow: public}]) {
+type CheckingAccount @model @auth(rules: [{allow: public}, {allow: owner}]) {
   id: ID!
-  users: [User!] @manyToMany(relationName: "UserBankAccount")
-  bankTransactions: [BankTransaction] @hasMany(indexName: "byBankAccount", fields: ["id"])
-  accountType: BankAccountType!
   accountNumber: String!
+  cardNumber: String
   balance: Float!
-  rewardsPoints: Int!
   creationDate: AWSDate!
+  users: [User!] @manyToMany(relationName: "UserCheckingAccount")
+  transactions: [BankTransaction] @hasMany(indexName: "byCheckingAccount", fields: ["id"])
 }
 
-type CreditAccount @model @auth(rules: [{allow: public}]) {
+type SavingsAccount @model @auth(rules: [{allow: public}, {allow: owner}]) {
   id: ID!
-  users: [User!] @manyToMany(relationName: "UserCreditAccount")
-  creditTransactions: [CreditTransaction] @hasMany(indexName: "byCreditAccount", fields: ["id"])
+  accountNumber: String!
+  balance: Float!
+  creationDate: AWSDate!
+  users: [User!] @manyToMany(relationName: "UserSavingsAccount")
+  transactions: [BankTransaction] @hasMany(indexName: "bySavingsAccount", fields: ["id"])
+}
+
+type CreditAccount @model @auth(rules: [{allow: public}, {allow: owner}]) {
+  id: ID!
   creditAccountType: CreditAccountType!
   accountNumber: String!
+  cardNumber: String
   balance: Float!
-  creationDate: AWSDate!
-}
-
-type BankTransaction @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  bankAccountID: ID! @index(name: "byBankAccount")
-  transactionType: TransactionType!
-  amount: Float!
-  description: String
-  timestamp: AWSTimestamp!
-}
-
-type CreditTransaction @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  creditAccountID: ID! @index(name: "byCreditAccount")
-  transactionType: TransactionType!
-  amount: Float!
-  description: String
+  creditLimit: Float!
   rewardsPoints: Int!
-  timestamp: AWSTimestamp!
-}
-
-enum TransactionType {
-  DEPOSIT
-  WITHDRAWAL
-  TRANSFER
+  creationDate: AWSDate!
+  users: [User!] @manyToMany(relationName: "UserCreditAccount")
+  transactions: [CreditTransaction] @hasMany(indexName: "byCreditAccount", fields: ["id"])
 }
 
 enum CreditAccountType {
@@ -57,7 +44,30 @@ enum CreditAccountType {
   AMETHYST_POINTS
 }
 
-enum BankAccountType {
-  CHECKING
-  SAVINGS
+type CreditTransaction @model @auth(rules: [{allow: public}, {allow: owner}]) {
+  id: ID!
+  transactionType: TransactionType!
+  amount: Float!
+  description: String
+  rewardsPoints: Int!
+  timestamp: AWSTimestamp!
+  creditAccountID: ID! @index(name: "byCreditAccount")
 }
+
+type BankTransaction @model @auth(rules: [{allow: public}, {allow: owner}]) {
+  id: ID!
+  bankAccountID: ID! @index(name: "byBankAccount")
+  transactionType: TransactionType!
+  amount: Float!
+  description: String
+  timestamp: AWSTimestamp!
+  checkingAccountID: ID! @index(name: "byCheckingAccount")
+  savingsAccountID: ID! @index(name: "bySavingsAccount")
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+}
+ 

@@ -2,33 +2,29 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const CreditAccountType = {
+  "SAPIEN_CASHBACK": "SAPIEN_CASHBACK",
+  "AMETHYST_POINTS": "AMETHYST_POINTS"
+};
+
 const TransactionType = {
   "DEPOSIT": "DEPOSIT",
   "WITHDRAWAL": "WITHDRAWAL",
   "TRANSFER": "TRANSFER"
 };
 
-const CreditAccountType = {
-  "SAPIEN_CASHBACK": "SAPIEN_CASHBACK",
-  "AMETHYST_POINTS": "AMETHYST_POINTS"
-};
-
-const BankAccountType = {
-  "CHECKING": "CHECKING",
-  "SAVINGS": "SAVINGS"
-};
-
-const { User, BankAccount, CreditAccount, BankTransaction, CreditTransaction, UserBankAccount, UserCreditAccount } = initSchema(schema);
+const { User, CheckingAccount, SavingsAccount, CreditAccount, CreditTransaction, BankTransaction, UserCheckingAccount, UserSavingsAccount, UserCreditAccount } = initSchema(schema);
 
 export {
   User,
-  BankAccount,
+  CheckingAccount,
+  SavingsAccount,
   CreditAccount,
-  BankTransaction,
   CreditTransaction,
-  UserBankAccount,
+  BankTransaction,
+  UserCheckingAccount,
+  UserSavingsAccount,
   UserCreditAccount,
-  TransactionType,
   CreditAccountType,
-  BankAccountType
+  TransactionType
 };

@@ -51,8 +51,6 @@ const SignUpForm = () => {
 					new User({
 						email: signUpInfo.email,
 						fullName: signUpInfo.fullName,
-						bankAccounts: [],
-						creditAccounts: [],
 					}),
 				)
 					.then(() => {

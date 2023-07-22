@@ -24,11 +24,27 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "bankAccounts": {
-                    "name": "bankAccounts",
+                "checkingAccounts": {
+                    "name": "checkingAccounts",
                     "isArray": true,
                     "type": {
-                        "model": "UserBankAccount"
+                        "model": "UserCheckingAccount"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "user"
+                        ]
+                    }
+                },
+                "savingsAccounts": {
+                    "name": "savingsAccounts",
+                    "isArray": true,
+                    "type": {
+                        "model": "UserSavingsAccount"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -92,60 +108,31 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
                 }
             ]
         },
-        "BankAccount": {
-            "name": "BankAccount",
+        "CheckingAccount": {
+            "name": "CheckingAccount",
             "fields": {
                 "id": {
                     "name": "id",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "users": {
-                    "name": "users",
-                    "isArray": true,
-                    "type": {
-                        "model": "UserBankAccount"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "bankAccount"
-                        ]
-                    }
-                },
-                "bankTransactions": {
-                    "name": "bankTransactions",
-                    "isArray": true,
-                    "type": {
-                        "model": "BankTransaction"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "bankAccountID"
-                        ]
-                    }
-                },
-                "accountType": {
-                    "name": "accountType",
-                    "isArray": false,
-                    "type": {
-                        "enum": "BankAccountType"
-                    },
                     "isRequired": true,
                     "attributes": []
                 },
@@ -156,17 +143,17 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "cardNumber": {
+                    "name": "cardNumber",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "balance": {
                     "name": "balance",
                     "isArray": false,
                     "type": "Float",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "rewardsPoints": {
-                    "name": "rewardsPoints",
-                    "isArray": false,
-                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -176,6 +163,38 @@ export const schema = {
                     "type": "AWSDate",
                     "isRequired": true,
                     "attributes": []
+                },
+                "users": {
+                    "name": "users",
+                    "isArray": true,
+                    "type": {
+                        "model": "UserCheckingAccount"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "checkingAccount"
+                        ]
+                    }
+                },
+                "transactions": {
+                    "name": "transactions",
+                    "isArray": true,
+                    "type": {
+                        "model": "BankTransaction"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "checkingAccountID"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -195,7 +214,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "BankAccounts",
+            "pluralName": "CheckingAccounts",
             "attributes": [
                 {
                     "type": "model",
@@ -207,6 +226,135 @@ export const schema = {
                         "rules": [
                             {
                                 "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "SavingsAccount": {
+            "name": "SavingsAccount",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "accountNumber": {
+                    "name": "accountNumber",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "balance": {
+                    "name": "balance",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "creationDate": {
+                    "name": "creationDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "users": {
+                    "name": "users",
+                    "isArray": true,
+                    "type": {
+                        "model": "UserSavingsAccount"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "savingsAccount"
+                        ]
+                    }
+                },
+                "transactions": {
+                    "name": "transactions",
+                    "isArray": true,
+                    "type": {
+                        "model": "BankTransaction"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "savingsAccountID"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "SavingsAccounts",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
                                 "operations": [
                                     "create",
                                     "update",
@@ -229,38 +377,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "users": {
-                    "name": "users",
-                    "isArray": true,
-                    "type": {
-                        "model": "UserCreditAccount"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "creditAccount"
-                        ]
-                    }
-                },
-                "creditTransactions": {
-                    "name": "creditTransactions",
-                    "isArray": true,
-                    "type": {
-                        "model": "CreditTransaction"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "creditAccountID"
-                        ]
-                    }
-                },
                 "creditAccountType": {
                     "name": "creditAccountType",
                     "isArray": false,
@@ -277,10 +393,31 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "cardNumber": {
+                    "name": "cardNumber",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "balance": {
                     "name": "balance",
                     "isArray": false,
                     "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "creditLimit": {
+                    "name": "creditLimit",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "rewardsPoints": {
+                    "name": "rewardsPoints",
+                    "isArray": false,
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -290,6 +427,38 @@ export const schema = {
                     "type": "AWSDate",
                     "isRequired": true,
                     "attributes": []
+                },
+                "users": {
+                    "name": "users",
+                    "isArray": true,
+                    "type": {
+                        "model": "UserCreditAccount"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "creditAccount"
+                        ]
+                    }
+                },
+                "transactions": {
+                    "name": "transactions",
+                    "isArray": true,
+                    "type": {
+                        "model": "CreditTransaction"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "creditAccountID"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -321,6 +490,135 @@ export const schema = {
                         "rules": [
                             {
                                 "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "CreditTransaction": {
+            "name": "CreditTransaction",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "transactionType": {
+                    "name": "transactionType",
+                    "isArray": false,
+                    "type": {
+                        "enum": "TransactionType"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "amount": {
+                    "name": "amount",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "rewardsPoints": {
+                    "name": "rewardsPoints",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "timestamp": {
+                    "name": "timestamp",
+                    "isArray": false,
+                    "type": "AWSTimestamp",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "creditAccountID": {
+                    "name": "creditAccountID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "CreditTransactions",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCreditAccount",
+                        "fields": [
+                            "creditAccountID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
                                 "operations": [
                                     "create",
                                     "update",
@@ -380,6 +678,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "checkingAccountID": {
+                    "name": "checkingAccountID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "savingsAccountID": {
+                    "name": "savingsAccountID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -414,107 +726,20 @@ export const schema = {
                     }
                 },
                 {
-                    "type": "auth",
+                    "type": "key",
                     "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
+                        "name": "byCheckingAccount",
+                        "fields": [
+                            "checkingAccountID"
                         ]
                     }
-                }
-            ]
-        },
-        "CreditTransaction": {
-            "name": "CreditTransaction",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "creditAccountID": {
-                    "name": "creditAccountID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "transactionType": {
-                    "name": "transactionType",
-                    "isArray": false,
-                    "type": {
-                        "enum": "TransactionType"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "amount": {
-                    "name": "amount",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "rewardsPoints": {
-                    "name": "rewardsPoints",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "timestamp": {
-                    "name": "timestamp",
-                    "isArray": false,
-                    "type": "AWSTimestamp",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "CreditTransactions",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
                 },
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byCreditAccount",
+                        "name": "bySavingsAccount",
                         "fields": [
-                            "creditAccountID"
+                            "savingsAccountID"
                         ]
                     }
                 },
@@ -530,14 +755,26 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
                 }
             ]
         },
-        "UserBankAccount": {
-            "name": "UserBankAccount",
+        "UserCheckingAccount": {
+            "name": "UserCheckingAccount",
             "fields": {
                 "id": {
                     "name": "id",
@@ -553,8 +790,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "bankAccountId": {
-                    "name": "bankAccountId",
+                "checkingAccountId": {
+                    "name": "checkingAccountId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -575,18 +812,18 @@ export const schema = {
                         ]
                     }
                 },
-                "bankAccount": {
-                    "name": "bankAccount",
+                "checkingAccount": {
+                    "name": "checkingAccount",
                     "isArray": false,
                     "type": {
-                        "model": "BankAccount"
+                        "model": "CheckingAccount"
                     },
                     "isRequired": true,
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "bankAccountId"
+                            "checkingAccountId"
                         ]
                     }
                 },
@@ -608,7 +845,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "UserBankAccounts",
+            "pluralName": "UserCheckingAccounts",
             "attributes": [
                 {
                     "type": "model",
@@ -626,9 +863,107 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byBankAccount",
+                        "name": "byCheckingAccount",
                         "fields": [
-                            "bankAccountId"
+                            "checkingAccountId"
+                        ]
+                    }
+                }
+            ]
+        },
+        "UserSavingsAccount": {
+            "name": "UserSavingsAccount",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userId": {
+                    "name": "userId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "savingsAccountId": {
+                    "name": "savingsAccountId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "user": {
+                    "name": "user",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "userId"
+                        ]
+                    }
+                },
+                "savingsAccount": {
+                    "name": "savingsAccount",
+                    "isArray": false,
+                    "type": {
+                        "model": "SavingsAccount"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "savingsAccountId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "UserSavingsAccounts",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "bySavingsAccount",
+                        "fields": [
+                            "savingsAccountId"
                         ]
                     }
                 }
@@ -734,14 +1069,6 @@ export const schema = {
         }
     },
     "enums": {
-        "TransactionType": {
-            "name": "TransactionType",
-            "values": [
-                "DEPOSIT",
-                "WITHDRAWAL",
-                "TRANSFER"
-            ]
-        },
         "CreditAccountType": {
             "name": "CreditAccountType",
             "values": [
@@ -749,15 +1076,16 @@ export const schema = {
                 "AMETHYST_POINTS"
             ]
         },
-        "BankAccountType": {
-            "name": "BankAccountType",
+        "TransactionType": {
+            "name": "TransactionType",
             "values": [
-                "CHECKING",
-                "SAVINGS"
+                "DEPOSIT",
+                "WITHDRAWAL",
+                "TRANSFER"
             ]
         }
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "6e51b1e5c0537768f44c7cf896c548f9"
+    "version": "5b60bba3da665e0004dc164cf7ea82e9"
 };

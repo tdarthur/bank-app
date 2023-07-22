@@ -46,7 +46,7 @@
 		border-bottom-right-radius: 8px;
 	}
 
-	50%,
+	40%,
 	to {
 		width: 1080px;
 		height: 150px;
@@ -59,7 +59,7 @@
 
 @keyframes close-account-card {
 	from,
-	50% {
+	60% {
 		width: 1080px;
 		height: 150px;
 
@@ -93,19 +93,20 @@
 	overflow: hidden;
 
 	transition: scale 150ms ease;
-	animation: close-account-card 600ms ease-in-out both;
+	animation: close-account-card 750ms ease-in-out both;
 }
 
-.accountCard:focus-visible {
+.accountCard[data-has-focus]:not(:active) {
 	outline: 2px solid black;
-}
-
-.accountCard:not([data-open="true"]):not(:disabled):hover {
 	scale: 1.05;
 }
 
-.accountCard[data-open="true"] {
-	animation: open-account-card 600ms ease-in-out both;
+.accountCard:not([data-open]):not([data-disabled]):hover {
+	scale: 1.05;
+}
+
+.accountCard[data-open] {
+	animation: open-account-card 750ms ease-in-out both;
 }
 
 .accountCard > * {
@@ -128,7 +129,7 @@
 	transition-delay: 300ms;
 }
 
-[data-open="true"] .accountCardBackdrop {
+[data-open] .accountCardBackdrop {
 	filter: brightness(50%);
 	transition-delay: 0ms;
 }
@@ -186,6 +187,22 @@
 	line-height: 32px;
 }
 
+.accountCardOpenButton {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
+
+	width: 100%;
+	height: 100%;
+
+	opacity: 0;
+}
+
+[data-open] .accountCardOpenButton {
+	display: none;
+}
+
 .accountCardCloseButton {
 	position: absolute;
 	top: 1rem;
@@ -202,12 +219,12 @@
 	transition: opacity 150ms linear 0ms, scale 150ms ease;
 }
 
-[data-open="true"] .accountCardCloseButton {
+[data-open] .accountCardCloseButton {
 	opacity: 100%;
 	transition: opacity 150ms linear 750ms;
 }
 
-[data-open="true"] .accountCardCloseButton:hover {
+[data-open] .accountCardCloseButton:hover {
 	scale: 1.2;
 }
 
@@ -224,7 +241,7 @@
 	transition-delay: 0;
 }
 
-.accountDetailsSection[data-open="true"] {
+.accountDetailsSection[data-open] {
 	height: 800px;
 
 	border-bottom-left-radius: 8px;

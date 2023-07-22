@@ -1,20 +1,16 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
+// @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
-
-export enum TransactionType {
-  DEPOSIT = "DEPOSIT",
-  WITHDRAWAL = "WITHDRAWAL",
-  TRANSFER = "TRANSFER"
-}
 
 export enum CreditAccountType {
   SAPIEN_CASHBACK = "SAPIEN_CASHBACK",
   AMETHYST_POINTS = "AMETHYST_POINTS"
 }
 
-export enum BankAccountType {
-  CHECKING = "CHECKING",
-  SAVINGS = "SAVINGS"
+export enum TransactionType {
+  DEPOSIT = "DEPOSIT",
+  WITHDRAWAL = "WITHDRAWAL",
+  TRANSFER = "TRANSFER"
 }
 
 
@@ -27,7 +23,8 @@ type EagerUser = {
   readonly id: string;
   readonly email: string;
   readonly fullName: string;
-  readonly bankAccounts?: (UserBankAccount | null)[] | null;
+  readonly checkingAccounts?: (UserCheckingAccount | null)[] | null;
+  readonly savingsAccounts?: (UserSavingsAccount | null)[] | null;
   readonly creditAccounts?: (UserCreditAccount | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -41,7 +38,8 @@ type LazyUser = {
   readonly id: string;
   readonly email: string;
   readonly fullName: string;
-  readonly bankAccounts: AsyncCollection<UserBankAccount>;
+  readonly checkingAccounts: AsyncCollection<UserCheckingAccount>;
+  readonly savingsAccounts: AsyncCollection<UserSavingsAccount>;
   readonly creditAccounts: AsyncCollection<UserCreditAccount>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -53,44 +51,78 @@ export declare const User: (new (init: ModelInit<User>) => User) & {
   copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }
 
-type EagerBankAccount = {
+type EagerCheckingAccount = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<BankAccount, 'id'>;
+    identifier: ManagedIdentifier<CheckingAccount, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly users?: UserBankAccount[] | null;
-  readonly bankTransactions?: (BankTransaction | null)[] | null;
-  readonly accountType: BankAccountType | keyof typeof BankAccountType;
   readonly accountNumber: string;
+  readonly cardNumber?: string | null;
   readonly balance: number;
-  readonly rewardsPoints: number;
   readonly creationDate: string;
+  readonly users?: UserCheckingAccount[] | null;
+  readonly transactions?: (BankTransaction | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-type LazyBankAccount = {
+type LazyCheckingAccount = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<BankAccount, 'id'>;
+    identifier: ManagedIdentifier<CheckingAccount, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly users: AsyncCollection<UserBankAccount>;
-  readonly bankTransactions: AsyncCollection<BankTransaction>;
-  readonly accountType: BankAccountType | keyof typeof BankAccountType;
   readonly accountNumber: string;
+  readonly cardNumber?: string | null;
   readonly balance: number;
-  readonly rewardsPoints: number;
   readonly creationDate: string;
+  readonly users: AsyncCollection<UserCheckingAccount>;
+  readonly transactions: AsyncCollection<BankTransaction>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-export declare type BankAccount = LazyLoading extends LazyLoadingDisabled ? EagerBankAccount : LazyBankAccount
+export declare type CheckingAccount = LazyLoading extends LazyLoadingDisabled ? EagerCheckingAccount : LazyCheckingAccount
 
-export declare const BankAccount: (new (init: ModelInit<BankAccount>) => BankAccount) & {
-  copyOf(source: BankAccount, mutator: (draft: MutableModel<BankAccount>) => MutableModel<BankAccount> | void): BankAccount;
+export declare const CheckingAccount: (new (init: ModelInit<CheckingAccount>) => CheckingAccount) & {
+  copyOf(source: CheckingAccount, mutator: (draft: MutableModel<CheckingAccount>) => MutableModel<CheckingAccount> | void): CheckingAccount;
+}
+
+type EagerSavingsAccount = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<SavingsAccount, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly accountNumber: string;
+  readonly balance: number;
+  readonly creationDate: string;
+  readonly users?: UserSavingsAccount[] | null;
+  readonly transactions?: (BankTransaction | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazySavingsAccount = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<SavingsAccount, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly accountNumber: string;
+  readonly balance: number;
+  readonly creationDate: string;
+  readonly users: AsyncCollection<UserSavingsAccount>;
+  readonly transactions: AsyncCollection<BankTransaction>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type SavingsAccount = LazyLoading extends LazyLoadingDisabled ? EagerSavingsAccount : LazySavingsAccount
+
+export declare const SavingsAccount: (new (init: ModelInit<SavingsAccount>) => SavingsAccount) & {
+  copyOf(source: SavingsAccount, mutator: (draft: MutableModel<SavingsAccount>) => MutableModel<SavingsAccount> | void): SavingsAccount;
 }
 
 type EagerCreditAccount = {
@@ -99,12 +131,15 @@ type EagerCreditAccount = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly users?: UserCreditAccount[] | null;
-  readonly creditTransactions?: (CreditTransaction | null)[] | null;
   readonly creditAccountType: CreditAccountType | keyof typeof CreditAccountType;
   readonly accountNumber: string;
+  readonly cardNumber?: string | null;
   readonly balance: number;
+  readonly creditLimit: number;
+  readonly rewardsPoints: number;
   readonly creationDate: string;
+  readonly users?: UserCreditAccount[] | null;
+  readonly transactions?: (CreditTransaction | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -115,12 +150,15 @@ type LazyCreditAccount = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly users: AsyncCollection<UserCreditAccount>;
-  readonly creditTransactions: AsyncCollection<CreditTransaction>;
   readonly creditAccountType: CreditAccountType | keyof typeof CreditAccountType;
   readonly accountNumber: string;
+  readonly cardNumber?: string | null;
   readonly balance: number;
+  readonly creditLimit: number;
+  readonly rewardsPoints: number;
   readonly creationDate: string;
+  readonly users: AsyncCollection<UserCreditAccount>;
+  readonly transactions: AsyncCollection<CreditTransaction>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -129,6 +167,44 @@ export declare type CreditAccount = LazyLoading extends LazyLoadingDisabled ? Ea
 
 export declare const CreditAccount: (new (init: ModelInit<CreditAccount>) => CreditAccount) & {
   copyOf(source: CreditAccount, mutator: (draft: MutableModel<CreditAccount>) => MutableModel<CreditAccount> | void): CreditAccount;
+}
+
+type EagerCreditTransaction = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<CreditTransaction, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly transactionType: TransactionType | keyof typeof TransactionType;
+  readonly amount: number;
+  readonly description?: string | null;
+  readonly rewardsPoints: number;
+  readonly timestamp: number;
+  readonly creditAccountID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyCreditTransaction = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<CreditTransaction, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly transactionType: TransactionType | keyof typeof TransactionType;
+  readonly amount: number;
+  readonly description?: string | null;
+  readonly rewardsPoints: number;
+  readonly timestamp: number;
+  readonly creditAccountID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type CreditTransaction = LazyLoading extends LazyLoadingDisabled ? EagerCreditTransaction : LazyCreditTransaction
+
+export declare const CreditTransaction: (new (init: ModelInit<CreditTransaction>) => CreditTransaction) & {
+  copyOf(source: CreditTransaction, mutator: (draft: MutableModel<CreditTransaction>) => MutableModel<CreditTransaction> | void): CreditTransaction;
 }
 
 type EagerBankTransaction = {
@@ -142,6 +218,8 @@ type EagerBankTransaction = {
   readonly amount: number;
   readonly description?: string | null;
   readonly timestamp: number;
+  readonly checkingAccountID: string;
+  readonly savingsAccountID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -157,6 +235,8 @@ type LazyBankTransaction = {
   readonly amount: number;
   readonly description?: string | null;
   readonly timestamp: number;
+  readonly checkingAccountID: string;
+  readonly savingsAccountID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -167,76 +247,72 @@ export declare const BankTransaction: (new (init: ModelInit<BankTransaction>) =>
   copyOf(source: BankTransaction, mutator: (draft: MutableModel<BankTransaction>) => MutableModel<BankTransaction> | void): BankTransaction;
 }
 
-type EagerCreditTransaction = {
+type EagerUserCheckingAccount = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<CreditTransaction, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly creditAccountID: string;
-  readonly transactionType: TransactionType | keyof typeof TransactionType;
-  readonly amount: number;
-  readonly description?: string | null;
-  readonly rewardsPoints: number;
-  readonly timestamp: number;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyCreditTransaction = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<CreditTransaction, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly creditAccountID: string;
-  readonly transactionType: TransactionType | keyof typeof TransactionType;
-  readonly amount: number;
-  readonly description?: string | null;
-  readonly rewardsPoints: number;
-  readonly timestamp: number;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type CreditTransaction = LazyLoading extends LazyLoadingDisabled ? EagerCreditTransaction : LazyCreditTransaction
-
-export declare const CreditTransaction: (new (init: ModelInit<CreditTransaction>) => CreditTransaction) & {
-  copyOf(source: CreditTransaction, mutator: (draft: MutableModel<CreditTransaction>) => MutableModel<CreditTransaction> | void): CreditTransaction;
-}
-
-type EagerUserBankAccount = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<UserBankAccount, 'id'>;
+    identifier: ManagedIdentifier<UserCheckingAccount, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly userId?: string | null;
-  readonly bankAccountId?: string | null;
+  readonly checkingAccountId?: string | null;
   readonly user: User;
-  readonly bankAccount: BankAccount;
+  readonly checkingAccount: CheckingAccount;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-type LazyUserBankAccount = {
+type LazyUserCheckingAccount = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<UserBankAccount, 'id'>;
+    identifier: ManagedIdentifier<UserCheckingAccount, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly userId?: string | null;
-  readonly bankAccountId?: string | null;
+  readonly checkingAccountId?: string | null;
   readonly user: AsyncItem<User>;
-  readonly bankAccount: AsyncItem<BankAccount>;
+  readonly checkingAccount: AsyncItem<CheckingAccount>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-export declare type UserBankAccount = LazyLoading extends LazyLoadingDisabled ? EagerUserBankAccount : LazyUserBankAccount
+export declare type UserCheckingAccount = LazyLoading extends LazyLoadingDisabled ? EagerUserCheckingAccount : LazyUserCheckingAccount
 
-export declare const UserBankAccount: (new (init: ModelInit<UserBankAccount>) => UserBankAccount) & {
-  copyOf(source: UserBankAccount, mutator: (draft: MutableModel<UserBankAccount>) => MutableModel<UserBankAccount> | void): UserBankAccount;
+export declare const UserCheckingAccount: (new (init: ModelInit<UserCheckingAccount>) => UserCheckingAccount) & {
+  copyOf(source: UserCheckingAccount, mutator: (draft: MutableModel<UserCheckingAccount>) => MutableModel<UserCheckingAccount> | void): UserCheckingAccount;
+}
+
+type EagerUserSavingsAccount = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserSavingsAccount, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userId?: string | null;
+  readonly savingsAccountId?: string | null;
+  readonly user: User;
+  readonly savingsAccount: SavingsAccount;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUserSavingsAccount = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserSavingsAccount, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userId?: string | null;
+  readonly savingsAccountId?: string | null;
+  readonly user: AsyncItem<User>;
+  readonly savingsAccount: AsyncItem<SavingsAccount>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type UserSavingsAccount = LazyLoading extends LazyLoadingDisabled ? EagerUserSavingsAccount : LazyUserSavingsAccount
+
+export declare const UserSavingsAccount: (new (init: ModelInit<UserSavingsAccount>) => UserSavingsAccount) & {
+  copyOf(source: UserSavingsAccount, mutator: (draft: MutableModel<UserSavingsAccount>) => MutableModel<UserSavingsAccount> | void): UserSavingsAccount;
 }
 
 type EagerUserCreditAccount = {

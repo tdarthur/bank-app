@@ -7,7 +7,7 @@ import { DataStore } from "@aws-amplify/datastore";
 import { User } from "../../models";
 import Button from "../../components/Button";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import sessionContext from "../../contexts/sessionContext";
+import userSessionContext from "../../contexts/userSessionContext";
 
 import styles from "./customerLayout.module.css";
 
@@ -91,42 +91,51 @@ const AccountNavigationMenu = () => {
  */
 const Layout = () => {
 	const [fetchingData, setFetchingData] = useState(false);
-	const [currentSession, setCurrentSession] = useState<CognitoUserSession | null>(null);
-	const [userInfo, setUserInfo] = useState<User>();
+	const [cognitoSession, setCognitoSession] = useState<CognitoUserSession | null>(null);
+	const [user, setUser] = useState<User | null>(null);
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		setFetchingData(true);
-		Auth.currentSession()
-			.then((session) => {
-				(async () => {
-					const userInfo = await Auth.currentUserInfo();
 
-					DataStore.query(User, (user) => user.email.eq(userInfo?.attributes?.email))
-						.then((users) => {
-							const user = users[0];
-							setUserInfo(user);
-							console.log(user);
-						})
-						.catch((err) => {
-							console.log(err);
-						});
-				})();
-				setCurrentSession(session);
-			})
-			.catch(() => {
-				navigate("/account-access");
-			})
-			.finally(() => {
-				setFetchingData(false);
-			});
+		let aborted = false;
+		(async () => {
+			let session = null;
+			let email = "";
+			try {
+				session = await Auth.currentSession();
+
+				const userInfo = await Auth.currentUserInfo();
+				if (!("attributes" in userInfo) || !("email" in userInfo.attributes)) throw Error("Invalid user info");
+				email = userInfo.attributes.email as string;
+			} catch (error) {
+				console.error(error);
+			}
+			if (!aborted) return;
+
+			let user = null;
+			try {
+				[user] = await DataStore.query(User, (user) => user.email.eq(email));
+			} catch (error) {
+				console.error(error);
+			}
+			if (!aborted) return;
+
+			setCognitoSession(session);
+			setUser(user);
+			setFetchingData(false);
+		})();
+
+		return () => {
+			aborted = true;
+		};
 	}, [navigate]);
 
 	if (fetchingData) return <LoadingOverlay />;
 
 	return (
-		<sessionContext.Provider value={currentSession}>
+		<userSessionContext.Provider value={{ cognitoSession, user }}>
 			<LoadingOverlay data-ready />
 			<div className={styles.layoutWrapper}>
 				<header className={styles.header}>
@@ -137,13 +146,13 @@ const Layout = () => {
 					<AccountNavigationMenu />
 				</header>
 				<main className={styles.main}>
-					<Outlet context={{ userInfo: userInfo }} />
+					<Outlet />
 				</main>
 				<footer className={styles.footer}>
 					<p className="text-disclosure">This is footer text.</p>
 				</footer>
 			</div>
-		</sessionContext.Provider>
+		</userSessionContext.Provider>
 	);
 };
 
