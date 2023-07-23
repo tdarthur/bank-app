@@ -183,3 +183,9 @@ h4 {
 .width-XL {
 	width: var(--width-XL) !important;
 }
+
+.primary-gradient-text {
+	background-image: linear-gradient(90deg, #1cd6fb, white);
+	-webkit-background-clip: text;
+	color: transparent;
+}

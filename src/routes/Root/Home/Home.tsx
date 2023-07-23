@@ -9,7 +9,7 @@ import cashbackCardImage from "../../../assets/cashback-card.png";
 
 type CarouselPanel = {
 	header: string;
-	text: React.ReactNode;
+	text: string;
 	image: string;
 	key: string;
 };
@@ -17,31 +17,37 @@ type CarouselPanel = {
 const carouselPanels: CarouselPanel[] = [
 	{
 		image: "https://images.pexels.com/photos/7620920/pexels-photo-7620920.jpeg?cs=srgb&dl=pexels-ivan-samkov-7620920.jpg&fm=jpg",
-		header: "Win. Your way.",
-		text: "This is something...",
+		header: "Free yourself",
+		text: "Discover what it means to have full control of your finances. We'll help you get there.",
 		key: "0",
 	},
 	{
-		image: "https://static.vecteezy.com/system/resources/previews/003/351/091/large_2x/portrait-of-smiling-pretty-young-business-woman-using-phone-free-photo.jpg",
-		header: "This is a header",
-		text: "Here's some text",
+		image: "https://www.cgi-textures.com/media/cache/full_thumb/th/5d/7b/98/5d7b986028012559517421.jpg",
+		header: "Bank your way",
+		text: "With our easy to use mobile app and intuitive account system, you'll never struggle to find and get what you need.",
 		key: "1",
 	},
 	{
-		image: "https://www.verywellmind.com/thmb/HZHiUS1k63_h8xtgNmQLTH498rU=/2121x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1126427826-976f525a9a3c4b3ea96016e418374b6b.jpg",
-		header: "This is a header",
-		text: "Here's some text",
+		image: "https://static.vecteezy.com/system/resources/previews/002/054/077/original/asian-family-portrait-with-balloons-free-photo.jpg",
+		header: "Prioritize",
+		text: "We take the worry out of your hands so you can focus on what matters most.",
 		key: "2",
 	},
 	{
-		image: "https://www.eatthis.com/wp-content/uploads/sites/4/2022/02/My-project-2022-02-07T075924.113.jpg?quality=82&strip=1",
-		header: "This is a header",
-		text: "Here's some text",
+		image: "https://www.verywellmind.com/thmb/HZHiUS1k63_h8xtgNmQLTH498rU=/2121x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1126427826-976f525a9a3c4b3ea96016e418374b6b.jpg",
+		header: "Overcome",
+		text: "We've all been there. Let us help you recover financially.",
 		key: "3",
+	},
+	{
+		image: "https://www.eatthis.com/wp-content/uploads/sites/4/2022/02/My-project-2022-02-07T075924.113.jpg?quality=82&strip=1",
+		header: "Retire",
+		text: "Preparing for the next chapter? Explore our high-interest savings options to see how we can help.",
+		key: "4",
 	},
 ];
 
-const carouselTransitionTimerMs = 6000;
+const carouselTransitionTimerMs = 8000;
 
 const Carousel = () => {
 	const [carouselPanelIndex, setCarouselPanelIndex] = useState<number>(NaN);
@@ -104,7 +110,7 @@ const Carousel = () => {
 								data-active={index === carouselPanelIndex ? true : undefined}
 								key={key}
 							>
-								<h1>{header}</h1>
+								<h2 className="primary-gradient-text">{header}</h2>
 								<p>{text}</p>
 								<Button
 									text="Sign Up"
