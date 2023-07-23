@@ -18,6 +18,7 @@ import AccountAccess from "./routes/AccountAccess/AccountAccess";
 import CustomerLayout from "./routes/Customer/CustomerLayout";
 import Dashboard from "./routes/Customer/Dashboard/Dashboard";
 import AccountSettings from "./routes/Customer/AccountSettings/AccountSettings";
+import AddAccount from "./routes/Customer/AddAccount/AddAccount";
 
 import "./index.css";
 
@@ -56,6 +57,10 @@ const routes: RouteObject[] = [
 			{
 				path: "account-settings",
 				element: <AccountSettings />,
+			},
+			{
+				path: "add-account",
+				element: <AddAccount />,
 			},
 		],
 	},

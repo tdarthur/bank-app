@@ -112,7 +112,7 @@ const Layout = () => {
 			} catch (error) {
 				console.error(error);
 			}
-			if (!aborted) return;
+			if (aborted) return;
 
 			let user = null;
 			try {
@@ -120,7 +120,7 @@ const Layout = () => {
 			} catch (error) {
 				console.error(error);
 			}
-			if (!aborted) return;
+			if (aborted) return;
 
 			setCognitoSession(session);
 			setUser(user);
@@ -132,26 +132,27 @@ const Layout = () => {
 		};
 	}, [navigate]);
 
-	if (fetchingData) return <LoadingOverlay />;
-
 	return (
 		<userSessionContext.Provider value={{ cognitoSession, user }}>
-			<LoadingOverlay data-ready />
-			<div className={styles.layoutWrapper}>
-				<header className={styles.header}>
-					<Link to="/">
-						<span className="logo">H</span>
-						<span className="logo-text">uman Bank</span>
-					</Link>
-					<AccountNavigationMenu />
-				</header>
-				<main className={styles.main}>
-					<Outlet />
-				</main>
-				<footer className={styles.footer}>
-					<p className="text-disclosure">This is footer text.</p>
-				</footer>
-			</div>
+			<LoadingOverlay data-ready={!fetchingData || undefined} />
+
+			{!fetchingData && (
+				<div className={styles.layoutWrapper}>
+					<header className={styles.header}>
+						<Link to="/">
+							<span className="logo">H</span>
+							<span className="logo-text">uman Bank</span>
+						</Link>
+						<AccountNavigationMenu />
+					</header>
+					<main className={styles.main}>
+						<Outlet />
+					</main>
+					<footer className={styles.footer}>
+						<p className="text-disclosure">This is footer text.</p>
+					</footer>
+				</div>
+			)}
 		</userSessionContext.Provider>
 	);
 };

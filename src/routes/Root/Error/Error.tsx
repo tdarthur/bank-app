@@ -29,7 +29,7 @@ const Error = () => {
 					<h2 className={styles.errorMessage}>
 						{errorMessages[routeError?.status] || routeError?.error?.message || "An error occurred"}
 					</h2>
-					<Button text="Back to Homepage" width="L" linkTo="" />
+					<Button text="Back to Homepage" width="L" linkTo="/" />
 
 					<p className="text-soft">
 						{(routeError.status && routeError.statusText && (

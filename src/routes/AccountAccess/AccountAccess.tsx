@@ -18,7 +18,7 @@ type SignUpInfo = {
 };
 
 const fieldNames = {
-	fullName: "full-name",
+	name: "name",
 	email: "email",
 	password: "password",
 	passwordConfirmation: "password-confirmation",
@@ -77,7 +77,7 @@ const SignUpForm = () => {
 						[fieldNames.email]: (value) => (emailValidationRegex.test(value) ? null : "Invalid email"),
 					}}
 					onSubmit={async ({ values }) => {
-						const { [fieldNames.fullName]: fullName, email } = values;
+						const { [fieldNames.name]: fullName, email } = values;
 
 						setSignUpInfo({ fullName, email });
 						setSignUpStep(2);
@@ -87,8 +87,23 @@ const SignUpForm = () => {
 							<MessageContainer messages={messages} className={styles.messageContainer} />
 
 							<fieldset>
-								<TextInput name={fieldNames.fullName} label="Full Name" width="L" autoFocus required />
-								<TextInput name={fieldNames.email} label="Email" width="L" required />
+								<TextInput
+									type="email"
+									name={fieldNames.email}
+									label="Email"
+									width="L"
+									inputMode="email"
+									required
+								/>
+								<TextInput
+									type="text"
+									name={fieldNames.name}
+									label="Full Name"
+									width="L"
+									autoComplete="name"
+									autoFocus
+									required
+								/>
 							</fieldset>
 
 							<Button type="submit" text="Next" variant="secondary" width="L" />
@@ -110,9 +125,6 @@ const SignUpForm = () => {
 						Auth.signUp({
 							username: signUpInfo.email,
 							password: values.password,
-							attributes: {
-								email: signUpInfo.email,
-							},
 							autoSignIn: {
 								enabled: true,
 							},
@@ -150,6 +162,8 @@ const SignUpForm = () => {
 						return (
 							<>
 								<MessageContainer messages={messages} className={styles.messageContainer} />
+
+								<input type="email" name={fieldNames.email} value={signUpInfo.email} readOnly hidden />
 
 								<fieldset>
 									<TextInput

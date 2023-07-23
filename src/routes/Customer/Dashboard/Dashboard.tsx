@@ -6,6 +6,7 @@ import userSessionContext from "../../../contexts/userSessionContext";
 
 import styles from "./dashboard.module.css";
 import { CheckingAccountCard, CreditCardAccountCard, SavingsAccountCard } from "./AccountCard";
+import Button from "../../../components/Button";
 
 const welcomeMessages: string[] = [
 	"Welcome back _name_! Here's a look at your accounts.",
@@ -16,11 +17,22 @@ const welcomeMessages: string[] = [
 const animationReducer = (animationCount: number, increment: -1 | 1) => animationCount + increment;
 
 const Dashboard = () => {
+	const [preloading, setPreloading] = useState(true);
 	const [welcomeMessage, setWelcomeMessage] = useState<string>();
 	const [openAccount, setOpenAccount] = useState<string>();
 	const [animationCount, dispatchAnimationUpdate] = useReducer(animationReducer, 0);
 
 	const { cognitoSession, user } = useContext(userSessionContext);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setPreloading(false);
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (cognitoSession && user) {
@@ -78,7 +90,7 @@ const Dashboard = () => {
 
 	return (
 		<>
-			<div className={styles.mainContent}>
+			<div className={styles.mainContent} data-preloading={preloading || undefined}>
 				<section className={styles.accountSection}>
 					<h3 className={styles.welcomeMessage}>{welcomeMessage}</h3>
 					{checkingAccounts.map((account) => (
@@ -131,6 +143,10 @@ const Dashboard = () => {
 							key={account.accountNumber}
 						/>
 					))}
+				</section>
+				<section className={styles.newAccountPrompt}>
+					<h4>Looking to do more with your finances?</h4>
+					<Button text="Open a new account today" variant="secondary" width="XL" linkTo={"../add-account"} />
 				</section>
 			</div>
 		</>

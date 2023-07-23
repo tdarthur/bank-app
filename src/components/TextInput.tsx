@@ -33,7 +33,7 @@ const TextInput = ({ label, width, className, name, required, ...props }: Props)
 			<input
 				id={name}
 				name={name}
-				type="text"
+				type={props.type || "text"}
 				className={classNames(width && `width-${width}`, className)}
 				required={required}
 				{...props}
