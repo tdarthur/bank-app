@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouteObject, RouterProvider, createBrowserRouter, createHashRouter } from "react-router-dom";
 import { Amplify } from "aws-amplify";
 import awsconfig from "./aws-exports";
 
@@ -66,7 +66,7 @@ const routes: RouteObject[] = [
 	},
 ];
 
-const router = createBrowserRouter(routes);
+const router = location.hostname === "humanbank.findtyler.com" ? createHashRouter(routes) : createBrowserRouter(routes);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>

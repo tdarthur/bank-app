@@ -43,6 +43,7 @@
 
 .carouselOverlays h2 {
 	width: fit-content;
+	transform: translateX(-4px);
 
 	font-size: 4rem;
 	font-weight: 900;
