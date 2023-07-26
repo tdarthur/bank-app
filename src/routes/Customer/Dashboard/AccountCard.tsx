@@ -2,7 +2,7 @@ import { useState } from "react";
 import classNames from "classnames";
 
 import { CheckingAccount, SavingsAccount, CreditAccount } from "../../../models";
-import IconX from "../../../components/IconX";
+import IconX from "../../../components/icons/IconX";
 
 import styles from "./dashboard.module.css";
 

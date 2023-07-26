@@ -12,9 +12,9 @@ body {
 	justify-content: center;
 	z-index: 100;
 
-	width: 100vw;
+	width: 100%;
 	height: var(--root-header-height);
-	padding: 0 4rem;
+	/* padding: 0 4rem; */
 
 	background-color: white;
 	box-shadow: 0 0 8px gray;
@@ -42,6 +42,10 @@ body {
 
 	list-style-type: none;
 	white-space: nowrap;
+}
+
+.hamburgerMenu {
+	display: none;
 }
 
 .navigation > ul {
@@ -104,10 +108,10 @@ body {
 	display: flex;
 	flex-direction: column;
 
-	width: 100vw;
+	width: 100%;
 	min-height: calc(100vh - var(--root-footer-height) - 4rem);
 	margin-bottom: 4rem;
-	padding: var(--root-header-height) 4rem 0 4rem;
+	padding: var(--root-header-height) 0 0 0;
 }
 
 .footer {
@@ -139,4 +143,46 @@ body {
 	width: 100%;
 	max-width: var(--root-content-width);
 	margin: 0 auto;
+}
+
+.signUpButton {
+	display: block;
+}
+
+@media screen and (max-width: 900px) {
+	.headerContent {
+		display: grid;
+		grid-template-columns: 40% 20% 40%;
+	}
+
+	.headerLogo {
+		justify-self: center;
+	}
+
+	.headerContent > * {
+		margin: 0;
+	}
+
+	.hamburgerMenu {
+		display: block;
+
+		width: var(--root-header-height);
+		height: var(--root-header-height);
+		padding: 12px;
+
+		background-color: transparent;
+		border: none;
+	}
+
+	.hamburgerMenu:hover {
+		scale: 1.1;
+	}
+
+	.navigation > ul > a {
+		display: none;
+	}
+
+	.signUpButton {
+		display: none !important;
+	}
 }

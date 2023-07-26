@@ -2,11 +2,11 @@
 	position: relative;
 	overflow: hidden;
 
+	max-width: 100%;
 	width: var(--root-content-width);
-	height: 512px;
+	height: 540px;
+	max-height: 50vw;
 	margin: 0 auto;
-
-	background-color: #f0f0f0;
 }
 
 .carouselImages {
@@ -48,6 +48,7 @@
 	font-size: 4rem;
 	font-weight: 900;
 	line-height: 6rem;
+	white-space: nowrap;
 	filter: drop-shadow(0 0 24px #000000);
 }
 
@@ -141,9 +142,11 @@
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: 1fr;
 	align-items: center;
+	gap: 32px;
 
 	width: 100%;
 	height: 300px;
+	padding: 0 32px;
 }
 
 .card:nth-child(odd):after {
@@ -159,8 +162,8 @@
 	background-color: #fbfbfb;
 }
 
-.card > div:first-child {
-	padding: 0 4rem;
+.card > div:nth-child(2) {
+	width: 100%;
 }
 
 .card > div:first-child > *:nth-child(2) {
@@ -169,5 +172,32 @@
 
 .cardImage > img {
 	max-height: 300px;
+	max-width: 100%;
 	margin: 0 auto;
+}
+
+@media screen and (max-width: 900px) {
+	.carouselOverlays h2 {
+		font-size: 3rem;
+		line-height: 4rem;
+	}
+
+	.carouselOverlays p {
+		width: 384px;
+
+		font-size: 16px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.carouselOverlays h2 {
+		font-size: 2.4rem;
+		line-height: 3.2rem;
+	}
+
+	.carouselOverlays p {
+		width: 256px;
+
+		font-size: 14px;
+	}
 }

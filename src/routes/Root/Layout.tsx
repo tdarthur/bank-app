@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { Link, Outlet, useMatches, useNavigate } from "react-router-dom";
+import classNames from "classnames";
 
 import styles from "./layout.module.css";
 import Button from "../../components/Button";
+import IconHamburger from "../../components/icons/Hamburger";
 
 /**
  * Header to use in the layout.
@@ -10,8 +12,11 @@ import Button from "../../components/Button";
 export const Header = () => (
 	<header className={styles.header}>
 		<div className={styles.headerContent}>
-			<Link to="">
-				<span className="logo">H</span>
+			<button className={styles.hamburgerMenu}>
+				<IconHamburger />
+			</button>
+			<Link to="" className={classNames(styles.headerLogo, "logo")}>
+				H
 			</Link>
 			<nav className={styles.navigation}>
 				<ul>
@@ -30,8 +35,8 @@ export const Header = () => (
 				</ul>
 
 				<div>
-					<Button text="Log In" variant="tertiary" width="S" linkTo="/account-access" />
-					<Button text="Sign Up" linkTo="/account-access?sign-up=true" />
+					<Button text="Sign In" variant="tertiary" width="S" linkTo="/account-access" />
+					<Button className={styles.signUpButton} text="Sign Up" linkTo="/account-access?sign-up=true" />
 				</div>
 			</nav>
 		</div>
