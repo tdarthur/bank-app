@@ -129,7 +129,7 @@
 	flex-direction: column;
 	gap: 128px;
 
-	margin-top: 4rem;
+	margin: 4rem 0;
 }
 
 .cards > :nth-child(even) > :nth-child(1) {
@@ -138,6 +138,8 @@
 }
 
 .card {
+	position: relative;
+
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: 1fr;
@@ -154,12 +156,13 @@
 
 	position: absolute;
 	z-index: -1;
-	left: 0;
+	top: -64px;
+	left: -80000px;
 
-	width: 100%;
-	height: calc(300px + 128px);
+	width: 160000px;
+	height: calc(100% + 128px);
 
-	background-color: #fbfbfb;
+	background-color: #f2f2f2;
 }
 
 .card > div:nth-child(2) {
@@ -187,6 +190,10 @@
 
 		font-size: 16px;
 	}
+
+	.carouselOverlays > * {
+		padding-left: 5rem;
+	}
 }
 
 @media screen and (max-width: 600px) {
@@ -197,7 +204,68 @@
 
 	.carouselOverlays p {
 		width: 256px;
+		margin-bottom: 0;
 
 		font-size: 14px;
+	}
+
+	.carouselOverlays > * {
+		padding-left: 4rem;
+	}
+
+	.carouselOverlays button {
+		display: none;
+	}
+
+	.carouselIndexIndicator {
+		gap: 6px;
+
+		height: 6px;
+	}
+
+	.carouselIndexIndicator > button {
+		width: 24px;
+		height: 6px;
+	}
+
+	.carouselIndexIndicator > button[data-selected] {
+		height: 9px;
+		width: 36px;
+		transform: translateY(-1.5px);
+	}
+
+	.cards {
+		gap: 64px;
+
+		margin: 2rem 0;
+	}
+
+	.cards button {
+		display: none;
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0;
+		text-align: center;
+
+		height: auto;
+		margin-bottom: 0;
+	}
+
+	.card:nth-child(odd):after {
+		display: none;
+	}
+
+	.cardImage > img {
+		flex-grow: 1;
+		flex-shrink: 1;
+
+		margin: 0 auto;
+
+		scale: 0.8;
+		transform: translateY(-24px);
 	}
 }

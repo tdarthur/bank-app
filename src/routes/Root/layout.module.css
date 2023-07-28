@@ -110,7 +110,6 @@ body {
 
 	width: 100%;
 	min-height: calc(100vh - var(--root-footer-height) - 4rem);
-	margin-bottom: 4rem;
 	padding: var(--root-header-height) 0 0 0;
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 
 import Button from "../../../components/Button";
@@ -49,7 +49,7 @@ const carouselPanels: CarouselPanel[] = [
 	},
 ];
 
-const carouselTransitionTimerMs = 7000;
+const carouselTransitionTimerMs = 700_000;
 
 const Carousel = () => {
 	const [carouselPanelIndex, setCarouselPanelIndex] = useState<number>(0);
