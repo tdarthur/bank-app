@@ -10,6 +10,8 @@
 }
 * {
 	margin: 0;
+
+	color: currentColor;
 }
 body {
 	line-height: 1.5;
@@ -149,7 +151,6 @@ h4 {
 
 .logo-text {
 	color: #3c3c3c;
-	white-space: nowrap;
 	font-weight: 900;
 	font-size: 24px;
 	line-height: 40px;

@@ -4,8 +4,9 @@
 	"version": "0.1.0",
 	"type": "module",
 	"scripts": {
-		"start": "vite",
-		"dev": "vite",
+		"start": "vite --open",
+		"dev": "vite --open",
+		"host": "vite --host",
 		"build": "tsc && vite build",
 		"lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"format": "prettier --write .",

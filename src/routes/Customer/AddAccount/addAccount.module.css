@@ -17,12 +17,13 @@
 	background-color: transparent;
 	font-size: 1.4rem;
 	line-height: 1.6rem;
+	border-bottom: transparent 2px solid;
 }
 
 .accountOptions > button:hover {
-	border-bottom: #00000028 2px solid;
+	border-bottom-color: #00000028;
 }
 
 .accountOptions > button[data-selected] {
-	border-bottom: var(--primary-color) 2px solid;
+	border-bottom-color: var(--primary-color);
 }

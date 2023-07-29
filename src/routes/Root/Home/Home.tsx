@@ -49,7 +49,7 @@ const carouselPanels: CarouselPanel[] = [
 	},
 ];
 
-const carouselTransitionTimerMs = 700_000;
+const carouselTransitionTimeMs = 7000;
 
 const Carousel = () => {
 	const [carouselPanelIndex, setCarouselPanelIndex] = useState<number>(0);
@@ -57,7 +57,7 @@ const Carousel = () => {
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			setCarouselPanelIndex((carouselPanelIndex + 1) % carouselPanels.length);
-		}, carouselTransitionTimerMs);
+		}, carouselTransitionTimeMs);
 
 		return () => {
 			clearTimeout(timeout);
@@ -157,10 +157,12 @@ const Home = () => (
 		<div className={styles.actionContainer}>
 			<div>
 				<span className="logo-text">Learn what makes us </span>
-				<span className="logo">H</span>
-				<span className="logo-text">uman</span>
+				<span className={classNames(styles.actionHeaderBankName, "logo-text")}>
+					<span className="logo">H</span>
+					<span>uman</span>
+				</span>
 			</div>
-			<h2 className={styles.actionHeader}>Get started for free today</h2>
+			<h2 className={styles.actionCall}>Get started for free today</h2>
 			<Button text="Sign Up" variant="secondary" linkTo="/account-access?sign-up=true" />
 		</div>
 

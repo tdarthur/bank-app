@@ -4,11 +4,16 @@ import Form from "../../../components/Form";
 
 import styles from "./addAccount.module.css";
 
+const fieldNames = {
+	accountType: "account-type",
+	name: "name",
+};
+
 const accountTypes = {
 	checking: "Checking",
 	savings: "Savings",
 	credit: "Credit",
-};
+} as Record<string, string>;
 
 const AddAccount = () => {
 	const [accountType, setAccountType] = useState("");
@@ -24,13 +29,14 @@ const AddAccount = () => {
 				<div>
 					<h2>What kind of account are you looking for?</h2>
 
+					<input name={fieldNames.accountType} value={accountType} />
 					<div className={styles.accountOptions}>
 						{Object.keys(accountTypes).map((type) => (
 							<button
 								onClick={() => {
-									setAccountType(type);
+									setAccountType(accountTypes[type]);
 								}}
-								data-selected={type === accountType || undefined}
+								data-selected={accountTypes[type] === accountType || undefined}
 								key={type}
 							>
 								{type}
@@ -38,7 +44,19 @@ const AddAccount = () => {
 						))}
 					</div>
 
-					<Button text="Next" variant="secondary" />
+					{/* {accountType === accountTypes.checking && (
+						<div>
+							<TextInput name={fieldNames.name} label="Name" />
+						</div>
+					)} */}
+
+					{/* {accountType === accountTypes.savings && (
+						<div>
+							<TextInput name={fieldNames.name} label="Name" />
+						</div>
+					)} */}
+
+					<Button type="submit" text="Create Account" variant="secondary" width="L" />
 				</div>
 			)}
 		/>
