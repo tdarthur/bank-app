@@ -14,7 +14,7 @@ body {
 
 	width: 100%;
 	height: var(--root-header-height);
-	/* padding: 0 4rem; */
+	padding: 0 13px;
 
 	background-color: white;
 	box-shadow: 0 0 8px gray;
@@ -101,7 +101,11 @@ body {
 	height: 100%;
 }
 
-.navigation button {
+.homeLink {
+	display: none;
+}
+
+.accountButtons > * {
 	margin: 0;
 }
 
@@ -198,6 +202,9 @@ body {
 
 		transform: translateX(-100%);
 		background-color: white;
+		box-shadow: 0 0 8px gray;
+
+		transition: transform 150ms ease;
 	}
 
 	.navigationLinks[data-hamburger-open] {
@@ -206,24 +213,27 @@ body {
 
 	.navigationLinks > a {
 		display: block;
-		width: 128px;
+		width: 100%;
+		min-width: 192px;
 		height: 32px;
-		padding: 0 32px;
+		padding: 0 16px;
+		margin-top: 16px;
 
 		text-align: right;
+		line-height: 32px;
 	}
 
 	.navigationLinks > a::after {
 		display: none;
 	}
 
+	.homeLink {
+		display: block;
+	}
+
 	.navigation {
 		justify-content: right;
 	}
-
-	/* .navigation > ul > a {
-		display: none;
-	} */
 
 	.signUpButton {
 		display: none !important;

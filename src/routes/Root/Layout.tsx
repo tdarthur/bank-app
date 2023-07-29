@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useMatches, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import classNames from "classnames";
 
 import IconHamburger from "../../components/icons/Hamburger";
@@ -13,6 +13,12 @@ import styles from "./layout.module.css";
  */
 export const Header = () => {
 	const [hamburgerOpen, setHamburgerOpen] = useState(false);
+
+	const location = useLocation();
+
+	useEffect(() => {
+		setHamburgerOpen(false);
+	}, [location]);
 
 	return (
 		<header className={styles.header}>
@@ -38,6 +44,9 @@ export const Header = () => {
 						>
 							<IconX />
 						</button>
+						<Link to="" className={styles.homeLink}>
+							<li>Home</li>
+						</Link>
 						<Link to="banking">
 							<li>Banking</li>
 						</Link>
@@ -52,7 +61,7 @@ export const Header = () => {
 						</Link>
 					</ul>
 
-					<div>
+					<div className={styles.accountButtons}>
 						<Button text="Sign In" variant="tertiary" width="S" linkTo="/account-access" />
 						<Button className={styles.signUpButton} text="Sign Up" linkTo="/account-access?sign-up=true" />
 					</div>
@@ -87,25 +96,14 @@ export const Footer = () => (
 /**
  * Layout component for the 'Root' application.
  */
-const Layout = () => {
-	const matches = useMatches();
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (matches.length === 1) {
-			navigate("home");
-		}
-	}, [matches, navigate]);
-
-	return (
-		<>
-			<Header />
-			<main className={styles.main}>
-				<Outlet />
-			</main>
-			<Footer />
-		</>
-	);
-};
+const Layout = () => (
+	<>
+		<Header />
+		<main className={styles.main}>
+			<Outlet />
+		</main>
+		<Footer />
+	</>
+);
 
 export default Layout;
