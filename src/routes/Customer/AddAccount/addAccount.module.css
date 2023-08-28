@@ -1,9 +1,28 @@
+.dashboardLink {
+	display: block;
+
+	width: fit-content;
+	margin-bottom: 16px;
+
+	border-bottom: 1px solid transparent;
+}
+
+.pageHeader {
+	margin-bottom: 1rem;
+}
+
+.dashboardLink:hover {
+	color: var(--primary-color-dark);
+
+	border-bottom: 1px solid var(--primary-color-dark);
+}
+
 .accountOptions {
 	display: flex;
 	justify-content: center;
 	gap: 32px;
 
-	margin: 1rem 0;
+	margin-bottom: 1rem;
 }
 
 .accountOptions > button {
@@ -20,10 +39,25 @@
 	border-bottom: transparent 2px solid;
 }
 
-.accountOptions > button:hover {
+.accountOptions > button:hover,
+.accountOptions > button:focus-visible {
 	border-bottom-color: #00000028;
+	font-weight: bold;
 }
 
 .accountOptions > button[data-selected] {
-	border-bottom-color: var(--primary-color);
+	border-bottom-color: var(--primary-color-dark);
+}
+
+.accountOptions > button[data-selected]:focus-visible {
+	border-bottom-color: var(--primary-color-dark);
+}
+
+.accountDisclaimer {
+	text-align: left;
+
+	padding: 16px 0 32px 0;
+
+	font-style: italic;
+	font-size: 0.8rem;
 }

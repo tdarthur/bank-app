@@ -3,6 +3,8 @@ import Button from "../../../components/Button";
 import Form from "../../../components/Form";
 
 import styles from "./addAccount.module.css";
+import { Link, useNavigate } from "react-router-dom";
+import MessageContainer from "../../../components/MessageContainer";
 
 const fieldNames = {
 	accountType: "account-type",
@@ -18,45 +20,72 @@ const accountTypes = {
 const AddAccount = () => {
 	const [accountType, setAccountType] = useState("");
 
+	const navigate = useNavigate();
+
 	return (
 		<Form
-			onSubmit={() => {
-				console.log("submitted");
+			onSubmit={({ values }) => {
+				console.log("submitted", values);
+
+				navigate("../dashboard");
 
 				return Promise.resolve();
 			}}
-			render={() => (
+			render={({ messages, pushErrorMessage }) => (
 				<div>
-					<h2>What kind of account are you looking for?</h2>
+					<input
+						type="hidden"
+						id={fieldNames.accountType}
+						name={fieldNames.accountType}
+						value={accountType}
+						required
+						key={accountType}
+					/>
 
-					<input name={fieldNames.accountType} value={accountType} />
+					<Link className={styles.dashboardLink} to="../dashboard">
+						Back to dashboard
+					</Link>
+
+					<h2 className={styles.pageHeader}>What kind of account are you looking for?</h2>
+
+					<MessageContainer messages={messages} />
+
 					<div className={styles.accountOptions}>
 						{Object.keys(accountTypes).map((type) => (
 							<button
+								type="button"
 								onClick={() => {
 									setAccountType(accountTypes[type]);
+									const accountTypeInput = document.getElementById(
+										fieldNames.accountType,
+									) as HTMLInputElement;
+									accountTypeInput.value = accountTypes[type];
+									accountTypeInput.dispatchEvent(new InputEvent("change", {}));
 								}}
 								data-selected={accountTypes[type] === accountType || undefined}
 								key={type}
 							>
-								{type}
+								{accountTypes[type]}
 							</button>
 						))}
 					</div>
 
-					{/* {accountType === accountTypes.checking && (
-						<div>
-							<TextInput name={fieldNames.name} label="Name" />
-						</div>
-					)} */}
+					<p className={styles.accountDisclaimer}>
+						We would collect more information from you, but this is a fake bank, so we'll just go ahead and
+						create the account.
+					</p>
 
-					{/* {accountType === accountTypes.savings && (
-						<div>
-							<TextInput name={fieldNames.name} label="Name" />
-						</div>
-					)} */}
-
-					<Button type="submit" text="Create Account" variant="secondary" width="L" />
+					<Button
+						type="submit"
+						text="Create Account"
+						variant="secondary"
+						width="L"
+						onClick={() => {
+							if (!accountType) {
+								pushErrorMessage("Account type is required");
+							}
+						}}
+					/>
 				</div>
 			)}
 		/>

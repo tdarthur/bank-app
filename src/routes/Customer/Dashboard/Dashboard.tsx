@@ -146,7 +146,7 @@ const Dashboard = () => {
 				</section>
 				<section className={styles.newAccountPrompt}>
 					<h4>Looking to do more with your finances?</h4>
-					<Button text="Open a new account today" variant="secondary" width="XL" linkTo={"../add-account"} />
+					<Button text="Open a new account today" variant="secondary" width="XL" linkTo="../add-account" />
 				</section>
 			</div>
 		</>
