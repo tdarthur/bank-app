@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { DataStore } from "@aws-amplify/datastore";
+
+import { CheckingAccount, SavingsAccount, CreditAccount } from "../../../models";
 import Button from "../../../components/Button";
 import Form from "../../../components/Form";
+import MessageContainer from "../../../components/MessageContainer";
 
 import styles from "./addAccount.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import MessageContainer from "../../../components/MessageContainer";
+import userSessionContext from "../../../contexts/userSessionContext";
 
 const fieldNames = {
 	accountType: "account-type",
@@ -17,19 +21,58 @@ const accountTypes = {
 	credit: "Credit",
 } as Record<string, string>;
 
+const formatDate = (date: Date) =>
+	`${date.getUTCFullYear()}-${String(date.getUTCMonth()).padStart(2, "0")}-${String(date.getUTCDate()).padStart(
+		2,
+		"0",
+	)}`;
+
 const AddAccount = () => {
 	const [accountType, setAccountType] = useState("");
 
 	const navigate = useNavigate();
 
+	const { user } = useContext(userSessionContext);
+
 	return (
 		<Form
-			onSubmit={({ values }) => {
-				console.log("submitted", values);
+			onSubmit={async ({ values }) => {
+				if (user) {
+					try {
+						let account: CheckingAccount | SavingsAccount | CreditAccount;
+
+						if (values[fieldNames.accountType] === accountTypes.checking) {
+							account = new CheckingAccount({
+								accountNumber: "test",
+								cardNumber: "8888-8888-8888-8888",
+								balance: 0,
+								creationDate: formatDate(new Date(Date.now())),
+							});
+						} else if (values[fieldNames.accountType] === accountTypes.savings) {
+							account = new SavingsAccount({
+								accountNumber: "test",
+								balance: 0,
+								creationDate: formatDate(new Date(Date.now())),
+							});
+						} else {
+							account = new CreditAccount({
+								accountNumber: "test",
+								balance: 0,
+								cardNumber: "9999-9999-9999-9999",
+								creationDate: formatDate(new Date(Date.now())),
+								creditAccountType: "AMETHYST_POINTS",
+								creditLimit: 5000,
+								rewardsPoints: 0,
+							});
+						}
+
+						await DataStore.save(account);
+					} catch (error) {
+						console.error(error);
+					}
+				}
 
 				navigate("../dashboard");
-
-				return Promise.resolve();
 			}}
 			render={({ messages, pushErrorMessage }) => (
 				<div>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Auth } from "aws-amplify";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { CognitoUserSession } from "amazon-cognito-identity-js";
 import { DataStore } from "@aws-amplify/datastore";
 
@@ -27,6 +27,11 @@ const AccountNavigationMenu = () => {
 	const navigationListRef = useRef<HTMLUListElement>(null);
 
 	const navigate = useNavigate();
+
+	const location = useLocation();
+	useEffect(() => {
+		setDisplayMenu(false);
+	}, [location]);
 
 	const signOut = () => {
 		Auth.signOut()
