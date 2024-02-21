@@ -97,6 +97,7 @@
 	border-radius: 8px;
 
 	background-color: white;
+	outline: 1px solid #00000080;
 
 	transition: width 300ms linear, height 300ms linear, transform 300ms linear;
 }
@@ -202,7 +203,7 @@
 	}
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 580px) {
 	.carousel {
 		width: 768px;
 		height: 384px;

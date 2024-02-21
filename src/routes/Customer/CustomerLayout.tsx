@@ -46,7 +46,7 @@ const AccountNavigationMenu = () => {
 	return (
 		<div className={styles.accountMenu}>
 			<Button
-				text={<IconProfile strokeWidth={1.2} />}
+				text={<IconProfile strokeWidth={1.2} width={32} height={32} />}
 				variant="tertiary"
 				onClick={() => {
 					setDisplayMenu(!displayMenu);

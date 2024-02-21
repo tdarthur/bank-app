@@ -14,7 +14,7 @@
 	align-items: center;
 	grid-template-columns: 1fr 1fr;
 
-	width: 100vw;
+	width: calc(100vw - 32px);
 	height: var(--header-height);
 	max-width: 1080px;
 	margin: 0 auto;
@@ -42,6 +42,7 @@
 	position: absolute;
 	top: 40px;
 	right: 0;
+	z-index: 10;
 	overflow: hidden;
 
 	width: 160px;
@@ -69,6 +70,7 @@
 }
 
 .accountNavigationMenu button {
+	box-sizing: border-box;
 	justify-content: right;
 
 	width: 100%;

@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import classNames from "classnames";
 
-import IconHamburger from "../../components/icons/Hamburger";
+import IconHamburger from "../../components/icons/IconHamburger";
 import IconX from "../../components/icons/IconX";
 import Button from "../../components/Button";
 
 import styles from "./layout.module.css";
+import clsx from "clsx";
 
 /**
  * Header to use in the layout.
@@ -23,27 +24,29 @@ export const Header = () => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.headerContent}>
+				<Link to="" className={classNames(styles.headerLogo, "logo")}>
+					H
+				</Link>
 				<button
-					className={styles.hamburgerOpenButton}
+					className={clsx("icon-button", styles.hamburgerOpenButton)}
 					onClick={() => {
 						setHamburgerOpen(true);
 					}}
 				>
 					<IconHamburger />
 				</button>
-				<Link to="" className={classNames(styles.headerLogo, "logo")}>
-					H
-				</Link>
-				<nav className={styles.navigation}>
-					<ul className={styles.navigationLinks} data-hamburger-open={hamburgerOpen || undefined}>
+				<nav className={styles.navigation} data-hamburger-open={hamburgerOpen || undefined}>
+					<div className={styles.hamburgerHeader}>
 						<button
-							className={styles.hamburgerCloseButton}
+							className={clsx("icon-button", styles.hamburgerCloseButton)}
 							onClick={() => {
 								setHamburgerOpen(false);
 							}}
 						>
 							<IconX />
 						</button>
+					</div>
+					<ul className={styles.navigationLinks}>
 						<Link to="" className={styles.homeLink}>
 							<li>Home</li>
 						</Link>

@@ -8,6 +8,7 @@ import cashbackCardImage from "../../../assets/cashback-card.png";
 
 import styles from "./home.module.css";
 import layoutStyles from "../layout.module.css";
+import IconChevron from "../../../components/icons/IconChevron";
 
 type CarouselPanel = {
 	header: string;
@@ -139,7 +140,16 @@ const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
 			<h2 className={styles.pageHeader}>{header}</h2>
 			<p>{text}</p>
 			<div className="center-children">
-				<Button text={`${actionText} >`} variant="secondary" linkTo={to} />
+				<Button
+					text={
+						<>
+							{actionText}&nbsp;
+							<IconChevron strokeWidth={2} />
+						</>
+					}
+					variant="secondary"
+					linkTo={to}
+				/>
 			</div>
 		</div>
 		<div className={styles.cardImage}>

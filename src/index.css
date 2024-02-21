@@ -7,16 +7,18 @@
 *::before,
 *::after {
 	box-sizing: border-box;
-}
-* {
-	margin: 0;
 
+	margin: 0;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
 	color: currentColor;
 }
-body {
-	line-height: 1.5;
-	-webkit-font-smoothing: antialiased;
-}
+
 img,
 picture,
 video,
@@ -25,34 +27,30 @@ svg {
 	display: block;
 	max-width: 100%;
 }
-input,
+
+a,
 button,
-textarea,
-select {
-	font: inherit;
+dialog {
+	all: unset;
 }
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	overflow-wrap: break-word;
+
+button:not(:disabled):hover,
+a:not(:disabled):hover {
+	cursor: pointer;
 }
-a {
-	text-decoration: none;
-	color: inherit;
+
+body {
+	-webkit-font-smoothing: antialiased;
 }
-#root,
-#__next {
-	isolation: isolate;
+
+:root {
+	overflow-x: hidden;
 }
 
 /* Scrollbar  */
 
 ::-webkit-scrollbar {
-	width: 16px;
+	width: 12px;
 }
 
 ::-webkit-scrollbar-track {
@@ -189,4 +187,29 @@ h4 {
 	background-image: linear-gradient(90deg, #1cd6fb, white);
 	-webkit-background-clip: text;
 	color: transparent;
+}
+
+.icon-button {
+	width: 24px;
+	height: 24px;
+	padding: 8px;
+
+	box-sizing: content-box;
+
+	border-radius: 2px;
+
+	transition: color 150ms linear;
+}
+
+.icon-button:disabled {
+	filter: invert(50%);
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+	color: #808080;
+}
+
+.icon-button > * {
+	pointer-events: none;
 }
