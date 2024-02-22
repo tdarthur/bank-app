@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import formContext from "../contexts/formContext";
 
@@ -26,7 +26,7 @@ const TextInput = ({ label, width, className, name, required, ...props }: Props)
 	}, [formProps, name, required]);
 
 	return (
-		<div className={classNames(styles.inputWrapper, validationError && styles.invalid)}>
+		<div className={clsx(styles.inputWrapper, validationError && styles.invalid)}>
 			<label className={styles.inputLabel} htmlFor={name}>
 				{label}
 			</label>
@@ -34,7 +34,7 @@ const TextInput = ({ label, width, className, name, required, ...props }: Props)
 				id={name}
 				name={name}
 				type={props.type || "text"}
-				className={classNames(width && `width-${width}`, className)}
+				className={clsx(width && `width-${width}`, className)}
 				required={required}
 				{...props}
 			/>

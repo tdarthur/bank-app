@@ -3,6 +3,10 @@
 
 /* CSS Reset */
 
+:root {
+	overflow: hidden;
+}
+
 *,
 *::before,
 *::after {
@@ -43,8 +47,10 @@ body {
 	-webkit-font-smoothing: antialiased;
 }
 
-:root {
+#root {
+	overflow-y: auto;
 	overflow-x: hidden;
+	height: 100dvh;
 }
 
 /* Scrollbar  */
@@ -190,11 +196,9 @@ h4 {
 }
 
 .icon-button {
-	width: 24px;
-	height: 24px;
-	padding: 8px;
-
-	box-sizing: content-box;
+	width: 32px;
+	height: 32px;
+	padding: 4px;
 
 	border-radius: 2px;
 

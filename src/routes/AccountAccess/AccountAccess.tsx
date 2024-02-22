@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Auth, Hub } from "aws-amplify";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { DataStore } from "@aws-amplify/datastore";
-import classNames from "classnames";
+import clsx from "clsx";
 
 import { User } from "../../models";
 import TextInput from "../../components/TextInput";
@@ -380,7 +380,7 @@ const AccountAccess = () => {
 				</Link>
 			</header>
 			<main>
-				<div className={classNames("card", styles.formCard)}>
+				<div className={clsx("card", styles.formCard)}>
 					<h2>{returningMember ? "Sign In" : "Sign Up"}</h2>
 					{returningMember ? <LoginForm /> : <SignUpForm />}
 					<div

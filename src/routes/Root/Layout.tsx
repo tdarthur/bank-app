@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import classNames from "classnames";
+import { createPortal } from "react-dom";
+import clsx from "clsx";
 
 import IconHamburger from "../../components/icons/IconHamburger";
 import IconX from "../../components/icons/IconX";
 import Button from "../../components/Button";
 
 import styles from "./layout.module.css";
-import clsx from "clsx";
 
 /**
  * Header to use in the layout.
  */
 export const Header = () => {
-	const [hamburgerOpen, setHamburgerOpen] = useState(false);
+	const [hamburgerOpen, setHamburgerOpen] = useState(true);
 
 	const location = useLocation();
 
@@ -24,28 +24,21 @@ export const Header = () => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.headerContent}>
-				<Link to="" className={classNames(styles.headerLogo, "logo")}>
-					H
-				</Link>
+				<span className="logo-text">
+					<Link to="">
+						<span className={clsx(styles.headerLogo, "logo")}>H</span>
+						<span className={styles.logoText}>uman Bank</span>
+					</Link>
+				</span>
 				<button
-					className={clsx("icon-button", styles.hamburgerOpenButton)}
+					className={clsx("icon-button", styles.hamburgerToggleButton)}
 					onClick={() => {
-						setHamburgerOpen(true);
+						setHamburgerOpen(!hamburgerOpen);
 					}}
 				>
-					<IconHamburger />
+					{hamburgerOpen ? <IconX /> : <IconHamburger />}
 				</button>
 				<nav className={styles.navigation} data-hamburger-open={hamburgerOpen || undefined}>
-					<div className={styles.hamburgerHeader}>
-						<button
-							className={clsx("icon-button", styles.hamburgerCloseButton)}
-							onClick={() => {
-								setHamburgerOpen(false);
-							}}
-						>
-							<IconX />
-						</button>
-					</div>
 					<ul className={styles.navigationLinks}>
 						<Link to="" className={styles.homeLink}>
 							<li>Home</li>
@@ -101,7 +94,7 @@ export const Footer = () => (
  */
 const Layout = () => (
 	<>
-		<Header />
+		{createPortal(<Header />, document.querySelector("#header") as HTMLDivElement)}
 		<main className={styles.main}>
 			<Outlet />
 		</main>

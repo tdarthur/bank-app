@@ -26,12 +26,12 @@
 }
 
 .accountOptions > button {
+	text-align: center;
+
 	width: 128px;
 	height: 64px;
 	border: none;
 	outline: none;
-
-	box-sizing: content-box;
 
 	background-color: transparent;
 	font-size: 1.4rem;

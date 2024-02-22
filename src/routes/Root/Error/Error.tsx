@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { useRouteError } from "react-router-dom";
 import { Footer, Header } from "../Layout";
 import Button from "../../../components/Button";
@@ -25,7 +25,7 @@ const Error = () => {
 		<>
 			<Header />
 			<main className={layoutStyles.main}>
-				<div className={classNames(layoutStyles.pageContent, styles.errorDetails)}>
+				<div className={clsx(layoutStyles.pageContent, styles.errorDetails)}>
 					<h2 className={styles.errorMessage}>
 						{errorMessages[routeError?.status] || routeError?.error?.message || "An error occurred"}
 					</h2>

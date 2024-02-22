@@ -1,7 +1,7 @@
 .layoutWrapper {
 	width: 100vw;
 	height: auto;
-	min-height: 100vh;
+	min-height: 100dvh;
 
 	background-color: #f0f0f0;
 
@@ -89,10 +89,9 @@
 
 .main {
 	width: 1080px;
-	min-height: calc(100vh - var(--header-height) - var(--footer-height) - 8rem);
+	min-height: calc(100dvh - var(--header-height) - var(--footer-height) - 8rem);
 	margin: 0 auto;
 	padding: 4rem 0;
-	box-sizing: content-box;
 }
 
 .footer {
@@ -131,7 +130,7 @@
 	padding-top: 256px;
 
 	width: 100vw;
-	height: calc(100vh + 256px);
+	height: calc(100dvh + 256px);
 	background-color: white;
 	box-shadow: 0 0 64px #00000028;
 }

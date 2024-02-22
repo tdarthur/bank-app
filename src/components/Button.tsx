@@ -1,5 +1,5 @@
 import { To, useNavigate } from "react-router-dom";
-import classNames from "classnames";
+import clsx from "clsx";
 
 import styles from "./components.module.css";
 import LoadingSpinner from "./LoadingSpinner";
@@ -27,7 +27,7 @@ const Button = ({
 	return (
 		<button
 			type="button"
-			className={classNames(
+			className={clsx(
 				variant === "tertiary"
 					? styles.buttonTertiary
 					: variant === "secondary"

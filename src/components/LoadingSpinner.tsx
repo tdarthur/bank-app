@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 
 import styles from "./components.module.css";
 
@@ -6,7 +6,7 @@ type Props = Omit<React.SVGProps<SVGSVGElement>, "children">;
 
 const LoadingSpinner = ({ className, ...props }: Props) => (
 	<svg
-		className={classNames(styles.loadingSpinner, className)}
+		className={clsx(styles.loadingSpinner, className)}
 		width="24"
 		height="24"
 		viewBox="0 0 24 24"

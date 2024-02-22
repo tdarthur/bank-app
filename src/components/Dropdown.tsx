@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 
 import styles from "./components.module.css";
 
@@ -11,7 +11,7 @@ type Props = {
 const Dropdown = ({ label, width, options, className, ...props }: Props) => (
 	<div className={styles.inputWrapper}>
 		<label className={styles.inputLabel}>{label}</label>
-		<select className={classNames(width && `width-${width}`, className)} {...props}>
+		<select className={clsx(width && `width-${width}`, className)} {...props}>
 			{options.map(({ key, value }) => (
 				<option value={key} key={key}>
 					{value}

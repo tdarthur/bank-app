@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 
 import Button from "../../../components/Button";
 
@@ -144,7 +144,7 @@ const InfoCard = ({ header, text, image, actionText, to }: InfoCardProps) => (
 					text={
 						<>
 							{actionText}&nbsp;
-							<IconChevron strokeWidth={2} />
+							<IconChevron width={24} height={24} strokeWidth={2} />
 						</>
 					}
 					variant="secondary"
@@ -167,7 +167,7 @@ const Home = () => (
 		<div className={styles.actionContainer}>
 			<div>
 				<span className="logo-text">Learn what makes us </span>
-				<span className={classNames(styles.actionHeaderBankName, "logo-text")}>
+				<span className={clsx(styles.actionHeaderBankName, "logo-text")}>
 					<span className="logo">H</span>
 					<span>uman</span>
 				</span>
@@ -176,7 +176,7 @@ const Home = () => (
 			<Button text="Sign Up" variant="secondary" linkTo="/account-access?sign-up=true" />
 		</div>
 
-		<section className={classNames(styles.cards, layoutStyles.pageContent)}>
+		<section className={clsx(styles.cards, layoutStyles.pageContent)}>
 			<InfoCard
 				header="Banking. It's what we do."
 				text="This is what we do."

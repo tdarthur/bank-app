@@ -12,8 +12,8 @@ const Icon = (props: React.PropsWithChildren<React.SVGProps<SVGSVGElement>>) => 
 			strokeWidth={1.5}
 			stroke="currentColor"
 			role="presentation"
-			width={24}
-			height={24}
+			width={32}
+			height={32}
 			{...props}
 		/>
 	</span>

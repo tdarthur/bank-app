@@ -1,5 +1,5 @@
 import { useState } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 
 import { CheckingAccount, SavingsAccount, CreditAccount } from "../../../models";
 import IconX from "../../../components/icons/IconX";
@@ -46,7 +46,7 @@ const AccountCard = ({
 	return (
 		<div className={styles.accountContainer}>
 			<div
-				className={classNames(
+				className={clsx(
 					"card",
 					styles.accountCard,
 					styles.accountCardChecking,
@@ -85,7 +85,7 @@ const AccountCard = ({
 					<IconX />
 				</button>
 			</div>
-			<div className={classNames("card", styles.accountDetailsSection)} data-open={isOpen || undefined} />
+			<div className={clsx("card", styles.accountDetailsSection)} data-open={isOpen || undefined} />
 		</div>
 	);
 };
@@ -100,7 +100,7 @@ const CheckingAccountCard = ({ account, ...accountCardProps }: CheckingAccountCa
 	<AccountCard
 		type="checking"
 		accountBalance={
-			<p className={classNames(styles.accountCardBalance, styles.currency)}>
+			<p className={clsx(styles.accountCardBalance, styles.currency)}>
 				{account.balance.toLocaleString("en-US")}
 			</p>
 		}
@@ -117,7 +117,7 @@ const SavingsAccountCard = ({ account, ...accountCardProps }: SavingsAccountCard
 	<AccountCard
 		type="savings"
 		accountBalance={
-			<p className={classNames(styles.accountCardBalance, styles.currency)}>
+			<p className={clsx(styles.accountCardBalance, styles.currency)}>
 				{account.balance.toLocaleString("en-US")}
 			</p>
 		}
