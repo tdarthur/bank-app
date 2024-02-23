@@ -114,8 +114,8 @@ const AddAccount = () => {
 					</div>
 
 					<p className={styles.accountDisclaimer}>
-						We would collect more information from you, but this is a fake bank, so we'll just go ahead and
-						create the account.
+						We would collect more information from you, but this is a fake bank, so we'll just create the
+						account.
 					</p>
 
 					<Button

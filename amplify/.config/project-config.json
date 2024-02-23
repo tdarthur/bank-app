@@ -1,15 +1,17 @@
 {
-	"projectName": "bankapp",
-	"version": "3.1",
-	"frontend": "javascript",
-	"javascript": {
-		"framework": "react",
-		"config": {
-			"SourceDir": "src",
-			"DistributionDir": "dist",
-			"BuildCommand": "npm.cmd run-script build",
-			"StartCommand": "npm.cmd run-script start"
-		}
-	},
-	"providers": ["awscloudformation"]
+  "providers": [
+    "awscloudformation"
+  ],
+  "projectName": "bankapp",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "src",
+      "DistributionDir": "dist",
+      "BuildCommand": "npm run build",
+      "StartCommand": "npm start"
+    }
+  }
 }

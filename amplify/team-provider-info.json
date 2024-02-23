@@ -12,9 +12,6 @@
       "AmplifyAppId": "dpxhi4nws4878"
     },
     "categories": {
-      "hosting": {
-        "S3AndCloudFront": {}
-      },
       "auth": {
         "bankappd6b5035e": {}
       },

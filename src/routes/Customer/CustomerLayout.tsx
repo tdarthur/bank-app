@@ -21,7 +21,7 @@ const LoadingOverlay = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTML
 	);
 };
 
-const AccountNavigationMenu = () => {
+const AccountMenu = () => {
 	const [displayMenu, setDisplayMenu] = useState(false);
 
 	const navigationListRef = useRef<HTMLUListElement>(null);
@@ -53,7 +53,7 @@ const AccountNavigationMenu = () => {
 				}}
 			/>
 			<nav
-				className={styles.accountNavigationMenu}
+				className={styles.accountMenuNavigation}
 				style={{ height: `${((displayMenu && navigationListRef.current?.childElementCount) || 0) * 40}px` }}
 			>
 				<ul ref={navigationListRef}>
@@ -135,7 +135,7 @@ const Layout = () => {
 							<span className="logo">H</span>
 							<span className="logo-text">uman Bank</span>
 						</Link>
-						<AccountNavigationMenu />
+						<AccountMenu />
 					</header>
 					<main className={styles.main}>
 						<Outlet />

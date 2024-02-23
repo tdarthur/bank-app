@@ -38,7 +38,7 @@
 	padding: 0;
 }
 
-.accountNavigationMenu {
+.accountMenuNavigation {
 	position: absolute;
 	top: 40px;
 	right: 0;
@@ -46,21 +46,21 @@
 	overflow: hidden;
 
 	width: 160px;
-	height: 0px;
+	height: -20px;
 	border-radius: 4px;
 
-	box-shadow: #0000000a 0px 0px 8px;
+	box-shadow: #0000004a 0px 0px 2px;
 
 	transition: height 150ms ease;
 }
 
-.accountNavigationMenu ul {
+.accountMenuNavigation ul {
 	padding: 0;
 
 	list-style: none;
 }
 
-.accountNavigationMenu li {
+.accountMenuNavigation li {
 	width: 100%;
 	height: 40px;
 	line-height: 40px;
@@ -69,7 +69,7 @@
 	white-space: none;
 }
 
-.accountNavigationMenu button {
+.accountMenuNavigation button {
 	box-sizing: border-box;
 	justify-content: right;
 
@@ -83,7 +83,7 @@
 	font-weight: normal;
 }
 
-.accountNavigationMenu button:hover:not(:disabled) {
+.accountMenuNavigation button:hover:not(:disabled) {
 	background-color: #cccccc;
 }
 

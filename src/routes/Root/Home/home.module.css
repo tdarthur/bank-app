@@ -69,9 +69,10 @@
 
 	opacity: 0;
 
+	outline: 1px solid #00000040;
+
 	transition: opacity 150ms linear;
 	transition-delay: 600ms;
-	filter: drop-shadow(0 0 48px #000000);
 }
 
 .carouselOverlays > *[data-active] > button {

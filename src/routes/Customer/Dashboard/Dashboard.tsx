@@ -1,8 +1,8 @@
 import { useContext, useEffect, useReducer, useState } from "react";
 
-import { AsyncCollection } from "@aws-amplify/datastore";
 import { CheckingAccount, SavingsAccount, CreditAccount } from "../../../models";
 import userSessionContext from "../../../contexts/userSessionContext";
+import { DataStore } from "@aws-amplify/datastore";
 
 import styles from "./dashboard.module.css";
 import { CheckingAccountCard, CreditCardAccountCard, SavingsAccountCard } from "./AccountCard";
@@ -16,7 +16,18 @@ const welcomeMessages: string[] = [
 
 const animationReducer = (animationCount: number, increment: -1 | 1) => animationCount + increment;
 
+type Accounts = {
+	checkingAccounts: CheckingAccount[];
+	savingsAccounts: SavingsAccount[];
+	creditAccounts: CreditAccount[];
+};
+
 const Dashboard = () => {
+	const [accounts, setAccounts] = useState<Accounts>({
+		checkingAccounts: [],
+		savingsAccounts: [],
+		creditAccounts: [],
+	});
 	const [preloading, setPreloading] = useState(true);
 	const [welcomeMessage, setWelcomeMessage] = useState<string>();
 	const [openAccount, setOpenAccount] = useState<string>();
@@ -29,13 +40,33 @@ const Dashboard = () => {
 			setPreloading(false);
 		}, 1000);
 
-		return () => {
-			clearInterval(interval);
-		};
+		return () => clearInterval(interval);
+	});
+
+	useEffect(() => {
+		(async () => {
+			setAccounts({
+				checkingAccounts: await DataStore.query(CheckingAccount),
+				savingsAccounts: await DataStore.query(SavingsAccount),
+				creditAccounts: await DataStore.query(CreditAccount),
+			});
+
+			setPreloading(false);
+		})();
 	}, []);
 
 	useEffect(() => {
 		if (cognitoSession && user) {
+			(async () => {
+				setAccounts({
+					checkingAccounts: await DataStore.query(CheckingAccount),
+					savingsAccounts: await DataStore.query(SavingsAccount),
+					creditAccounts: await DataStore.query(CreditAccount),
+				});
+
+				setPreloading(false);
+			})();
+
 			let randomKey = 0;
 			const jwtToken = cognitoSession?.getAccessToken().getJwtToken();
 			if (jwtToken) {
@@ -49,42 +80,6 @@ const Dashboard = () => {
 		}
 	}, [cognitoSession, user]);
 
-	const checkingAccounts: CheckingAccount[] = [
-		{
-			id: "1",
-			accountNumber: "1",
-			cardNumber: "0000-0009-8765-4321",
-			balance: 987,
-			creationDate: "",
-			users: new AsyncCollection([]),
-			transactions: new AsyncCollection([]),
-		} as unknown as CheckingAccount,
-	];
-	const savingsAccounts: SavingsAccount[] = [
-		{
-			id: "2",
-			accountNumber: "2",
-			balance: 6543,
-			creationDate: "",
-			users: new AsyncCollection([]),
-			transactions: new AsyncCollection([]),
-		} as unknown as SavingsAccount,
-	];
-	const creditCardAccounts: CreditAccount[] = [
-		{
-			id: "3",
-			accountNumber: "3",
-			cardNumber: "0000-0001-2345-6789",
-			creditAccountType: "SAPIEN_CASHBACK",
-			balance: 21,
-			creditLimit: 10_000,
-			rewardsPoints: 14,
-			creationDate: "",
-			users: new AsyncCollection([]),
-			transactions: new AsyncCollection([]),
-		} as unknown as CreditAccount,
-	];
-
 	const pushAnimation = () => dispatchAnimationUpdate(1);
 	const popAnimation = () => dispatchAnimationUpdate(-1);
 
@@ -93,7 +88,7 @@ const Dashboard = () => {
 			<div className={styles.mainContent} data-preloading={preloading || undefined}>
 				<section className={styles.accountSection}>
 					<h3 className={styles.welcomeMessage}>{welcomeMessage}</h3>
-					{checkingAccounts.map((account) => (
+					{accounts.checkingAccounts.map((account) => (
 						<CheckingAccountCard
 							isOpen={openAccount === account.id}
 							isAnimating={animationCount > 0}
@@ -110,7 +105,7 @@ const Dashboard = () => {
 						/>
 					))}
 
-					{savingsAccounts.map((account) => (
+					{accounts.savingsAccounts.map((account) => (
 						<SavingsAccountCard
 							isOpen={openAccount === account.id}
 							isAnimating={animationCount > 0}
@@ -127,7 +122,7 @@ const Dashboard = () => {
 						/>
 					))}
 
-					{creditCardAccounts.map((account) => (
+					{accounts.creditAccounts.map((account) => (
 						<CreditCardAccountCard
 							isOpen={openAccount === account.id}
 							isAnimating={animationCount > 0}
