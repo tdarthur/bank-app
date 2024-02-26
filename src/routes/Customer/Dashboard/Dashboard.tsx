@@ -83,6 +83,24 @@ const Dashboard = () => {
 	const pushAnimation = () => dispatchAnimationUpdate(1);
 	const popAnimation = () => dispatchAnimationUpdate(-1);
 
+	const deleteAccount = async (
+		accountType: typeof CheckingAccount | typeof SavingsAccount | typeof CreditAccount,
+		id: string,
+	) => {
+		if (accountType === CheckingAccount) {
+			DataStore.delete(accountType, id);
+		} else if (accountType === SavingsAccount) {
+			DataStore.delete(accountType, id);
+		} else if (accountType === CreditAccount) {
+			DataStore.delete(accountType, id);
+		}
+		setAccounts({
+			checkingAccounts: accounts.checkingAccounts.filter((account) => account.id !== id),
+			savingsAccounts: accounts.savingsAccounts.filter((account) => account.id !== id),
+			creditAccounts: accounts.creditAccounts.filter((account) => account.id !== id),
+		});
+	};
+
 	return (
 		<>
 			<div className={styles.mainContent} data-preloading={preloading || undefined}>
@@ -101,7 +119,8 @@ const Dashboard = () => {
 							account={account}
 							pushAnimation={pushAnimation}
 							popAnimation={popAnimation}
-							key={account.accountNumber}
+							deleteAccount={() => deleteAccount(CheckingAccount, account.id)}
+							key={account.id}
 						/>
 					))}
 
@@ -118,7 +137,8 @@ const Dashboard = () => {
 							account={account}
 							pushAnimation={pushAnimation}
 							popAnimation={popAnimation}
-							key={account.accountNumber}
+							deleteAccount={() => deleteAccount(SavingsAccount, account.id)}
+							key={account.id}
 						/>
 					))}
 
@@ -135,7 +155,8 @@ const Dashboard = () => {
 							account={account}
 							pushAnimation={pushAnimation}
 							popAnimation={popAnimation}
-							key={account.accountNumber}
+							deleteAccount={() => deleteAccount(CreditAccount, account.id)}
+							key={account.id}
 						/>
 					))}
 				</section>

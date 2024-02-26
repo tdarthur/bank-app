@@ -18,7 +18,7 @@ import styles from "./dashboard.module.css";
 // 	</div>
 // );
 
-type AccountCardProps = {
+type AccountCardProps = React.PropsWithChildren<{
 	type: "checking" | "savings" | "credit";
 	accountBalance: React.ReactNode;
 	accountName: string;
@@ -28,7 +28,8 @@ type AccountCardProps = {
 	closeCard: () => void;
 	pushAnimation: () => void;
 	popAnimation: () => void;
-};
+	deleteAccount: () => void;
+}>;
 
 const AccountCard = ({
 	type,
@@ -40,8 +41,12 @@ const AccountCard = ({
 	closeCard,
 	pushAnimation,
 	popAnimation,
+	deleteAccount,
+	children,
 }: AccountCardProps) => {
 	const [cardFocused, setCardFocused] = useState(false);
+
+	const innerTabIndex = isOpen ? 0 : -1;
 
 	return (
 		<div className={styles.accountContainer}>
@@ -81,11 +86,22 @@ const AccountCard = ({
 				<h3 className={styles.accountCardHeader}>Account Balance</h3>
 				{accountBalance}
 				<p className={styles.accountCardAccountType}>{accountName}</p>
-				<button className={styles.accountCardCloseButton} tabIndex={isOpen ? 0 : -1} onClick={closeCard}>
+				<button className={styles.accountCardCloseButton} tabIndex={innerTabIndex} onClick={closeCard}>
 					<IconX />
 				</button>
 			</div>
-			<div className={clsx("card", styles.accountDetailsSection)} data-open={isOpen || undefined} />
+			<div className={clsx("card", styles.accountDetailsSection)} data-open={isOpen || undefined}>
+				<div className={styles.accountDetailsHeader}>
+					<div className={styles.accountDetailsAccountActions}>
+						<button tabIndex={innerTabIndex}>Transfer Funds</button>
+						<button tabIndex={innerTabIndex}>View Statements</button>
+					</div>
+					<button className={styles.deleteAccountButton} tabIndex={innerTabIndex} onClick={deleteAccount}>
+						Delete Account
+					</button>
+				</div>
+				{children}
+			</div>
 		</div>
 	);
 };

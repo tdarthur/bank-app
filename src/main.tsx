@@ -29,7 +29,7 @@ Amplify.configure({
 	aws_appsync_apiKey: process.env.VITE_GRAPHQL_ENDPOINT,
 	aws_cognito_identity_pool_id: process.env.VITE_COGNITO_IDENTITY_POOL_ID,
 	aws_cognito_region: "us-east-2",
-	aws_user_pools_id: process.env.VITE_USER_POOL_ID,
+	aws_user_pools_id: process.env.VITE_USER_POOLS_ID,
 	aws_user_pools_web_client_id: process.env.VITE_USER_POOLS_WEB_CLIENT_ID,
 	oauth: {},
 	aws_cognito_username_attributes: ["EMAIL"],
