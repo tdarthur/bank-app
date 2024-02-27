@@ -56,43 +56,25 @@ body {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	gap: 2rem;
+	padding: 0;
 
 	height: 100%;
-	padding: 0;
 	line-height: var(--root-header-height);
 
 	list-style-type: none;
 }
 
 .navigationLinks a {
-	position: relative;
-
-	height: 100%;
-	padding: 0 1rem;
-
 	transition: color 150ms linear;
-}
-
-.navigationLinks a::after {
-	content: "";
-
-	position: absolute;
-	left: 0;
-	bottom: 0;
-
-	height: 2px;
-	width: 100%;
-
-	background-color: transparent;
-	transition: background-color 150ms linear;
 }
 
 .navigationLinks a:hover {
 	color: var(--primary-color);
 }
 
-.navigationLinks a:hover::after {
-	background-color: var(--primary-color);
+.navigationLinks a:focus-visible {
+	outline: 2px solid black;
 }
 
 .navigation > div {
@@ -111,9 +93,10 @@ body {
 	display: flex;
 	justify-content: end;
 	flex-grow: 1;
+	gap: 8px;
 }
 
-.accountButtons > * {
+.accountButtons > button {
 	margin: 0;
 }
 

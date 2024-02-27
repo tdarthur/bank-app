@@ -25,7 +25,7 @@ export const Header = () => {
 		<header className={styles.header}>
 			<div className={styles.headerContent}>
 				<span className="logo-text">
-					<Link to="">
+					<Link to="" className="logo-link">
 						<span className={clsx(styles.headerLogo, "logo")}>H</span>
 						<span className={styles.logoText}>uman Bank</span>
 					</Link>
@@ -40,21 +40,23 @@ export const Header = () => {
 				</button>
 				<nav className={styles.navigation} data-hamburger-open={hamburgerOpen || undefined}>
 					<ul className={styles.navigationLinks}>
-						<Link to="" className={styles.homeLink}>
-							<li>Home</li>
-						</Link>
-						<Link to="banking">
-							<li>Banking</li>
-						</Link>
-						<Link to="credit-cards">
-							<li>Credit Cards</li>
-						</Link>
-						<Link to="benefits">
-							<li>Benefits</li>
-						</Link>
-						<Link to="faq">
-							<li>FAQ</li>
-						</Link>
+						<li>
+							<Link to="" className={styles.homeLink}>
+								Home
+							</Link>
+						</li>
+						<li>
+							<Link to="banking">Banking</Link>
+						</li>
+						<li>
+							<Link to="credit-cards">Credit Cards</Link>
+						</li>
+						<li>
+							<Link to="benefits">Benefits</Link>
+						</li>
+						<li>
+							<Link to="faq">FAQ</Link>
+						</li>
 					</ul>
 
 					<div className={styles.accountButtons}>

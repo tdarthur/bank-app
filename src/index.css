@@ -137,6 +137,11 @@ h4 {
 	font-size: 0.6rem;
 }
 
+.logo-link:focus-visible {
+	outline: 2px solid black;
+	border-radius: 2px;
+}
+
 .logo {
 	position: relative;
 	display: inline-block;

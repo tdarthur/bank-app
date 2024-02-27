@@ -374,7 +374,7 @@ const AccountAccess = () => {
 	return (
 		<div className={styles.layoutWrapper}>
 			<header className={styles.header}>
-				<Link to="/">
+				<Link to="/" className="logo-link">
 					<span className="logo">H</span>
 					<span className="logo-text">uman Bank</span>
 				</Link>
