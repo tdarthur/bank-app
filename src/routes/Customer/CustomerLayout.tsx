@@ -58,19 +58,25 @@ const AccountMenu = () => {
 			>
 				<ul ref={navigationListRef}>
 					<li>
-						<Button text="Account Settings" tabIndex={displayMenu ? 0 : -1} />
+						<button type="button" tabIndex={displayMenu ? 0 : -1}>
+							Account Settings
+						</button>
 					</li>
 					<li>
-						<Button text="Security" tabIndex={displayMenu ? 0 : -1} />
+						<button type="button" tabIndex={displayMenu ? 0 : -1}>
+							Security
+						</button>
 					</li>
 					<li>
-						<Button
-							text="Sign Out"
+						<button
+							type="button"
+							tabIndex={displayMenu ? 0 : -1}
 							onClick={() => {
 								signOut();
 							}}
-							tabIndex={displayMenu ? 0 : -1}
-						/>
+						>
+							Sign Out
+						</button>
 					</li>
 				</ul>
 			</nav>
@@ -131,10 +137,12 @@ const Layout = () => {
 			{!fetchingData && (
 				<div className={styles.layoutWrapper}>
 					<header className={styles.header}>
-						<Link to="/">
-							<span className="logo">H</span>
-							<span className="logo-text">uman Bank</span>
-						</Link>
+						<div>
+							<Link to="/" className="logo-link">
+								<span className="logo">H</span>
+								<span className="logo-text">uman Bank</span>
+							</Link>
+						</div>
 						<AccountMenu />
 					</header>
 					<main className={styles.main}>

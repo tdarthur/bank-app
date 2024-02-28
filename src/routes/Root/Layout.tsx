@@ -40,10 +40,8 @@ export const Header = () => {
 				</button>
 				<nav className={styles.navigation} data-hamburger-open={hamburgerOpen || undefined}>
 					<ul className={styles.navigationLinks}>
-						<li>
-							<Link to="" className={styles.homeLink}>
-								Home
-							</Link>
+						<li className={styles.homeLink}>
+							<Link to="">Home</Link>
 						</li>
 						<li>
 							<Link to="banking">Banking</Link>
@@ -87,7 +85,10 @@ export const Footer = () => (
 				</span>
 			</Link>
 		</p>
-		<p>&#169;{new Date(Date.now()).getFullYear()} Human Bank</p>
+		<div className={styles.copyright}>
+			<span>&#169;</span>
+			<span>{new Date(Date.now()).getFullYear()} Human Bank</span>
+		</div>
 	</footer>
 );
 

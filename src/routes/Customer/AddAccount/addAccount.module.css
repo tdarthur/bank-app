@@ -1,20 +1,26 @@
+.pageHeader {
+	margin-bottom: 1rem;
+}
+
 .dashboardLink {
 	display: block;
 
 	width: fit-content;
 	margin-bottom: 16px;
+	padding: 4px 8px;
+	border-radius: 2px;
 
 	border-bottom: 1px solid transparent;
-}
-
-.pageHeader {
-	margin-bottom: 1rem;
 }
 
 .dashboardLink:hover {
 	color: var(--primary-color-dark);
 
 	border-bottom: 1px solid var(--primary-color-dark);
+}
+
+.dashboardLink:focus-visible {
+	outline: 2px solid black;
 }
 
 .accountOptions {

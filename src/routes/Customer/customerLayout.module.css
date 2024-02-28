@@ -83,7 +83,8 @@
 	font-weight: normal;
 }
 
-.accountMenuNavigation button:hover:not(:disabled) {
+.accountMenuNavigation button:hover:not(:disabled),
+.accountMenuNavigation button:focus-visible:not(:disabled) {
 	background-color: #cccccc;
 }
 

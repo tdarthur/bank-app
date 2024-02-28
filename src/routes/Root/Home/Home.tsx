@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 
 import Button from "../../../components/Button";
@@ -54,16 +54,35 @@ const carouselTransitionTimeMs = 7000;
 
 const Carousel = () => {
 	const [carouselPanelIndex, setCarouselPanelIndex] = useState<number>(0);
+	const indexIndicatorRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			setCarouselPanelIndex((carouselPanelIndex + 1) % carouselPanels.length);
+			const newCarouselPanelIndex = (carouselPanelIndex + 1) % carouselPanels.length;
+			setCarouselPanelIndex(newCarouselPanelIndex);
+			indexIndicatorRef.current?.childNodes.forEach((indexIndicatorButton) => {
+				if (indexIndicatorButton === document.activeElement) {
+					(indexIndicatorRef.current?.children[newCarouselPanelIndex] as HTMLButtonElement).focus();
+				}
+			});
 		}, carouselTransitionTimeMs);
 
 		return () => {
 			clearTimeout(timeout);
 		};
 	}, [carouselPanelIndex]);
+
+	const handleCarouselKeyDown = (event: React.KeyboardEvent) => {
+		if (event.key === "ArrowLeft") {
+			const newCarouselPanelIndex = carouselPanelIndex > 0 ? carouselPanelIndex - 1 : carouselPanels.length - 1;
+			setCarouselPanelIndex(newCarouselPanelIndex);
+			(indexIndicatorRef.current?.children[newCarouselPanelIndex] as HTMLButtonElement).focus();
+		} else if (event.key === "ArrowRight") {
+			const newCarouselPanelIndex = (carouselPanelIndex + 1) % carouselPanels.length;
+			setCarouselPanelIndex(newCarouselPanelIndex);
+			(indexIndicatorRef.current?.children[newCarouselPanelIndex] as HTMLButtonElement).focus();
+		}
+	};
 
 	return (
 		<div className={styles.carousel}>
@@ -72,6 +91,7 @@ const Carousel = () => {
 				style={{
 					transform: `translateX(-${carouselPanelIndex * 100}%)`,
 				}}
+				onKeyDown={handleCarouselKeyDown}
 			>
 				{carouselPanels.map(({ image, key }, index) => (
 					<img
@@ -89,7 +109,7 @@ const Carousel = () => {
 			<div
 				className={styles.carouselOverlays}
 				style={{
-					transform: `translateY(-${carouselPanelIndex * 100}%)`,
+					transform: `translateY(-${carouselPanelIndex * 100}%)   `,
 				}}
 			>
 				{carouselPanels.map(({ header, text, key }, index) => (
@@ -113,12 +133,14 @@ const Carousel = () => {
 				))}
 			</div>
 
-			<div className={styles.carouselIndexIndicator}>
+			<div className={styles.carouselIndexIndicator} ref={indexIndicatorRef}>
 				{carouselPanels.map(({ key }, index) => (
 					<button
 						type="button"
 						onClick={() => setCarouselPanelIndex(index)}
+						onKeyDown={handleCarouselKeyDown}
 						data-selected={carouselPanelIndex === index ? true : undefined}
+						tabIndex={index === carouselPanelIndex ? 0 : -1}
 						key={key}
 					/>
 				))}

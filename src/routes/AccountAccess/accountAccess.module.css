@@ -93,6 +93,8 @@
 	width: fit-content;
 	height: 1rem;
 	margin: 0;
+	padding: 4px;
+	border-radius: 2px;
 
 	background-color: transparent;
 	font-size: 0.7rem;
